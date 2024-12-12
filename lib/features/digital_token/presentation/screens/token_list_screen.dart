@@ -49,14 +49,14 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none)),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("รายการโทเคน",
@@ -76,35 +76,40 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            // ใช้ SingleChildScrollView เมื่อมีจำนวนแท็บเยอะเกินไป
+            SizedBox(height: 10.0),
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal, // ทำให้ TabBar เลื่อนได้
-              child: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                dividerColor: Colors.transparent,
-                labelColor: Colors.black, // สีข้อความในแท็บที่ถูกเลือก
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: Colors.orange,
-                indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 5.0,color: Colors.orange),
-                    insets: EdgeInsets.symmetric(horizontal: 50.0)),
-                labelStyle: GoogleFonts.prompt(
-                  textStyle: TextStyle(fontSize: 18.0),
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  dividerHeight: 0,
+                  labelColor: Colors.black,
+                  tabAlignment: TabAlignment.start,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Colors.orange,
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 4.0, color: Colors.orange),
+                    insets: EdgeInsets.symmetric(horizontal: 50.0),
+                  ),
+                  labelStyle: GoogleFonts.prompt(
+                    textStyle: TextStyle(fontSize: 18.0),
+                  ),
+                  onTap: (index) {
+                    ref
+                        .read(selectedTabIndexProvider.notifier)
+                        .changeTab(index);
+                    print("current index : $selectIndexTab");
+                  },
+                  tabs: [
+                    Tab(text: 'โทเคนที่เปิดจองอยู่'),
+                    Tab(text: 'โทเคนที่ใกล้เปิดจอง'),
+                    Tab(text: 'โทเคนที่ปิดจองแล้ว'),
+                  ],
                 ),
-                onTap: (index) {
-                  ref.read(selectedTabIndexProvider.notifier).changeTab(index);
-                  print("current index : $selectIndexTab");
-                },
-                tabs: [
-                  Tab(text: 'โทเคนที่เปิดจองอยู่'),
-                  Tab(text: 'โทเคนที่ใกล้เปิดจอง'),
-                  Tab(text: 'โทเคนที่ปิดจองแล้ว'),
-                ],
               ),
             ),
-            // ใช้ TabBarView ที่ให้เลือกแท็บตาม selectIndexTab
             Expanded(
               child: TabBarView(
                 controller: _tabController,
