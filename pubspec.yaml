@@ -17,7 +17,8 @@ dependencies:
   google_fonts: ^6.2.1
   path_provider: ^2.1.5
   shared_preferences: ^2.3.3
-  
+  json_annotation: ^4.9.0
+  font_awesome_flutter: ^10.8.0
 
 dev_dependencies:
   flutter_test:
@@ -25,8 +26,12 @@ dev_dependencies:
   flutter_lints: ^4.0.0    
   auto_route_generator: ^7.1.1
   build_runner: ^2.4.13
+  json_serializable: ^6.9.0
+  freezed: ^2.5.7
 
   
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/token.json

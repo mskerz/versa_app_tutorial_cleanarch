@@ -13,4 +13,6 @@ abstract class StorageService {
   Future<void> clear();
 
   Future<bool> has(String key);
+
+  Future<String> loadJson();
 }
