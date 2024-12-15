@@ -3,3 +3,4 @@ analyzer:
   errors:
     unused_element: ignore
     unnecessary_null_comparison: ignore
+    constant_identifier_names: ignore

@@ -35,47 +35,53 @@ Widget buildTokenList(List<Token> tokens, String status) {
     itemCount: filtered.length,
     itemBuilder: (context, index) {
       final token = filtered[index];
-      return Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 12),
-            child: Row(
-              children: [Icon(FontAwesomeIcons.diamond,size: 15,color: Colors.orangeAccent,),SizedBox(width: 5,),Text(token.tokenType =="investment"?'โทเคนดิจิทัลเพื่อการลงทุน':'โทเคนดิจิทัลเพื่อการใช้ประโยชน์')],
-            ),
-          ),
-          SizedBox(height: 10,),
-          ListTile(
-            leading: Container(
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: ListTile(
+          contentPadding: EdgeInsets.zero,
+          onTap: () {
+            print(token.name);
+          },
+          leading: Container(
               padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        
-                        color: Colors.blueAccent
-                      ),
-                      child: const Icon(
-                            FontAwesomeIcons.coins,
-                            color: Colors.yellow,
-                            )),
-            title: Text(token.symbol,style: CustomText(),),
-            subtitle: Text(token.name,style: CustomText()),
-            onTap: () {
-              print(token.name);
-            },
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30), color: Colors.grey),
+              child: const Icon(
+                FontAwesomeIcons.info,
+                color: Colors.white,
+              )),
+          title: Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.grey[200],
+                ),
+                child: Text(
+                    token.tokenType == "investment"
+                        ? 'โทเคนเพื่อการลงทุน'
+                        : 'โทเคนเพื่อการใช้ประโยชน์',
+                    style: CustomText(fontSize: 10)),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  child: Text(token.name, style: CustomText(fontSize: 16))),
+            ],
           ),
-        ],
+        ),
       );
     },
   );
 }
 
-
-
 TextStyle CustomText({
-  double fontSize = 18.0,  // กำหนดค่าเริ่มต้นเป็น 14.0
-  Color color = Colors.black,  // กำหนดค่าเริ่มต้นเป็นสีดำ
-  FontWeight fontWeight = FontWeight.normal,  // กำหนดค่าเริ่มต้นเป็นปกติ
-  TextDecoration decoration = TextDecoration.none,  // กำหนดค่าเริ่มต้นเป็นไม่มีขีดเส้นใต้
-  double letterSpacing = 0.0,  // กำหนดค่าเริ่มต้นเป็น 0.0
+  double fontSize = 18.0, // กำหนดค่าเริ่มต้นเป็น 14.0
+  Color color = Colors.black, // กำหนดค่าเริ่มต้นเป็นสีดำ
+  FontWeight fontWeight = FontWeight.normal, // กำหนดค่าเริ่มต้นเป็นปกติ
+  TextDecoration decoration =
+      TextDecoration.none, // กำหนดค่าเริ่มต้นเป็นไม่มีขีดเส้นใต้
+  double letterSpacing = 0.0, // กำหนดค่าเริ่มต้นเป็น 0.0
 }) {
   return GoogleFonts.prompt(
     fontSize: fontSize,

@@ -15,22 +15,27 @@ class BottomNavBar extends ConsumerWidget {
         {required int index,
         required IconData selectedIcon,
         required IconData unselectedIcon}) {
-      return Icon(transionNavigator.index == index ? selectedIcon : unselectedIcon);
+      return Icon(
+          transionNavigator.index == index ? selectedIcon : unselectedIcon);
     }
 
     // Update the navigation behavior when the tab is tapped
     void _onTabTapped(int index) {
       switch (index) {
         case 0:
-          AutoRouter.of(context).pushAndPopUntil(HomeRoute(), predicate: (_) => false);
+          AutoRouter.of(context)
+              .pushAndPopUntil(HomeRoute(), predicate: (_) => false);
           break;
         case 1:
-          AutoRouter.of(context).pushAndPopUntil(TokenRoute(), predicate: (_) => false);
+          AutoRouter.of(context)
+              .pushAndPopUntil(TokenRoute(), predicate: (_) => false);
           break;
         default:
           break;
       }
-      ref.read(transitionProvider.notifier).transitionTo(index); // Update the index for the transition indicator
+      ref
+          .read(transitionProvider.notifier)
+          .transitionTo(index); // Update the index for the transition indicator
     }
 
     // List of pages to navigate to
@@ -62,8 +67,8 @@ class BottomNavBar extends ConsumerWidget {
             BottomNavigationBarItem(
               icon: _getIcon(
                 index: 1,
-                selectedIcon: Icons.widgets,
-                unselectedIcon: Icons.widgets_outlined,
+                selectedIcon: Icons.now_widgets,
+                unselectedIcon: Icons.now_widgets_outlined,
               ),
               label: "Token List",
             ),
@@ -99,9 +104,7 @@ class BottomNavBar extends ConsumerWidget {
               label: "Settings",
             ),
           ],
-          onTap:  _onTabTapped, // Handle tab tap action
-
-            
+          onTap: _onTabTapped, // Handle tab tap action
         ),
         Positioned(
           bottom: 60, // เพิ่มระยะห่างจากด้านล่าง

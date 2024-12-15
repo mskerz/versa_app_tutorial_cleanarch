@@ -19,6 +19,7 @@ dependencies:
   shared_preferences: ^2.3.3
   json_annotation: ^4.9.0
   font_awesome_flutter: ^10.8.0
+  tab_indicator_styler: ^2.0.0
 
 dev_dependencies:
   flutter_test:
