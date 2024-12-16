@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_intro_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_list_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/screens/home_screen.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 part 'app_route.gr.dart'; // จะสร้างไฟล์นี้โดยอัตโนมัติเมื่อรัน build_runner
 
@@ -15,6 +17,7 @@ class AppRouter extends _$AppRouter {
     // ใช้ CustomRoute เพื่อกำหนดการเปลี่ยนหน้าเป็น fade
     CustomRoute(
       page: HomeRoute.page,
+      
       initial: true, // หน้าแรก
       transitionsBuilder: _fadeTransition, // ฟังก์ชั่นสำหรับ fade transition
       durationInMilliseconds: 200, // ระยะเวลา transition
@@ -24,6 +27,12 @@ class AppRouter extends _$AppRouter {
       transitionsBuilder: _fadeTransition,
       durationInMilliseconds: 200,
     ),
+
+    CustomRoute(
+      page: TokenIntroRoute.page,
+       transitionsBuilder: _fadeTransition,
+      durationInMilliseconds: 200,
+    )
   ];
 
   // ฟังก์ชั่นสำหรับการเปลี่ยนหน้าแบบ Fade

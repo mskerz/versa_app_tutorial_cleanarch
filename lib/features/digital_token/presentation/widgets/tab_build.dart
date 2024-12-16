@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 Widget buildTokenList(List<Token> tokens, String status) {
@@ -9,22 +11,21 @@ Widget buildTokenList(List<Token> tokens, String status) {
   if (filtered.isEmpty) {
     return Center(
       child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.center, // จัดให้อยู่กึ่งกลางแนวตั้ง
-        crossAxisAlignment:
-            CrossAxisAlignment.center, // จัดให้อยู่กึ่งกลางแนวนอน
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.generating_tokens_outlined,
-              size: 50, // ขนาดไอคอน (ปรับตามต้องการ)
-              color: Colors.grey[500] // สีไอคอน (ปรับตามต้องการ)
-              ),
-          SizedBox(height: 10), // เว้นระยะห่างระหว่างไอคอนกับข้อความ
+          Icon(
+            Icons.generating_tokens_outlined,
+            size: 50,
+            color: Colors.grey[500],
+          ),
+          SizedBox(height: 10),
           Text(
             'ยังไม่มีรายการโทเคน',
             style: GoogleFonts.prompt(
-                fontSize: 18,
-                color: Colors.grey[500] // สีไอคอน (ปรับตามต้องการ)
-                ),
+              fontSize: 18,
+              color: Colors.grey[500],
+            ),
           ),
         ],
       ),
@@ -35,39 +36,53 @@ Widget buildTokenList(List<Token> tokens, String status) {
     itemCount: filtered.length,
     itemBuilder: (context, index) {
       final token = filtered[index];
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: ListTile(
-          contentPadding: EdgeInsets.zero,
-          onTap: () {
-            print(token.name);
-          },
-          leading: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30), color: Colors.grey),
-              child: const Icon(
-                FontAwesomeIcons.info,
-                color: Colors.white,
-              )),
-          title: Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.grey[200],
-                ),
-                child: Text(
+      return InkWell(
+        onTap: () {
+          context.router.push(TokenIntroRoute(tokenItem: token));
+        },
+        child: Material(
+          color: Colors.transparent, // ทำให้ไม่แสดงพื้นหลัง
+          child: Container(
+            width: double.infinity, // ขยายไปจนเต็มหน้าจอ
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Token type (อยู่ข้างบนของไอคอน)
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.grey[200],
+                  ),
+                  child: Text(
                     token.tokenType == "investment"
                         ? 'โทเคนเพื่อการลงทุน'
                         : 'โทเคนเพื่อการใช้ประโยชน์',
-                    style: CustomText(fontSize: 10)),
-              ),
-              Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  child: Text(token.name, style: CustomText(fontSize: 16))),
-            ],
+                    style: CustomText(fontSize: 10),
+                  ),
+                ),
+                SizedBox(height: 8),
+                // ไอคอน
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      child: const Icon(
+                        Icons.token,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    // ชื่อของโทเคน
+                    Text(
+                      token.name,
+                      style: CustomText(fontSize: 16),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );

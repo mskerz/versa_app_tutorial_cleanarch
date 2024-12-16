@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/token_provider.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
@@ -59,6 +60,8 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
           child: IconButton(
               onPressed: () {
                 context.router.back();
+                ref.read(transitionProvider.notifier).transitionTo(0);
+                    // รีเซ็ตสถานะของ Bottom Navigation
               },
               icon: const Icon(Icons.arrow_back_ios)),
         ),
@@ -112,7 +115,6 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                       labelColor: Colors.black,
                       tabAlignment: TabAlignment.start,
                       unselectedLabelColor: Colors.grey,
-                      
                       indicatorColor: Colors.orange,
                       labelPadding: EdgeInsets.symmetric(
                           horizontal: 20), // เพิ่ม padding เพื่อขยายแท็บ

@@ -18,13 +18,25 @@ abstract class _$AppRouter extends RootStackRouter {
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child:  HomeScreen(),
+        child: HomeScreen(),
       );
     },
     TokenRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: TokenListScreen(),
+      );
+    },
+    TokenIntroRoute.name: (routeData) {
+      // ตรวจสอบว่า args มีค่าไหมก่อนใช้งาน
+      final args = routeData.argsAs<TokenIntroArgs>(
+          orElse: () => const TokenIntroArgs());
+
+      final tokenItem = args.token;
+
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: TokenIntroScreen(tokenItem!),
       );
     }
   };
@@ -46,14 +58,39 @@ class TokenRoute extends PageRouteInfo<void> {
 
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
-  : super(
+      : super(
           HomeRoute.name,
           initialChildren: children,
         );
 
   static const String name = 'HomeRoute';
   static const PageInfo<void> page = PageInfo<void>(name);
+}
 
+class TokenIntroRoute extends PageRouteInfo<TokenIntroArgs> {
+  TokenIntroRoute({
+    required Token tokenItem, // รับ parameter ที่จำเป็น
+    List<PageRouteInfo>? children,
+  }) : super(
+          TokenIntroRoute.name,
+          args: TokenIntroArgs(token: tokenItem),
+          initialChildren: children,
+        );
+
+  static const String name = 'TokenIntroRoute';
+  static const PageInfo<TokenIntroArgs> page = PageInfo<TokenIntroArgs>(name);
+}
+
+// กำหนดคลาสสำหรับเก็บ Argument
+class TokenIntroArgs {
+  const TokenIntroArgs({this.token});
+
+  final Token? token;
+
+  @override
+  String toString() {
+    return 'RegisterRouteArgs{key: ${token.toString()}}';
+  }
 }
 
 /// generated route for

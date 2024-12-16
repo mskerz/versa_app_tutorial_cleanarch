@@ -5,6 +5,7 @@ part 'token_model.g.dart';
 
 typedef TokenList = List<Token>;
 
+
 @freezed
 class Token with _$Token {
   factory Token({
@@ -24,7 +25,7 @@ class Token with _$Token {
     @Default('') String description,
     required Whitepaper whitepaper,  // This will require a custom Whitepaper class
   }) = _Token;
-
+  
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
 
 }

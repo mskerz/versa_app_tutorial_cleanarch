@@ -19,8 +19,9 @@ class AnimateTransitionNotifier extends StateNotifier<IndicatorState>{
     state = IndicatorState(true, index);
   }
 
-  void reset(){
-
+  // เมื่อกลับหน้า Home จะต้องรีเซ็ต index
+  void resetToHome() {
+    state = IndicatorState(true, 0); // ตั้งค่าให้เป็นหน้าแรก
   }
 
   // ฟังก์ชันสำหรับ reset ทุกครั้งที่เลือกเมนูใหม่
@@ -34,5 +35,8 @@ class IndicatorState {
   final int index;
 
   IndicatorState(this.isVisible, this.index);
+
+
+
 }
 
