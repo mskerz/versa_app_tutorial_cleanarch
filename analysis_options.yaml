@@ -4,3 +4,5 @@ analyzer:
     unused_element: ignore
     unnecessary_null_comparison: ignore
     constant_identifier_names: ignore
+    unnecessary_string_interpolations: ignore
+    prefer_const_constructors: ignore

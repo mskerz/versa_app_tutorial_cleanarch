@@ -23,6 +23,7 @@ mixin _$Token {
   String get symbol => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  String get companyName => throw _privateConstructorUsedError;
   String get tokenType => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   int get totalSupply => throw _privateConstructorUsedError;
@@ -30,6 +31,7 @@ mixin _$Token {
   int get minInvestment => throw _privateConstructorUsedError;
   int get maxInvestment => throw _privateConstructorUsedError;
   int get fundingGoal => throw _privateConstructorUsedError;
+  int get projectPeriod => throw _privateConstructorUsedError;
   int get currentRaised => throw _privateConstructorUsedError;
   String get startDate => throw _privateConstructorUsedError;
   String get endDate => throw _privateConstructorUsedError;
@@ -54,6 +56,7 @@ abstract class $TokenCopyWith<$Res> {
       {String symbol,
       String name,
       String status,
+      String companyName,
       String tokenType,
       String category,
       int totalSupply,
@@ -61,6 +64,7 @@ abstract class $TokenCopyWith<$Res> {
       int minInvestment,
       int maxInvestment,
       int fundingGoal,
+      int projectPeriod,
       int currentRaised,
       String startDate,
       String endDate,
@@ -88,6 +92,7 @@ class _$TokenCopyWithImpl<$Res, $Val extends Token>
     Object? symbol = null,
     Object? name = null,
     Object? status = null,
+    Object? companyName = null,
     Object? tokenType = null,
     Object? category = null,
     Object? totalSupply = null,
@@ -95,6 +100,7 @@ class _$TokenCopyWithImpl<$Res, $Val extends Token>
     Object? minInvestment = null,
     Object? maxInvestment = null,
     Object? fundingGoal = null,
+    Object? projectPeriod = null,
     Object? currentRaised = null,
     Object? startDate = null,
     Object? endDate = null,
@@ -113,6 +119,10 @@ class _$TokenCopyWithImpl<$Res, $Val extends Token>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      companyName: null == companyName
+          ? _value.companyName
+          : companyName // ignore: cast_nullable_to_non_nullable
               as String,
       tokenType: null == tokenType
           ? _value.tokenType
@@ -141,6 +151,10 @@ class _$TokenCopyWithImpl<$Res, $Val extends Token>
       fundingGoal: null == fundingGoal
           ? _value.fundingGoal
           : fundingGoal // ignore: cast_nullable_to_non_nullable
+              as int,
+      projectPeriod: null == projectPeriod
+          ? _value.projectPeriod
+          : projectPeriod // ignore: cast_nullable_to_non_nullable
               as int,
       currentRaised: null == currentRaised
           ? _value.currentRaised
@@ -187,6 +201,7 @@ abstract class _$$TokenImplCopyWith<$Res> implements $TokenCopyWith<$Res> {
       {String symbol,
       String name,
       String status,
+      String companyName,
       String tokenType,
       String category,
       int totalSupply,
@@ -194,6 +209,7 @@ abstract class _$$TokenImplCopyWith<$Res> implements $TokenCopyWith<$Res> {
       int minInvestment,
       int maxInvestment,
       int fundingGoal,
+      int projectPeriod,
       int currentRaised,
       String startDate,
       String endDate,
@@ -220,6 +236,7 @@ class __$$TokenImplCopyWithImpl<$Res>
     Object? symbol = null,
     Object? name = null,
     Object? status = null,
+    Object? companyName = null,
     Object? tokenType = null,
     Object? category = null,
     Object? totalSupply = null,
@@ -227,6 +244,7 @@ class __$$TokenImplCopyWithImpl<$Res>
     Object? minInvestment = null,
     Object? maxInvestment = null,
     Object? fundingGoal = null,
+    Object? projectPeriod = null,
     Object? currentRaised = null,
     Object? startDate = null,
     Object? endDate = null,
@@ -245,6 +263,10 @@ class __$$TokenImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      companyName: null == companyName
+          ? _value.companyName
+          : companyName // ignore: cast_nullable_to_non_nullable
               as String,
       tokenType: null == tokenType
           ? _value.tokenType
@@ -273,6 +295,10 @@ class __$$TokenImplCopyWithImpl<$Res>
       fundingGoal: null == fundingGoal
           ? _value.fundingGoal
           : fundingGoal // ignore: cast_nullable_to_non_nullable
+              as int,
+      projectPeriod: null == projectPeriod
+          ? _value.projectPeriod
+          : projectPeriod // ignore: cast_nullable_to_non_nullable
               as int,
       currentRaised: null == currentRaised
           ? _value.currentRaised
@@ -305,6 +331,7 @@ class _$TokenImpl implements _Token {
       {this.symbol = '',
       this.name = '',
       this.status = '',
+      this.companyName = '',
       this.tokenType = '',
       this.category = '',
       this.totalSupply = 0,
@@ -312,6 +339,7 @@ class _$TokenImpl implements _Token {
       this.minInvestment = 0,
       this.maxInvestment = 0,
       this.fundingGoal = 0,
+      this.projectPeriod = 0,
       this.currentRaised = 0,
       this.startDate = '',
       this.endDate = '',
@@ -330,6 +358,9 @@ class _$TokenImpl implements _Token {
   @override
   @JsonKey()
   final String status;
+  @override
+  @JsonKey()
+  final String companyName;
   @override
   @JsonKey()
   final String tokenType;
@@ -353,6 +384,9 @@ class _$TokenImpl implements _Token {
   final int fundingGoal;
   @override
   @JsonKey()
+  final int projectPeriod;
+  @override
+  @JsonKey()
   final int currentRaised;
   @override
   @JsonKey()
@@ -368,7 +402,7 @@ class _$TokenImpl implements _Token {
 
   @override
   String toString() {
-    return 'Token(symbol: $symbol, name: $name, status: $status, tokenType: $tokenType, category: $category, totalSupply: $totalSupply, tokenPrice: $tokenPrice, minInvestment: $minInvestment, maxInvestment: $maxInvestment, fundingGoal: $fundingGoal, currentRaised: $currentRaised, startDate: $startDate, endDate: $endDate, description: $description, whitepaper: $whitepaper)';
+    return 'Token(symbol: $symbol, name: $name, status: $status, companyName: $companyName, tokenType: $tokenType, category: $category, totalSupply: $totalSupply, tokenPrice: $tokenPrice, minInvestment: $minInvestment, maxInvestment: $maxInvestment, fundingGoal: $fundingGoal, projectPeriod: $projectPeriod, currentRaised: $currentRaised, startDate: $startDate, endDate: $endDate, description: $description, whitepaper: $whitepaper)';
   }
 
   @override
@@ -379,6 +413,8 @@ class _$TokenImpl implements _Token {
             (identical(other.symbol, symbol) || other.symbol == symbol) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.companyName, companyName) ||
+                other.companyName == companyName) &&
             (identical(other.tokenType, tokenType) ||
                 other.tokenType == tokenType) &&
             (identical(other.category, category) ||
@@ -393,6 +429,8 @@ class _$TokenImpl implements _Token {
                 other.maxInvestment == maxInvestment) &&
             (identical(other.fundingGoal, fundingGoal) ||
                 other.fundingGoal == fundingGoal) &&
+            (identical(other.projectPeriod, projectPeriod) ||
+                other.projectPeriod == projectPeriod) &&
             (identical(other.currentRaised, currentRaised) ||
                 other.currentRaised == currentRaised) &&
             (identical(other.startDate, startDate) ||
@@ -411,6 +449,7 @@ class _$TokenImpl implements _Token {
       symbol,
       name,
       status,
+      companyName,
       tokenType,
       category,
       totalSupply,
@@ -418,6 +457,7 @@ class _$TokenImpl implements _Token {
       minInvestment,
       maxInvestment,
       fundingGoal,
+      projectPeriod,
       currentRaised,
       startDate,
       endDate,
@@ -445,6 +485,7 @@ abstract class _Token implements Token {
       {final String symbol,
       final String name,
       final String status,
+      final String companyName,
       final String tokenType,
       final String category,
       final int totalSupply,
@@ -452,6 +493,7 @@ abstract class _Token implements Token {
       final int minInvestment,
       final int maxInvestment,
       final int fundingGoal,
+      final int projectPeriod,
       final int currentRaised,
       final String startDate,
       final String endDate,
@@ -467,6 +509,8 @@ abstract class _Token implements Token {
   @override
   String get status;
   @override
+  String get companyName;
+  @override
   String get tokenType;
   @override
   String get category;
@@ -480,6 +524,8 @@ abstract class _Token implements Token {
   int get maxInvestment;
   @override
   int get fundingGoal;
+  @override
+  int get projectPeriod;
   @override
   int get currentRaised;
   @override

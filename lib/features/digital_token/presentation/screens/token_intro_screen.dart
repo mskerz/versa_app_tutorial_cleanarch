@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token_modal.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 @RoutePage()
@@ -82,15 +84,33 @@ class TokenIntroScreen extends StatelessWidget {
                   )),
               Spacer(), // This will push the ElevatedButton to the bottom
 
-              Container(
-                margin: EdgeInsets.only(bottom: 30),
-                child: ElevatedButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.arrow_downward,
+              // GestureDetector + ElevatedButton
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Color(0xFF0A173E),
+                  ),
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: IconButton.filled(
+                    onPressed: () => showModalBottomSheet(
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        backgroundColor: Colors.transparent,
+                        barrierColor: Colors.transparent,
+                        context: context,
+                        builder: (context) => buildTokenModalSheet(tokenItem)),
+                    icon: const Icon(
+                      FontAwesomeIcons.arrowDown,
                       color: Colors.black,
-                    )),
-              )
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
