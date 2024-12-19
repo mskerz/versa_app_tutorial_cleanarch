@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/state/hover_notifier.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/theme/text_theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +20,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // ดึงค่า state จาก transitionProvider
     const double progress = 0.3;
     const double percent = progress * 100;
-    final isPressed = ref.watch(hoverProvider); // ติดตามสถานะของ hover
 
     // ignore: constant_identifier_names
 

@@ -13,10 +13,12 @@ class AppException implements Exception {
     required this.identifier,
   });
   @override
+
   String toString() {
     return 'statusCode=$statusCode\nmessage=$message\nidentifier=$identifier';
   }
 }
+
 
 class CacheFailureException extends Equatable implements AppException {
   @override

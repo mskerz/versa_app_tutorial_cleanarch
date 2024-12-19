@@ -8,6 +8,7 @@ import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/tab_build.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_loading.dart';
 
 class TokenListScreen extends ConsumerStatefulWidget {
   const TokenListScreen({super.key});
@@ -36,11 +37,19 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
   Widget build(BuildContext context) {
     int selectIndexTab = ref.watch(selectedTabIndexProvider);
     final tokenState = ref.watch(tokenNotifierProvider);
-    final List<Token> tokens = tokenState.tokens.fold(
-      (exception) => [],
-      (tokens) => tokens,
+    if (tokenState.isLoading) {
+      // แสดง loading
+      return AppLoading();
+    }
+    final List<Token> tokenData = tokenState.tokens.fold(
+      (exception) => [], // กรณีเกิดข้อผิดพลาด
+      (tokens) => tokens, // กรณีข้อมูลโหลดสำเร็จ
     );
-
+    if (tokenData.isNotEmpty) {
+      print(tokenData[1].status); // ถ้ามีข้อมูลอย่างน้อย 2 ตัว (ตำแหน่ง 1)
+    } else {
+      print("tokenData is empty");
+    }
     List<Widget> tabs = [
       Tab(text: 'โทเคนที่เปิดจองอยู่'),
       Tab(text: 'โทเคนที่ใกล้เปิดจอง'),
@@ -48,9 +57,9 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
     ];
 
     List<Widget> tabViews = [
-      buildTokenList(tokens, 'open'),
-      buildTokenList(tokens, 'coming'),
-      buildTokenList(tokens, 'closed'),
+      buildTokenList(tokenData, 'open'),
+      buildTokenList(tokenData, 'coming'),
+      buildTokenList(tokenData, 'closed'),
     ];
 
     return Scaffold(
@@ -61,7 +70,7 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
               onPressed: () {
                 context.router.back();
                 ref.read(transitionProvider.notifier).transitionTo(0);
-                    // รีเซ็ตสถานะของ Bottom Navigation
+                // รีเซ็ตสถานะของ Bottom Navigation
               },
               icon: const Icon(Icons.arrow_back_ios)),
         ),

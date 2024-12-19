@@ -35,24 +35,26 @@ class TokenState {
 class TokenNotifier extends StateNotifier<TokenState> {
   final TokenRepository tokenRepository;
 
-TokenNotifier(this.tokenRepository) : super(TokenState.initial()) {
+  TokenNotifier(this.tokenRepository) : super(TokenState.initial()) {
     // เรียกใช้ fetchToken เมื่อเริ่มต้น
     fetchToken();
   }
-  Future<void> fetchToken() async{
+  Future<void> fetchToken() async {
     state = state.copyWith(isLoading: true); // เปลี่ยนเป็นกำลัง��หลด
-    final result = await tokenRepository.fetchToken();
-
+    final result = await tokenRepository.fetchTokenList();
+    
     state = result.fold(
-      (exception) => state.copyWith(
-        isLoading: false,
-        tokens: Left(exception),
-      ),
-      (tokens) => state.copyWith(
+        (exception) => state.copyWith(
+              isLoading: false,
+              tokens: Left(exception),
+            ), (response) {
+      // Access the `data` field from `ParseResponse<List<Token>>`
+      final tokens = response.data!;
+      return state.copyWith(
         isLoading: false,
         tokens: Right(tokens),
-      ),
-    );
+      );
+    });
   }
 
   Future<void> filterToken(String tokenStatus) async {
