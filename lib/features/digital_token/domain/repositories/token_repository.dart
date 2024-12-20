@@ -1,13 +1,10 @@
-
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/either.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/parse_response.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/paginated_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
 abstract class TokenRepository {
-    Future<Either<AppException, ParseResponse<List<Token>>>> fetchTokenList();
-
-    Future<Either<AppException, List<Token>>> fetchToken();
-    Future<Either<AppException, List<Token>>> fetchTokenbyStatus(String tokenStatus);
-    
+  Future<Either<AppException, PaginatedResponse>> fetchToken( {required int  skip}); // Future<Either<AppException, List<Token>>> fetchToken();
+  Future<Either<AppException, List<Token>>> fetchTokenbyStatus(
+      String tokenStatus);
 }

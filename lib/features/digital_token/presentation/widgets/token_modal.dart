@@ -202,6 +202,33 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.only(top: 10, bottom: 10),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Whitepaper",
+                          style:
+                              GoogleFonts.prompt(fontWeight: FontWeight.bold),
+                        )),
+                    Text(tokenItem.whitepaper.overview),
+                    Column(
+                      children: [
+                        Text(tokenItem.whitepaper.problemStatement[0]),
+                        Text(tokenItem.whitepaper.problemStatement[1]),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(tokenItem.whitepaper.solution[0]),
+                        Text(tokenItem.whitepaper.solution[1]),
+                      ],
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         );

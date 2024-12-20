@@ -6,3 +6,4 @@ analyzer:
     constant_identifier_names: ignore
     unnecessary_string_interpolations: ignore
     prefer_const_constructors: ignore
+    non_constant_identifier_names: ignore

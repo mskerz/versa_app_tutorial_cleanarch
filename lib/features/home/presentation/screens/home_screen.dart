@@ -37,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(AssetsApp.lightLogoPath),
+                  Image.asset(LIGHT_LOGO_IMG),
                   Stack(
                     clipBehavior: Clip.none, // อนุญาตให้ Badge เกินขอบของ Icon
                     children: [

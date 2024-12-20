@@ -8,7 +8,6 @@ import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/tab_build.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_loading.dart';
 
 class TokenListScreen extends ConsumerStatefulWidget {
   const TokenListScreen({super.key});
@@ -37,19 +36,9 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
   Widget build(BuildContext context) {
     int selectIndexTab = ref.watch(selectedTabIndexProvider);
     final tokenState = ref.watch(tokenNotifierProvider);
-    if (tokenState.isLoading) {
-      // แสดง loading
-      return AppLoading();
-    }
-    final List<Token> tokenData = tokenState.tokens.fold(
-      (exception) => [], // กรณีเกิดข้อผิดพลาด
-      (tokens) => tokens, // กรณีข้อมูลโหลดสำเร็จ
-    );
-    if (tokenData.isNotEmpty) {
-      print(tokenData[1].status); // ถ้ามีข้อมูลอย่างน้อย 2 ตัว (ตำแหน่ง 1)
-    } else {
-      print("tokenData is empty");
-    }
+  
+     final List<Token> tokenData = tokenState.tokenList;
+     
     List<Widget> tabs = [
       Tab(text: 'โทเคนที่เปิดจองอยู่'),
       Tab(text: 'โทเคนที่ใกล้เปิดจอง'),

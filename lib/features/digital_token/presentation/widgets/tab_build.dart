@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 Widget buildTokenList(List<Token> tokens, String status) {
@@ -65,13 +66,31 @@ Widget buildTokenList(List<Token> tokens, String status) {
                 // ไอคอน
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      child: const Icon(
-                        Icons.token,
-                        color: Colors.white,
+                    Container(
+                      width: 50, // Set the size of the CircleAvatar
+                      height: 50, // Set the size of the CircleAvatar
+                      decoration: BoxDecoration(
+                        shape:
+                            BoxShape.circle, // Ensures the gradient is circular
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.blue,
+                            Colors.white,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors
+                            .transparent, // Make CircleAvatar's background transparent
+                        child: Image.asset(
+                          EXAMPLE_TOKEN_LOGO, // Your image path
+                          width: 25,
+                        ),
                       ),
                     ),
+
                     SizedBox(width: 10),
                     // ชื่อของโทเคน
                     Text(

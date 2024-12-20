@@ -1,8 +1,10 @@
 
+import 'dart:async';
+
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/data/data_source/token_data_source.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/domain/repositories/token_repository.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/either.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/parse_response.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/paginated_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
@@ -23,16 +25,15 @@ class TokenRepositoryImpl  implements TokenRepository{
     // }
 
   @override
-  Future<Either<AppException, ParseResponse<List<Token>>>> fetchTokenList() async{
-    // TODO: implement fetchTokenList
-    final data = await tokenDataSource.fetchToken();
-    return data;
+  Future<Either<AppException, PaginatedResponse>> fetchToken({required int skip}) async{
+    return  await tokenDataSource.fetchToken(skip: skip);
+        
   }
   
-  @override
-  Future<Either<AppException, List<Token>>> fetchToken() {
-    // TODO: implement fetchToken
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<Either<AppException, List<Token>>> fetchToken() {
+  //   // TODO: implement fetchToken
+  //   throw UnimplementedError();
+  // }
   
 }
