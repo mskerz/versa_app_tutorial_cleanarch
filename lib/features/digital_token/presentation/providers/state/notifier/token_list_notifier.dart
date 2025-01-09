@@ -48,7 +48,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
   }
 
   void updateStateFromResponse(
-      Either<AppException, PaginatedResponse<dynamic>> response) {
+      Either<VersaException, PaginatedResponse<dynamic>> response) {
     response.fold((failure) {
       state = state.copyWith(
         state: TokenConcreteState.failure,

@@ -20,6 +20,7 @@ class AnimateTransitionNotifier extends StateNotifier<IndicatorState>{
   }
 
   // เมื่อกลับหน้า Home จะต้องรีเซ็ต index
+
   void resetToHome() {
     state = IndicatorState(true, 0); // ตั้งค่าให้เป็นหน้าแรก
   }

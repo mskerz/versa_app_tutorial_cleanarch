@@ -4,9 +4,9 @@ import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_mo
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
 abstract class TokenDataSource {
-  Future<Either<AppException, PaginatedResponse>> fetchToken({required int skip});
-  Future<Either<AppException,List<Token>>> filterToken({required String tokenStatus});
-  Future<Either<AppException,Token>> getTokenOne(String symbol);
+  Future<Either<VersaException, PaginatedResponse>> fetchToken({required int skip});
+  Future<Either<VersaException,List<Token>>> filterToken({required String tokenStatus});
+  Future<Either<VersaException,Token>> getTokenOne(String symbol);
 }
 
 

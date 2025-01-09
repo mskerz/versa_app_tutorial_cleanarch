@@ -14,18 +14,18 @@ class TokenRepositoryImpl  implements TokenRepository{
   TokenRepositoryImpl(this.tokenDataSource);
   @override
 
-  Future<Either<AppException, List<Token>>> fetchTokenbyStatus(String tokenStatus) async {
+  Future<Either<VersaException, List<Token>>> fetchTokenbyStatus(String tokenStatus) async {
     // TODO: implement fetchTokenbyStatus
   
     return await tokenDataSource.filterToken(tokenStatus: tokenStatus);
   }
 
-    // Future<Either<AppException, List<Token>>> fetchToken() async{
+    // Future<Either<VersaException, List<Token>>> fetchToken() async{
     //   return await tokenDataSource.fetchToken();
     // }
 
   @override
-  Future<Either<AppException, PaginatedResponse>> fetchToken({required int skip}) async{
+  Future<Either<VersaException, PaginatedResponse>> fetchToken({required int skip}) async{
     return  await tokenDataSource.fetchToken(skip: skip);
         
   }

@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/either.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/response.dart';
 
-class AppException implements Exception {
+class VersaException implements Exception {
   final String message;
   final int statusCode;
   final String identifier;
 
-  AppException({
+  VersaException({
     required this.message,
     required this.statusCode,
     required this.identifier,
@@ -20,7 +20,7 @@ class AppException implements Exception {
 }
 
 
-class CacheFailureException extends Equatable implements AppException {
+class CacheFailureException extends Equatable implements VersaException {
   @override
   String get identifier => 'Cache failure exception';
 
@@ -36,6 +36,7 @@ class CacheFailureException extends Equatable implements AppException {
 
 //  extension
 
-extension HttpExceptionExtension on AppException {
-  Left<AppException, Response> get toLeft => Left<AppException, Response>(this);
+extension HttpExceptionExtension on VersaException {
+  Left<VersaException, Response> get toLeft => Left<VersaException, Response>(this);
 }
+

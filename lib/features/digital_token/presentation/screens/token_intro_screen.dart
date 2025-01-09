@@ -11,8 +11,10 @@ class TokenIntroScreen extends StatelessWidget {
   TokenIntroScreen(this.tokenItem, {super.key});
 
   @override
+
   Widget build(BuildContext context) {
     bool isSoldOut = tokenItem.currentRaised == tokenItem.fundingGoal;
+    bool isComing = tokenItem.status == "coming";
     String amountStatus = isSoldOut ? 'ขายหมดแล้ว' : 'ยังเปิดจองอยู่';
     if (tokenItem == null) {
       return Container();
@@ -71,17 +73,40 @@ class TokenIntroScreen extends StatelessWidget {
                 '${tokenItem.name}',
                 style: GoogleFonts.kanit(fontSize: 25, color: Colors.white),
               ),
-              Container(
-                  margin: EdgeInsets.only(top: 20),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: isSoldOut ? Colors.grey : Colors.green,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: Text(
-                    amountStatus,
-                    style: GoogleFonts.kanit(color: Colors.white),
-                  )),
+              isSoldOut
+                  ? Container(
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Text(
+                        amountStatus,
+                        style: GoogleFonts.kanit(color: Colors.white),
+                      ))
+                  : !isComing
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Colors.green, // Set the background color
+                            foregroundColor: Colors.white, // Set the text color
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5), // ลด padding
+                          ),
+                          onPressed: () {},
+                          child: Text("เปิดจอง"))
+                      : Container(
+                          margin: EdgeInsets.only(top: 20),
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Text(
+                            "ใกล้เปิดจอง",
+                            style: GoogleFonts.kanit(color: Colors.white),
+                          )),
               Spacer(), // This will push the ElevatedButton to the bottom
 
               // GestureDetector + ElevatedButton

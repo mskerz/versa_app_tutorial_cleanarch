@@ -12,7 +12,7 @@ class TokenRemoteDataSource extends TokenDataSource {
 
   TokenRemoteDataSource(this.networkService);
   @override
-  Future<Either<AppException, PaginatedResponse>> fetchToken(
+  Future<Either<VersaException, PaginatedResponse>> fetchToken(
       {required int skip}) async {
     final response = await networkService.get('/token', queryParameters: {
       'skip': skip,
@@ -20,10 +20,9 @@ class TokenRemoteDataSource extends TokenDataSource {
     });
     return response.fold((fail) => Left(fail), (response) {
       final jsonData = response.data;
-      print("log - $jsonData");
       if (jsonData == null) {
         return Left(
-          AppException(
+          VersaException(
             identifier: 'fetchPaginatedData',
             statusCode: 0,
             message: 'The data is not in the valid format.',
@@ -37,14 +36,14 @@ class TokenRemoteDataSource extends TokenDataSource {
   }
 
   @override
-  Future<Either<AppException, List<Token>>> filterToken(
+  Future<Either<VersaException, List<Token>>> filterToken(
       {required String tokenStatus}) {
     // TODO: implement filterToken
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<AppException, Token>> getTokenOne(String symbol) {
+  Future<Either<VersaException, Token>> getTokenOne(String symbol) {
     // TODO: implement getTokenOne
     throw UnimplementedError();
   }

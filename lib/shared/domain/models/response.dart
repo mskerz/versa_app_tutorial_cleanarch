@@ -15,5 +15,5 @@ class Response {
 }
 
 extension ResponseExtension on Response {
-  Right<AppException, Response> get toRight => Right(this);
+  Right<VersaException, Response> get toRight => Right(this);
 }

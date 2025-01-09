@@ -1,72 +1,49 @@
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
-  final String id;
-  final int timeJoined;
-  final String tenantId;
+  final String uid;
   final String email;
-  final bool isEmailVerified;
-  final String? phoneNumber;
-  final bool isPhoneNumberVerified;
-  final String username;
+  final String phoneNumber;
   final String password;
   final String firstName;
   final String lastName;
+  final int age;
   final String gender;
   final String image;
-  final String token;
 
   const User({
-    this.id = '',
-    this.timeJoined = 0,
-    this.tenantId = '',
+    this.uid = '',
     this.email = '',
-    this.isEmailVerified = false,
-    this.phoneNumber,
-    this.isPhoneNumberVerified = false,
-    this.username = '',
+    this.phoneNumber='',
     this.password = '',
     this.firstName = '',
     this.lastName = '',
+    this.age = 1,
     this.gender = '',
-    this.image = '',
-    this.token = '',
-  });
+    this.image = 'https://static.vecteezy.com/system/resources/previews/001/840/612/non_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg'  });
 
   @override
   List<Object?> get props => [
-        id,
-        timeJoined,
-        tenantId,
+        uid,
         email,
-        isEmailVerified,
         phoneNumber,
-        isPhoneNumberVerified,
-        username,
         password,
         firstName,
         lastName,
         gender,
         image,
-        token,
       ];
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'id': id,
-      'timeJoined': timeJoined,
-      'tenantId': tenantId,
+      'uid': uid,
       'email': email,
-      'isEmailVerified': isEmailVerified,
       'phoneNumber': phoneNumber,
-      'isPhoneNumberVerified': isPhoneNumberVerified,
-      'username': username,
       'password': password,
       'firstName': firstName,
       'lastName': lastName,
       'gender': gender,
       'image': image,
-      'token': token,
     };
   }
 
@@ -74,29 +51,19 @@ class User extends Equatable {
     final userMap = map['user'] ?? map;
 
     return User(
-      id: userMap['id'] ?? '',
-      timeJoined: userMap['timeJoined'] ?? 0,
-      tenantId:
-          (userMap['tenantIds'] != null && userMap['tenantIds'].isNotEmpty)
-              ? userMap['tenantIds'][0]
-              : '',
+      uid: userMap['uid'] ?? '',      
       email: userMap['email'] ?? '',
-      isEmailVerified: userMap['isEmailVerified'] ?? false,
       phoneNumber: userMap['phoneNumber'],
-      isPhoneNumberVerified: userMap['isPhoneNumberVerified'] ?? false,
-      username: userMap['username'] ?? '',
       password: userMap['password'] ?? '',
       firstName: userMap['firstName'] ?? '',
       lastName: userMap['lastName'] ?? '',
       gender: userMap['gender'] ?? '',
       image: userMap['image'] ?? '',
-      token: map['st-access-token'] ??
-          '', // Ensure you extract the token if it's part of headers or response
     );
   }
 
   User copyWith({
-    String? id,
+    String? uid,
     int? timeJoined,
     String? tenantId,
     String? email,
@@ -109,24 +76,16 @@ class User extends Equatable {
     String? lastName,
     String? gender,
     String? image,
-    String? token,
   }) {
     return User(
-      id: id ?? this.id,
-      timeJoined: timeJoined ?? this.timeJoined,
-      tenantId: tenantId ?? this.tenantId,
+      uid: uid ?? this.uid,
       email: email ?? this.email,
-      isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      isPhoneNumberVerified:
-          isPhoneNumberVerified ?? this.isPhoneNumberVerified,
-      username: username ?? this.username,
-      password: password ?? this.password,
+   password: password ?? this.password,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       gender: gender ?? this.gender,
       image: image ?? this.image,
-      token: token ?? this.token,
-    );
+   );
   }
 }

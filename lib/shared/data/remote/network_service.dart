@@ -9,13 +9,15 @@ abstract class NetworkService {
 
   void updateHeader(Map<String, dynamic> data);
 
-  Future<Either<AppException, Response>> get(
+  Future<Either<VersaException, Response>> get(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
   });
 
-  Future<Either<AppException, Response>> post(
+  Future<Either<VersaException, Response>> post(
     String endpoint, {
     Map<String, dynamic>? data,
   });
+
+  
 }

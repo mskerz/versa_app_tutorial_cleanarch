@@ -1,0 +1,14 @@
+if (widget.formKey.currentState?.validate() ?? false) {
+                        // Submit the form
+                        final user = User(
+                          email: widget.controllers['email']!.text,
+                          password: widget.controllers['password']!.text,
+                          firstName: widget.controllers['firstName']!.text,
+                          lastName: widget.controllers['lastName']!.text,
+                          phoneNumber: widget.controllers['phoneNumber']!.text,
+                          age: int.parse(widget.controllers['age']!.text),
+                          gender: widget.controllers['gender']!.text,
+                        );
+                        print(user);
+                        print('Form is valid');
+                      }

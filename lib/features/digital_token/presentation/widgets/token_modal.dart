@@ -202,7 +202,7 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                   ],
                 ),
               ),
-              Container(
+            /*  Container(
                 margin: EdgeInsets.only(top: 10, bottom: 10),
                 child: Column(
                   children: [
@@ -228,7 +228,7 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                     ),
                   ],
                 ),
-              )
+              ) */
             ],
           ),
         );
