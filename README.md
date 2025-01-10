@@ -38,7 +38,3 @@
 
 5. Open the app on an emulator or connected device.
 
-
- 
-
-# API 
