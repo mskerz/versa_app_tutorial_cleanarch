@@ -1,21 +1,15 @@
-ขอโทษที่เข้าใจผิด! นี่คือตัวอย่างการปรับแต่ง **README** สำหรับโปรเจ็กต์ Flutter ของคุณที่ใช้ **Clean Architecture**:
-
----
-
 # Versa App with Clean Architecture (Flutter)
-
-This project demonstrates the **Versa App** built with **Flutter** and following the principles of **Clean Architecture**. It includes features like authentication, token management, and a dynamic homepage.
 
 ## Features
 
 ### Authentication
 - **Sign In**: User authentication using email and password.
 - **Sign Up**: User registration with required credentials.
-- **Verify User**: Verifies the user with an `accessToken`.
+- **Verify User**: Verifies the user with an `accessToken`.   not Finish
 
 ### Token List
-- **Get Token List**: Displays a mock list of tokens.
-- **Filter Token by Status**: Allows filtering of tokens based on their status.
+- **Get Token List**: Displays a mock list of tokens and Filter Token by Status to Tab Build.
+ 
 
 ### HomePage
 - The homepage provides a clean UI to access all features and information, enhancing the user experience.
@@ -44,14 +38,7 @@ This project demonstrates the **Versa App** built with **Flutter** and following
 
 5. Open the app on an emulator or connected device.
 
-## Folder Structure
 
-This project follows the **Clean Architecture** principles, and the structure is divided into layers:
-
-- **lib/domain**: Contains business logic and entities.
-- **lib/data**: Data sources, repositories, and models.
-- **lib/presentation**: UI components, screens, and views.
-- **lib/infrastructure**: Network services and utilities.
  
 
 # API 
