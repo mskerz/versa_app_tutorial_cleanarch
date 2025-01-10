@@ -10,5 +10,5 @@ abstract class AuthState with _$AuthState {
   const factory AuthState.initial() = Initial;
   const factory AuthState.loading() = Loading;
   const factory AuthState.failure(VersaException exception) = Failure;
-  const factory AuthState.success([LoginResponse? loginResponse]) = Success;
+  const factory AuthState.success() = Success;
 }

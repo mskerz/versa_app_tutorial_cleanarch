@@ -14,7 +14,7 @@ class AuthRemoteDataSource implements AuthDataSource {
   AuthRemoteDataSource(this.networkService, this.storageService);
 
   @override
-  Future<Either<VersaException, LoginResponse>> signin(
+  Future<Either<VersaException, void>> signin(
       String email, String password) async {
     try {
       final loginData = {'email': email, 'password': password};
@@ -29,7 +29,7 @@ class AuthRemoteDataSource implements AuthDataSource {
         await storageService.set("accessToken", loginResponse.idToken!);
 
         await storageService.set("refreshToken", loginResponse.refreshToken!);
-        return Right(loginResponse); // On success, return the LoginResponse
+        return Right(null); // On success, return the LoginResponse
       });
     } catch (e) {
       // หากเกิดข้อผิดพลาดจาก network หรือกรณีอื่นๆ

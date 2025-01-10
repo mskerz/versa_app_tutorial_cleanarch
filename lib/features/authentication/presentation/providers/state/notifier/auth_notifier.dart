@@ -18,7 +18,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = AuthState.failure(exception);
       },
       (loginResponse) {
-        state = AuthState.success(loginResponse);
+        state = AuthState.success();
       },
     );
   }
@@ -32,6 +32,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
       (_) {
         state = const AuthState.success();
       },
+    ); 
+  }
+
+  Future<void> verify()async {
+    final result = await authRepository.verifyUser();
+    result.fold(
+      (exception) {
+        state = AuthState.failure(exception);
+      },
+      (response) {
+
+        // insert the code 
+       },
     ); 
   }
 
