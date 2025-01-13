@@ -3,7 +3,7 @@ import 'package:versa_app_tutorial_cleanarch/shared/domain/models/models.dart';
 class UserResponse {
   final String message;
   final User user;
-  bool isloggedIn;
+  final bool isloggedIn;
   UserResponse({required this.message,required this.user,this.isloggedIn =false});
 
 
@@ -11,7 +11,7 @@ class UserResponse {
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     return UserResponse(
       message: json['message'],
-      user: json['user'],
+      user: User.fromJson(json['user']),
     );
   }
 

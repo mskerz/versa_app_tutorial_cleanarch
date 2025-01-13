@@ -21,7 +21,7 @@ mixin _$AuthState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(VersaException exception) failure,
-    required TResult Function(LoginResponse? loginResponse) success,
+    required TResult Function(UserResponse? userResponse) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -29,7 +29,7 @@ mixin _$AuthState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(VersaException exception)? failure,
-    TResult? Function(LoginResponse? loginResponse)? success,
+    TResult? Function(UserResponse? userResponse)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -37,7 +37,7 @@ mixin _$AuthState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(VersaException exception)? failure,
-    TResult Function(LoginResponse? loginResponse)? success,
+    TResult Function(UserResponse? userResponse)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -132,7 +132,7 @@ class _$InitialImpl implements Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(VersaException exception) failure,
-    required TResult Function(LoginResponse? loginResponse) success,
+    required TResult Function(UserResponse? userResponse) success,
   }) {
     return initial();
   }
@@ -143,7 +143,7 @@ class _$InitialImpl implements Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(VersaException exception)? failure,
-    TResult? Function(LoginResponse? loginResponse)? success,
+    TResult? Function(UserResponse? userResponse)? success,
   }) {
     return initial?.call();
   }
@@ -154,7 +154,7 @@ class _$InitialImpl implements Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(VersaException exception)? failure,
-    TResult Function(LoginResponse? loginResponse)? success,
+    TResult Function(UserResponse? userResponse)? success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -249,7 +249,7 @@ class _$LoadingImpl implements Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(VersaException exception) failure,
-    required TResult Function(LoginResponse? loginResponse) success,
+    required TResult Function(UserResponse? userResponse) success,
   }) {
     return loading();
   }
@@ -260,7 +260,7 @@ class _$LoadingImpl implements Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(VersaException exception)? failure,
-    TResult? Function(LoginResponse? loginResponse)? success,
+    TResult? Function(UserResponse? userResponse)? success,
   }) {
     return loading?.call();
   }
@@ -271,7 +271,7 @@ class _$LoadingImpl implements Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(VersaException exception)? failure,
-    TResult Function(LoginResponse? loginResponse)? success,
+    TResult Function(UserResponse? userResponse)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -394,7 +394,7 @@ class _$FailureImpl implements Failure {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(VersaException exception) failure,
-    required TResult Function(LoginResponse? loginResponse) success,
+    required TResult Function(UserResponse? userResponse) success,
   }) {
     return failure(exception);
   }
@@ -405,7 +405,7 @@ class _$FailureImpl implements Failure {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(VersaException exception)? failure,
-    TResult? Function(LoginResponse? loginResponse)? success,
+    TResult? Function(UserResponse? userResponse)? success,
   }) {
     return failure?.call(exception);
   }
@@ -416,7 +416,7 @@ class _$FailureImpl implements Failure {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(VersaException exception)? failure,
-    TResult Function(LoginResponse? loginResponse)? success,
+    TResult Function(UserResponse? userResponse)? success,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -481,7 +481,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({LoginResponse? loginResponse});
+  $Res call({UserResponse? userResponse});
 }
 
 /// @nodoc
@@ -497,13 +497,13 @@ class __$$SuccessImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loginResponse = freezed,
+    Object? userResponse = freezed,
   }) {
     return _then(_$SuccessImpl(
-      freezed == loginResponse
-          ? _value.loginResponse
-          : loginResponse // ignore: cast_nullable_to_non_nullable
-              as LoginResponse?,
+      freezed == userResponse
+          ? _value.userResponse
+          : userResponse // ignore: cast_nullable_to_non_nullable
+              as UserResponse?,
     ));
   }
 }
@@ -511,14 +511,14 @@ class __$$SuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessImpl implements Success {
-  const _$SuccessImpl([this.loginResponse]);
+  const _$SuccessImpl([this.userResponse]);
 
   @override
-  final LoginResponse? loginResponse;
+  final UserResponse? userResponse;
 
   @override
   String toString() {
-    return 'AuthState.success(loginResponse: $loginResponse)';
+    return 'AuthState.success(userResponse: $userResponse)';
   }
 
   @override
@@ -526,12 +526,12 @@ class _$SuccessImpl implements Success {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessImpl &&
-            (identical(other.loginResponse, loginResponse) ||
-                other.loginResponse == loginResponse));
+            (identical(other.userResponse, userResponse) ||
+                other.userResponse == userResponse));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, loginResponse);
+  int get hashCode => Object.hash(runtimeType, userResponse);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -547,9 +547,9 @@ class _$SuccessImpl implements Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(VersaException exception) failure,
-    required TResult Function(LoginResponse? loginResponse) success,
+    required TResult Function(UserResponse? userResponse) success,
   }) {
-    return success(loginResponse);
+    return success(userResponse);
   }
 
   @override
@@ -558,9 +558,9 @@ class _$SuccessImpl implements Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(VersaException exception)? failure,
-    TResult? Function(LoginResponse? loginResponse)? success,
+    TResult? Function(UserResponse? userResponse)? success,
   }) {
-    return success?.call(loginResponse);
+    return success?.call(userResponse);
   }
 
   @override
@@ -569,11 +569,11 @@ class _$SuccessImpl implements Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(VersaException exception)? failure,
-    TResult Function(LoginResponse? loginResponse)? success,
+    TResult Function(UserResponse? userResponse)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(loginResponse);
+      return success(userResponse);
     }
     return orElse();
   }
@@ -617,9 +617,9 @@ class _$SuccessImpl implements Success {
 }
 
 abstract class Success implements AuthState {
-  const factory Success([final LoginResponse? loginResponse]) = _$SuccessImpl;
+  const factory Success([final UserResponse? userResponse]) = _$SuccessImpl;
 
-  LoginResponse? get loginResponse;
+  UserResponse? get userResponse;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.

@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: HomeScreen(),
       );
     },
+    SettingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: SettingScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -29,8 +35,7 @@ abstract class _$AppRouter extends RootStackRouter {
     },
     RegisterRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
-          routeData: routeData,
-          child: RegisterScreen());
+          routeData: routeData, child: RegisterScreen());
     },
     TokenRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
@@ -53,8 +58,6 @@ abstract class _$AppRouter extends RootStackRouter {
   };
 }
 
-/// generated route for
-/// [DashboardScreen]
 class TokenRoute extends PageRouteInfo<void> {
   const TokenRoute({List<PageRouteInfo>? children})
       : super(
@@ -75,6 +78,17 @@ class HomeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'HomeRoute';
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+class SettingRoute extends PageRouteInfo<void> {
+  const SettingRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingRoute';
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 

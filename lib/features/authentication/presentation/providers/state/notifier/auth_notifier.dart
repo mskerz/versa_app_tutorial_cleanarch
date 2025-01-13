@@ -8,7 +8,7 @@ import 'package:versa_app_tutorial_cleanarch/shared/domain/models/models.dart';
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
 
-  AuthNotifier(this.authRepository) : super(AuthState.initial());
+  AuthNotifier(this.authRepository) : super(AuthState.initial()) {}
 
   Future<void> signin(String email, String password) async {
     final result = await authRepository.signin(email, password);
@@ -17,12 +17,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
       (exception) {
         state = AuthState.failure(exception);
       },
-      (loginResponse) {
+      (_) {
         state = AuthState.success();
+        verify();
       },
     );
   }
-  Future<void> signup(User user) async{
+
+  Future<void> signup(User user) async {
     final result = await authRepository.signup(user);
 
     result.fold(
@@ -32,35 +34,38 @@ class AuthNotifier extends StateNotifier<AuthState> {
       (_) {
         state = const AuthState.success();
       },
-    ); 
+    );
   }
 
-  Future<void> verify()async {
+  Future<void> verify() async {
     final result = await authRepository.verifyUser();
     result.fold(
       (exception) {
         state = AuthState.failure(exception);
       },
       (response) {
-
-        // insert the code 
-       },
-    ); 
+        final updatedResponse = response.copyWith(isloggedIn: true);
+        print("Updated UserResponse: ${updatedResponse.isloggedIn}");
+        state = AuthState.success(updatedResponse);
+      },
+    );
   }
 
-
-
-  void showErrorSnackBar(String err_message,BuildContext context) {
+  void showErrorSnackBar(String err_message, BuildContext context) {
     // นำการแสดงผล Dialog มาแสดงใน UI
     // ใช้ตัวจัดการแสดงผล Dialog ของคุณ เช่น `showDialog`
-    
-     ScaffoldMessenger.of(context).showSnackBar(
+
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
             const Icon(Icons.error_outline, color: Colors.white),
             const SizedBox(width: 8),
-            Expanded(child: Text(err_message,style: GoogleFonts.prompt(color: Colors.white),)),
+            Expanded(
+                child: Text(
+              err_message,
+              style: GoogleFonts.prompt(color: Colors.white),
+            )),
           ],
         ),
         backgroundColor: Colors.black,
@@ -70,14 +75,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void showSuccessSnackbar(String success,BuildContext context){
+  void showSuccessSnackbar(String success, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
             const Icon(Icons.check_circle_outline, color: Colors.white),
             const SizedBox(width: 8),
-            Expanded(child: Text(success, style: GoogleFonts.prompt(color: Colors.white),)),
+            Expanded(
+                child: Text(
+              success,
+              style: GoogleFonts.prompt(color: Colors.white),
+            )),
           ],
         ),
         backgroundColor: Colors.green,

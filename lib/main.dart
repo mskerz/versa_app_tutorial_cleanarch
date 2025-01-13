@@ -8,6 +8,7 @@ import 'package:versa_app_tutorial_cleanarch/main/app_env.dart';
 import 'package:versa_app_tutorial_cleanarch/main/observers.dart';
 
 void main() => mainCommon(AppEnvironment.PROD);
+  
 
 Future<void> mainCommon(AppEnvironment environment) async {
   WidgetsFlutterBinding.ensureInitialized();

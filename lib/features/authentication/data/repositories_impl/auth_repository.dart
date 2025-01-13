@@ -22,9 +22,9 @@ class AuthRepositoryImpl implements AuthRepository{
   }
 
   @override
-  Future<Either<VersaException, UserResponse>> verifyUser() {
+  Future<Either<VersaException, UserResponse>> verifyUser()async {
     // TODO: implement verifyUser
-    throw UnimplementedError();
+    return await authDataSource.verifyUser();
   }}
 
   

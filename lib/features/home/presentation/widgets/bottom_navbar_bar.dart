@@ -30,6 +30,10 @@ class BottomNavBar extends ConsumerWidget {
           AutoRouter.of(context)
               .pushAndPopUntil(TokenRoute(), predicate: (_) => false);
           break;
+
+        case 4:
+          AutoRouter.of(context)
+              .pushAndPopUntil(SettingRoute(), predicate: (_) => false);
         default:
           break;
       }
@@ -48,14 +52,13 @@ class BottomNavBar extends ConsumerWidget {
       ),
       child: Stack(children: [
         BottomNavigationBar(
-          
           currentIndex: currentIndex, // index ของไอคอนตรงกลาง
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
           backgroundColor: const Color(0xFF0D2B5B),
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          
+
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(

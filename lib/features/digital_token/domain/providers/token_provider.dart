@@ -22,6 +22,5 @@ final tokenRepositoryProvider = Provider<TokenRepository>((ref) {
   final networkservice = ref.watch(networkServiceProvider);
   final datasource = ref.watch(tokenDatasourceProvider(networkservice));
   final repository = TokenRepositoryImpl(datasource);
-
   return repository;
 });

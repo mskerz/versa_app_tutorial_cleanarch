@@ -32,6 +32,7 @@ class User extends Equatable {
         lastName,
         gender,
         image,
+        age,
       ];
 
   Map<String, dynamic> toJson() {
@@ -44,6 +45,7 @@ class User extends Equatable {
       'lastName': lastName,
       'gender': gender,
       'image': image,
+      'age': age,
     };
   }
 
@@ -55,25 +57,23 @@ class User extends Equatable {
       email: userMap['email'] ?? '',
       phoneNumber: userMap['phoneNumber'],
       password: userMap['password'] ?? '',
-      firstName: userMap['firstName'] ?? '',
-      lastName: userMap['lastName'] ?? '',
+      firstName: userMap['firstname'] ?? '',
+      lastName: userMap['lastname'] ?? '',
       gender: userMap['gender'] ?? '',
       image: userMap['image'] ?? '',
+      age: userMap['age'] ?? 1,
     );
   }
 
   User copyWith({
     String? uid,
-    int? timeJoined,
-    String? tenantId,
     String? email,
-    bool? isEmailVerified,
     String? phoneNumber,
-    bool? isPhoneNumberVerified,
     String? username,
     String? password,
     String? firstName,
     String? lastName,
+    int? age,
     String? gender,
     String? image,
   }) {
@@ -84,6 +84,7 @@ class User extends Equatable {
    password: password ?? this.password,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
+      age: age ?? this.age,
       gender: gender ?? this.gender,
       image: image ?? this.image,
    );

@@ -2,8 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/leading_logo.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/notification/notification_icon.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/progress_signup.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/user_drawer.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
 
@@ -18,60 +23,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // ดึงค่า state จาก transitionProvider
-    const double progress = 0.3;
+    const double progress = 0.40;
     const double percent = progress * 100;
+    final authState = ref.watch(authNotifierProvider);
+// เช็คว่า user login แล้วหรือยัง
+    final isLoggedIn = authState.maybeWhen(
+      success: (userResponse) => userResponse?.isloggedIn ?? false,
+      orElse: () => false,
+    );
 
+    final prefix = authState.maybeWhen(
+      success: (userResponse) => userResponse?.user.gender == 'Male'
+          ? 'Mr.'
+          : userResponse?.user.gender == 'Female'
+              ? 'Mrs.'
+              : 'คุณ', // ใช้ Mx. สำหรับกรณีที่ไม่ต้องการระบุเพศ
+      orElse: () => '',
+    );
     return Scaffold(
+        drawer: UserDrawer(),
         appBar: AppBar(
-          backgroundColor: Colors.white,
           elevation: 0,
-          automaticallyImplyLeading: false,
+          leadingWidth: 150, // Set a fixed width for the leading widget
+          leading: Builder(
+            builder: (BuildContext context) {
+              return LeadingLogo(
+                logoAssetPath: DARK_LOGO_IMG,
+                onMenuPressed: () {
+                  // Open the drawer using the correct context
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
+          actions: [
+            NotificationBadge(
+              notificationCount: 1, // Example: 3 notifications
+              onPressed: () {
+                print("Notification Icon Pressed");
+              },
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(LIGHT_LOGO_IMG),
-                  Stack(
-                    clipBehavior: Clip.none, // อนุญาตให้ Badge เกินขอบของ Icon
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.notifications, color: Colors.black),
-                        onPressed: () {},
-                      ),
-                      // เพิ่ม Badge ที่มุมขวาบนของ Icon
-                      Positioned(
-                        right: 0, // ขยับ Badge ไปทางขวา
-                        top: 0, // ขยับ Badge ไปด้านบน
-                        child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.red, // สีพื้นหลังของ Badge
-                            shape: BoxShape.circle,
-                          ),
-                          constraints: BoxConstraints(
-                            minWidth: 20, // ขนาดขั้นต่ำของ Badge
-                            minHeight: 20,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '3', // จำนวน Notification หรือค่าที่ต้องการแสดงใน Badge
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12, // ขนาดตัวอักษรของ Badge
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
               // Text(
               //   "Versa",
               //   style: TextStyle(
@@ -83,61 +81,47 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                "สวัสดี User",
-                style: GoogleFonts.kanit(
-                    fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            
-              Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color.fromARGB(15, 0, 0, 0),
-                    width: 2,
-                  ),
-                ),
-                child: Row(
+              authState.maybeWhen(
+                success: (userResponse) => Column(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start, // Aligns text to start horizontally
+                  mainAxisAlignment:
+                      MainAxisAlignment.start, // Aligns content at the top
                   children: [
-                    Expanded(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Text(
-                            '${percent.floor()}%',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          Container(
-                            child: CircularProgressIndicator(
-                              value: progress,
-                              backgroundColor: Colors.grey[200],
-                              color: Colors.orange,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      "สวัสดี $prefix ${userResponse?.user.firstName} ${userResponse?.user.lastName}",
+                      style: GoogleFonts.kanit(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "การสมัครของคุณยังไม่เสร็จสิ้น",
-                          style: GoogleFonts.prompt(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "กรุณาสมัครให้สำเร็จก่อนทำการ\nจองซื้อโทเคนดิจิทัล",
-                          style: GoogleFonts.prompt(
-                              color: Colors.grey, fontSize: 16),
-                        ),
-                      ],
+                    SizedBox(height: 5), // Adjust the space between texts
+                    Text(
+                      "Welcome to Versa ",
+                      style: GoogleFonts.kanit(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ],
                 ),
+                orElse: () => Container(),
+              ),
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: isLoggedIn
+                      ? Colors.white
+                      : const Color.fromARGB(255, 238, 238, 238),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: const Color.fromARGB(15, 0, 0, 0),
+                    width: isLoggedIn ? 1 : 0,
+                  ),
+                ),
+                child: isLoggedIn
+                    ? buildLoggedInProgressBar(progress, percent)
+                    : buildUnloggedInMessage(context),
               ),
               SizedBox(height: 20),
               Row(

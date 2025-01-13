@@ -34,7 +34,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authNotifier = ref.read(authNotifierProvider.notifier);
 
     // ฟังการเปลี่ยนแปลงสถานะของ loginNotifierProvider
-  
+
     ref.listen(authNotifierProvider, (previous, next) {
       // เมื่อสถานะเปลี่ยนเป็น failure ให้แสดง snackbar แสดงข้อผิดพลาด
       if (next is Failure) {
@@ -69,10 +69,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         // หน่วงเวลา 2 วินาที ก่อนที่จะทำการนำทาง
         Future.delayed(const Duration(seconds: 2), () {
           // ปิด Dialog เมื่อหน่วงเวลาหมด
-          Navigator.of(context).pop();
+          if (context.mounted) {
+            // ปิด Dialog เมื่อหน่วงเวลาหมด
+            Navigator.of(context).pop();
 
-          // ทำการนำทางไปยังหน้า Home
-          context.router.replace(const HomeRoute());
+            // ทำการนำทางไปยังหน้า Home
+            context.router.replace(const HomeRoute());
+          }
         });
       }
     });
@@ -165,14 +168,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Container(
               margin: EdgeInsets.only(top: 5),
               child: Row(
-
                 children: [
-                  TextButton(onPressed: (){
-                    print("Forget Password Button");
-                  }, child: Text("Forget Password ?",style: GoogleFonts.prompt(color: Colors.black),))
-                  ,
-                  
-                 ],
+                  TextButton(
+                      onPressed: () {
+                        print("Forget Password Button");
+                      },
+                      child: Text(
+                        "Forget Password ?",
+                        style: GoogleFonts.prompt(color: Colors.black),
+                      )),
+                ],
               ),
             ),
             SizedBox(height: 5),
@@ -238,22 +243,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               margin: EdgeInsets.only(top: 10),
               child: SizedBox(
                 width: double.infinity,
-                
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    AutoRouter.of(context)
-              .pushAndPopUntil(RegisterRoute(), predicate: (_) => false);
+                    AutoRouter.of(context).pushAndPopUntil(RegisterRoute(),
+                        predicate: (_) => false);
                   },
-                   
                   style: ElevatedButton.styleFrom(
-                    
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     backgroundColor: Color(0xFF0D2B5B),
                     disabledBackgroundColor: Colors.grey,
                   ),
-                  label: Text("Sign Up",style: GoogleFonts.kanit(
-                    
-                  ),),
+                  label: Text(
+                    "Sign Up",
+                    style: GoogleFonts.kanit(),
+                  ),
                   icon: Icon(Icons.create),
                 ),
               ),

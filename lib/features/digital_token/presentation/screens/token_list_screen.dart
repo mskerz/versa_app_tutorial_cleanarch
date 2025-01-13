@@ -36,21 +36,35 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
   Widget build(BuildContext context) {
     int selectIndexTab = ref.watch(selectedTabIndexProvider);
     final tokenState = ref.watch(tokenNotifierProvider);
-  
-     final List<Token> tokenData = tokenState.tokenList;
-     
+
+    final List<Token> tokenData = tokenState.tokenList;
+
     List<Widget> tabs = [
       Tab(text: 'โทเคนที่เปิดจองอยู่'),
       Tab(text: 'โทเคนที่ใกล้เปิดจอง'),
       Tab(text: 'โทเคนที่ปิดจองแล้ว'),
     ];
-    
 
     List<Widget> tabViews = [
       buildTokenList(tokenData, 'open'),
       buildTokenList(tokenData, 'coming'),
       buildTokenList(tokenData, 'closed'),
     ];
+    void _handleBackButtonPress() {
+      final previousIndex =
+          ref.read(transitionProvider.notifier).getPreviousIndex();
+
+      if (previousIndex != null) {
+        // เปลี่ยนไปยังเมนูที่เคยเปิด
+        ref.read(transitionProvider.notifier).transitionTo(previousIndex);
+      } else {
+        // หากไม่พบ previousIndex ให้รีเซ็ตกลับไปยังหน้าแรก
+        ref.read(transitionProvider.notifier).resetToHome();
+      }
+
+      // ย้อนกลับหน้าปัจจุบัน
+      context.router.back();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -58,15 +72,18 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
           margin: const EdgeInsets.only(left: 20),
           child: IconButton(
               onPressed: () {
-                context.router.back();
-                ref.read(transitionProvider.notifier).transitionTo(0);
-                // รีเซ็ตสถานะของ Bottom Navigation
+                // กดย้อนกลับและเรียกใช้ getPreviousIndex เพื่อกลับไปยังเมนูที่เคยเปิดก่อนหน้า
+                _handleBackButtonPress();
               },
-              icon: const Icon(Icons.arrow_back_ios)),
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Theme.of(context).primaryColor),
         ),
-        backgroundColor: Colors.white,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none)),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none),
+            color: Theme.of(context).primaryColor,
+          ),
         ],
       ),
       body: Container(

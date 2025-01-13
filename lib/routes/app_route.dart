@@ -5,12 +5,17 @@ import 'package:versa_app_tutorial_cleanarch/features/authentication/presentatio
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_intro_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_list_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/screens/home_screen.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/screens/setting/setting_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 part 'app_route.gr.dart'; // ไฟล์นี้จะถูกสร้างโดย build_runner
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends _$AppRouter {
+  // final WidgetRef ref;
+
+  // AppRouter(this.ref);
+
   @override
   RouteType get defaultRouteType => const RouteType.material();
 
@@ -18,12 +23,13 @@ class AppRouter extends _$AppRouter {
   List<AutoRoute> get routes => [
         CustomRoute(
           page: HomeRoute.page,
+          initial: true,
+
           transitionsBuilder: _fadeTransition, // ใช้ Fade Transition
           durationInMilliseconds: 200, // ระยะเวลา Fade
         ),
         CustomRoute(
           page: LoginRoute.page,
-          initial: true,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
         ),
@@ -39,6 +45,11 @@ class AppRouter extends _$AppRouter {
         ),
         CustomRoute(
           page: TokenIntroRoute.page,
+          transitionsBuilder: _fadeTransition,
+          durationInMilliseconds: 200,
+        ),
+        CustomRoute(
+          page: SettingRoute.page,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
         ),
@@ -65,6 +76,4 @@ class AppRouter extends _$AppRouter {
       child: child,
     );
   }
-
-  
 }
