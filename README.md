@@ -6,8 +6,7 @@
 - **Sign In**: User authentication using email and password.
 - **Sign Up**: User registration with required credentials.
 - **Verify User**: Verifies the user with an `accessToken`.  
-- **V
-
+ 
 ### Token List
 - **Get Token List**: Displays a mock list of tokens and Filter Token by Status to Tab Build.
  
