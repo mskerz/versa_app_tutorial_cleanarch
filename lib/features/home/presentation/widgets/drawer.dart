@@ -33,17 +33,37 @@ class UserDrawer extends ConsumerWidget {
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        const DrawerHeader(
-          child: Center(
-            child: Text(
-              "Welcome , Guest!",
-              style: TextStyle(fontSize: 20, color: Colors.black54),
+        Theme(
+          data: Theme.of(context).copyWith(
+            dividerTheme: const DividerThemeData(color: Colors.transparent),
+          ),
+          child: DrawerHeader(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.onSurface, // สีที่สองใน gradient
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                "Welcome , Guest!",
+                style: GoogleFonts.kanit(
+                    fontSize: 20, color: Theme.of(context).primaryColor),
+              ),
             ),
           ),
         ),
         ListTile(
-          leading: const Icon(Icons.login),
-          title: const Text('Login'),
+          leading: Icon(Icons.login, color: Theme.of(context).primaryColor),
+          title: Text(
+            'Login',
+            style: GoogleFonts.kanit(
+                fontSize: 20, color: Theme.of(context).primaryColor),
+          ),
           onTap: () {
             // นำทางไปหน้าล็อกอิน
           },
@@ -60,64 +80,96 @@ class UserDrawer extends ConsumerWidget {
     final authNotifier = ref.read(authNotifierProvider.notifier);
     final notificationNotifier = ref.read(notificationStateProvider.notifier);
     return ListView(
-    
       shrinkWrap: true,
       padding: EdgeInsets.zero,
+      clipBehavior: Clip.none, // ทำให้ไม่มีกำแพงระหว่างส่วนต่างๆ
+
       children: [
         // ข้อมูลผู้ใช้ที่แสดงบน Drawer
-        DrawerHeader(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+        Theme(
+          data: Theme.of(context).copyWith(
+            dividerTheme: const DividerThemeData(color: Colors.transparent),
           ),
-          child: Row(children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                    radius: 30,
-                    backgroundImage: user.image.isNotEmpty
-                        ? NetworkImage(user.image)
-                        : AssetImage(DEFAULT_IMAGE_PROFILE) // ตรวจสอบ image
-                    ),
-                Text(
-                  '${user.firstName} ${user.lastName}',
-                  style: GoogleFonts.prompt(color: Theme.of(context).primaryColor, fontSize: 18),
-                ),
-                Text(
-                  user.phoneNumber, // ตรวจสอบ email
-                  style: GoogleFonts.prompt(color: Theme.of(context).primaryColor, fontSize: 18),
-                ),
-              ],
+          child: DrawerHeader(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.surface,
+                  Theme.of(context).colorScheme.secondary, // สีที่สองใน gradient
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-          ]),
+            child: Row(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                 CircleAvatar(
+  radius: 30,
+  backgroundImage: user.image.isNotEmpty
+      ? NetworkImage(user.image)
+      : AssetImage(DEFAULT_IMAGE_PROFILE),
+  child: Container(
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      border: Border.all(
+        color: Theme.of(context).colorScheme.inversePrimary, // กำหนดสีขอบที่นี่
+        width: 3, // กำหนดความหนาของขอบ
+      ),
+    ),
+  ),
+),
+
+                  Text(
+                    '${user.firstName} ${user.lastName}',
+                    style: GoogleFonts.prompt(
+                        color: Theme.of(context).primaryColor, fontSize: 18),
+                  ),
+                  Text(
+                    user.phoneNumber, // ตรวจสอบ email
+                    style: GoogleFonts.prompt(
+                        color: Theme.of(context).primaryColor, fontSize: 18),
+                  ),
+                ],
+              ),
+            ]),
+          ),
         ),
         // เมนูต่างๆ ใน Drawer
         ListTile(
           leading: Icon(Icons.home),
-          title: Text('Home',style: GoogleFonts.prompt(color: Theme.of(context).primaryColor)),
+          title: Text('Home',
+              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor)),
           onTap: () {
             // การนำทางไปหน้าหลัก
           },
         ),
         ListTile(
           leading: Icon(Icons.settings),
-          title: Text('Settings',style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),),
+          title: Text(
+            'Settings',
+            style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
+          ),
           onTap: () {
             // การนำทางไปหน้าการตั้งค่า
           },
         ),
         ListTile(
           leading: Icon(Icons.logout),
-          title: Text('Logout',style: GoogleFonts.prompt(color: Theme.of(context).primaryColor)),
+          title: Text('Logout',
+              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor)),
           onTap: () {
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
                   title: Text("ยืนยันการออกจากระบบ",
-                      style: GoogleFonts.prompt(color: Theme.of(context).primaryColor)),
+                      style: GoogleFonts.prompt(
+                          color: Theme.of(context).primaryColor)),
                   content: Text('คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?',
-                      style: GoogleFonts.prompt(color: Theme.of(context).primaryColor)),
+                      style: GoogleFonts.prompt(
+                          color: Theme.of(context).primaryColor)),
                   actions: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -128,7 +180,8 @@ class UserDrawer extends ConsumerWidget {
                       },
                       child: Text(
                         "กลับ",
-                        style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
+                        style: GoogleFonts.prompt(
+                            color: Theme.of(context).primaryColor),
                       ),
                     ),
                     ElevatedButton(
@@ -138,7 +191,7 @@ class UserDrawer extends ConsumerWidget {
                         await authNotifier.signout(context);
                         context.router.pushAndPopUntil(HomeRoute(),
                             predicate: (_) => false);
-                       },
+                      },
                       child: Text(
                         "ออกจากระบบ",
                         style: GoogleFonts.prompt(color: Colors.white),

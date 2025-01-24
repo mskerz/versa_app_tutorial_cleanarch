@@ -6,7 +6,7 @@ class TextThemes {
   /// Main text theme
 
   static TextTheme get textTheme {
-    return const TextTheme(
+    return TextTheme(
       bodyLarge: AppTextStyles.bodyLg,
       bodyMedium: AppTextStyles.body,
       titleMedium: AppTextStyles.bodySm,

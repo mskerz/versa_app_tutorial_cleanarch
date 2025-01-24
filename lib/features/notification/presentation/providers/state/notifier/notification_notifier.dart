@@ -48,15 +48,13 @@ class NotificationStateNotifier extends StateNotifier<NotificationState> {
             print("From State: ${data.notifications}");
             state = state.maybeWhen(
               success: (notifications) {
-               
                 final sortedNotifications = Sort().sort_byASC(
-                [...notifications, ...data.notifications], 
-                (notification) => notification.isRead,
-              );
+                  [...notifications, ...data.notifications],
+                  (notification) => notification.isRead,
+                );
                 return NotificationState.success(sortedNotifications);
               },
               orElse: () {
-
                 return NotificationState.success(data.notifications);
               },
             );
@@ -93,11 +91,11 @@ class NotificationStateNotifier extends StateNotifier<NotificationState> {
             notifications[i],
       ];
 // อัพเดต state เป็น NotificationState.success พร้อม list ใหม่
-    // ที่นี้เราจะจัดลำดับใหม่ให้ `isRead = false` มาก่อน
-    final sortedNotifications = [
-      ...updatedNotifications.where((notification) => !notification.isRead),
-      ...updatedNotifications.where((notification) => notification.isRead),
-    ];
+      // ที่นี้เราจะจัดลำดับใหม่ให้ `isRead = false` มาก่อน
+      final sortedNotifications = [
+        ...updatedNotifications.where((notification) => !notification.isRead),
+        ...updatedNotifications.where((notification) => notification.isRead),
+      ];
       // อัพเดต state เป็น NotificationState.success พร้อม list ใหม่
       state = NotificationState.success(sortedNotifications);
     }
@@ -105,18 +103,46 @@ class NotificationStateNotifier extends StateNotifier<NotificationState> {
 
   void markAllAsRead() {
     // เข้าถึงรายการ notifications ปัจจุบัน
+
     final notifications = state.maybeMap(
       success: (value) => value.notifications,
       orElse: () => <Notify>[],
     );
+    if (notifications.isEmpty) {
+      state = NotificationState.empty();
+    } else {
+      final updatedNotifications = [
+        for (final notification in notifications)
+          notification.copyWith(isRead: true),
+      ];
+
+      // อัปเดต state ให้กับ StateNotifier
+      state = NotificationState.success(updatedNotifications);
+    }
 
     // อัปเดตรายการ notifications ทั้งหมดให้ isRead = true
-    final updatedNotifications = [
-      for (final notification in notifications)
-        notification.copyWith(isRead: true),
-    ];
-
-    // อัปเดต state ให้กับ StateNotifier
-    state = NotificationState.success(updatedNotifications);
   }
+
+ void tryRemove(String id) {
+  final notifications = state.maybeMap(
+    success: (value) => value.notifications,
+    orElse: () => <Notify>[],
+  );
+
+  // ใช้ `where` เพื่อกรองรายการที่ messageId ไม่ตรงกับ id ที่ส่งเข้ามา
+  // ignore: unrelated_type_equality_checks
+  final updateNotifications = notifications.where((notification) => notification.messageId != id).toList();
+
+  if(updateNotifications.isEmpty){
+    state = NotificationState.empty();
+  }
+  else{
+    state = NotificationState.success(updateNotifications);
+  }
+
+  // อัปเดต state ใหม่ด้วยรายการที่กรองแล้ว
+  
+
+}
+
 }

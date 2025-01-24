@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/domain/repositories/token_repository.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/state/token_list_state.dart';
@@ -16,14 +19,13 @@ import '../../../../../../shared/domain/models/either.dart';
 class TokenNotifier extends StateNotifier<TokenState> {
   final TokenRepository tokenRepository;
 
-  TokenNotifier(this.tokenRepository) : super(const TokenState.initial()){
+  TokenNotifier(this.tokenRepository) : super(const TokenState.initial()) {
     fetchToken();
   }
 
   bool get isFetching =>
       state.state != TokenConcreteState.loading &&
       state.state != TokenConcreteState.fetchingMore;
-
 
   Future<void> fetchToken() async {
     if (isFetching && state.state != TokenConcreteState.fetchedAllTokens) {
@@ -38,7 +40,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
           await tokenRepository.fetchToken(skip: state.page * ITEM_PER_PAGE);
       updateStateFromResponse(response);
       print("Page :${state.page}");
-    }else{
+    } else {
       state = state.copyWith(
         state: TokenConcreteState.fetchedAllTokens,
         message: 'No more products available',
@@ -72,5 +74,22 @@ class TokenNotifier extends StateNotifier<TokenState> {
         isLoading: false,
       );
     });
+  }
+
+  void RouteToken(String symbol, Function callback) {
+    final tokenItem =
+        state.tokenList.where((item) => item.symbol == symbol).toList();
+
+    if (tokenItem.isNotEmpty) {
+      final firstItem = tokenItem.first;
+      // เรียก callback พร้อมข้อมูล firstItem เมื่อพบ
+
+      state = state.copyWith(state: TokenConcreteState.loaded);
+      callback(true, firstItem); 
+    } else {
+      // ถ้าไม่พบ token ที่ตรงกับเงื่อนไข
+      state = state.copyWith(state: TokenConcreteState.failure);
+      callback(false, null);
+    }
   }
 }

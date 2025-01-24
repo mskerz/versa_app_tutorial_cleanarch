@@ -11,7 +11,6 @@ class TokenIntroScreen extends StatelessWidget {
   TokenIntroScreen(this.tokenItem, {super.key});
 
   @override
-
   Widget build(BuildContext context) {
     bool isSoldOut = tokenItem.currentRaised == tokenItem.fundingGoal;
     bool isComing = tokenItem.status == "coming";
@@ -113,28 +112,29 @@ class TokenIntroScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Color(0xFF0A173E),
-                  ),
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: IconButton.filled(
-                    onPressed: () => showModalBottomSheet(
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        backgroundColor: Colors.transparent,
-                        barrierColor: Colors.transparent,
-                        context: context,
-                        builder: (context) => buildTokenModalSheet(tokenItem)),
-                    icon: const Icon(
-                      FontAwesomeIcons.arrowDown,
-                      color: Colors.black,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Theme.of(context).colorScheme.primaryContainer
                     ),
-                  ),
-                ),
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: IconButton(
+                      color: Colors.black, // กำหนดสีที่ต้องการที่นี่
+                      onPressed: () => showModalBottomSheet(
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          backgroundColor: Colors.transparent,
+                          barrierColor: Colors.transparent,
+                          context: context,
+                          builder: (context) =>
+                              buildTokenModalSheet(tokenItem)),
+                      icon:  Icon(
+                        FontAwesomeIcons.arrowDown,
+                        color: Theme.of(context).primaryColor // กำหนดสีที่ต้องการที่นี่
+                      ),
+                    )),
               ),
             ],
           ),

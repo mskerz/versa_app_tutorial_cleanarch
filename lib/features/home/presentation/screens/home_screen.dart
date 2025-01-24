@@ -7,7 +7,7 @@ import 'package:versa_app_tutorial_cleanarch/features/home/presentation/provider
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/leading_logo.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/progress_signup.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/user_drawer.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/drawer.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification_badge.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
@@ -47,9 +47,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final notificationCount = ref.watch(notificationCountUnreadProvider);
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
-    final  theme = ref.watch(appThemeProvider);
+    final theme = ref.watch(appThemeProvider);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         drawer: UserDrawer(),
         appBar: AppBar(
           elevation: 0,
@@ -57,7 +57,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           leading: Builder(
             builder: (BuildContext context) {
               return LeadingLogo(
-                logoAssetPath: theme == ThemeMode.dark ? DARK_LOGO_IMG :LIGHT_LOGO_IMG,
+                logoAssetPath:
+                    theme == ThemeMode.dark ? DARK_LOGO_IMG : LIGHT_LOGO_IMG,
                 onMenuPressed: () {
                   // Open the drawer using the correct context
                   Scaffold.of(context).openDrawer();
@@ -68,7 +69,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           actions: [
             NotificationBadge(
               notificationCount: notificationCount, // Example: 3 notifications
-              
             ),
             IconButton(
                 onPressed: () {
@@ -87,8 +87,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-    
-
               const SizedBox(
                 height: 20,
               ),
@@ -102,10 +100,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Text(
                           "สวัสดี $prefix ${user?.firstName} ${user?.lastName}",
                           style: GoogleFonts.kanit(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).primaryColor
-                          ),
+                              fontSize: 22,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).primaryColor),
                         ),
                         SizedBox(height: 5), // Adjust the space between texts
                         // Text(
@@ -131,7 +128,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
                 child: isLoggedIn
-                    ? buildLoggedInProgressBar(progress, percent,context)
+                    ? buildLoggedInProgressBar(progress, percent, context)
                     : buildUnloggedInMessage(context),
               ),
               SizedBox(height: 20),
@@ -158,13 +155,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                color: const Color(0xFF0D2B5B),
+                                color: Theme.of(context).colorScheme.primary,
                               ),
-                              child: Icon(Icons.widgets, color: Colors.white),
+                              child: Icon(Icons.widgets,
+                                  color:
+                                      Theme.of(context).primaryIconTheme.color),
                             ),
                             Text(
                               "โทเคนดิจิทัล",
-                              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
+                              style: GoogleFonts.prompt(
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ],
                         ),
@@ -189,14 +189,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                color: const Color(0xFF0D2B5B),
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                               child: Icon(Icons.shopping_cart,
-                                  color: Colors.white),
+                                  color:
+                                      Theme.of(context).primaryIconTheme.color),
                             ),
                             Text(
                               "การจองซื้อ",
-                              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
+                              style: GoogleFonts.prompt(
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ],
                         ),
@@ -223,13 +225,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                color: const Color(0xFF0D2B5B),
+                                color: Theme.of(context).colorScheme.primary,
                               ),
-                              child: Icon(Icons.wallet, color: Colors.white),
+                              child: Icon(Icons.wallet,
+                                  color:
+                                      Theme.of(context).primaryIconTheme.color),
                             ),
                             Text(
                               "วอลเล็ท",
-                              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
+                              style: GoogleFonts.prompt(
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ],
                         ),

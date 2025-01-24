@@ -7,6 +7,7 @@ import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_mo
 
 Widget buildTokenList(List<Token> tokens, String status, BuildContext context) {
   final filtered = tokens.where((token) => token.status == status).toList();
+  
   print(filtered);
   if (filtered.isEmpty) {
     return Center(

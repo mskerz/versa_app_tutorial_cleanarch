@@ -1,47 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
   static const String fontFamily = 'Prompt';
 
   /// Text style for body
-  static const TextStyle bodyLg = TextStyle(
+  static TextStyle bodyLg = GoogleFonts.prompt(
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
 
-  static const TextStyle body = TextStyle(
+  static TextStyle body = GoogleFonts.prompt(
     fontSize: 14,
     fontWeight: FontWeight.w400,
   );
 
-  static const TextStyle bodySm = TextStyle(
+  static TextStyle bodySm = GoogleFonts.prompt(
     fontSize: 12,
     fontWeight: FontWeight.w300,
   );
 
-  static const TextStyle bodyXs = TextStyle(
+  static TextStyle bodyXs = GoogleFonts.prompt(
     fontSize: 10,
     fontWeight: FontWeight.w300,
   );
 
   /// Text style for heading
 
-  static const TextStyle h1 = TextStyle(
+  static TextStyle h1 = GoogleFonts.prompt(
     fontSize: 24,
     fontWeight: FontWeight.w700,
   );
 
-  static const TextStyle h2 = TextStyle(
+  static TextStyle h2 = GoogleFonts.prompt(
     fontSize: 22,
     fontWeight: FontWeight.w700,
   );
 
-  static const TextStyle h3 = TextStyle(
+  static  TextStyle h3 = GoogleFonts.prompt(
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );
 
-  static const TextStyle h4 = TextStyle(
+  static TextStyle h4 = GoogleFonts.prompt(
     fontSize: 18,
     fontWeight: FontWeight.w500,
   );

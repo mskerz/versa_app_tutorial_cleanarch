@@ -74,11 +74,12 @@ class AppTheme {
         primaryContainer: AppColors.lightBlue,
         secondaryContainer: AppColors.lightSkyBlue,
         error: AppColors.error,
+        inversePrimary: AppColors.primary
       ),
       scaffoldBackgroundColor: AppColors.backgroundDarkBlue,
-      textTheme: TextThemes.darkTextTheme,
-      primaryTextTheme: TextThemes.primaryTextTheme,
-      appBarTheme: const AppBarTheme(
+      textTheme: TextThemes.textTheme,
+      primaryTextTheme: TextThemes.darkTextTheme,
+      appBarTheme: AppBarTheme(
         elevation: 0,
         foregroundColor: AppColors.primary,
         backgroundColor: AppColors.backgroundDarkBlue, // เปลี่ยนสีของ app bar
@@ -125,6 +126,7 @@ class AppTheme {
         onSurface: AppColors.backgroundContainerLight,
         secondaryContainer: AppColors.lightWhiteGrey,
         error: AppColors.error,
+        inversePrimary: AppColors.secondary
       ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
