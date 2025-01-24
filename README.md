@@ -5,11 +5,13 @@
 ### Authentication
 - **Sign In**: User authentication using email and password.
 - **Sign Up**: User registration with required credentials.
-- **Verify User**: Verifies the user with an `accessToken`.   not Finish
-
+- **Verify User**: Verifies the user with an `accessToken`.  
+ 
 ### Token List
 - **Get Token List**: Displays a mock list of tokens and Filter Token by Status to Tab Build.
  
+### Notification
+- **Get Notification**: show real time push notification with WebSocket**
 
 ### HomePage
 - The homepage provides a clean UI to access all features and information, enhancing the user experience.
