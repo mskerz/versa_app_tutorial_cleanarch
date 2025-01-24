@@ -5,7 +5,7 @@ import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
-Widget buildTokenList(List<Token> tokens, String status) {
+Widget buildTokenList(List<Token> tokens, String status, BuildContext context) {
   final filtered = tokens.where((token) => token.status == status).toList();
   print(filtered);
   if (filtered.isEmpty) {
@@ -74,7 +74,7 @@ Widget buildTokenList(List<Token> tokens, String status) {
                             BoxShape.circle, // Ensures the gradient is circular
                         gradient: LinearGradient(
                           colors: [
-                            Colors.blue,
+                            Theme.of(context).colorScheme.primaryContainer,
                             Colors.white,
                           ],
                           begin: Alignment.topLeft,
@@ -95,7 +95,10 @@ Widget buildTokenList(List<Token> tokens, String status) {
                     // ชื่อของโทเคน
                     Text(
                       token.name,
-                      style: CustomText(fontSize: 16),
+                      style: CustomText(
+                        fontSize: 16,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ],
                 )

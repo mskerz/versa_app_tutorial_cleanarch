@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
-class LeadingLogo extends StatelessWidget {
+class LeadingLogo extends ConsumerWidget {
   final String logoAssetPath;
   final Function()? onMenuPressed;
 
@@ -11,13 +13,17 @@ class LeadingLogo extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final theme = ref.watch(appThemeProvider);
     return Row(
       mainAxisSize: MainAxisSize
           .min, // Prevent the row from taking up more space than needed
       children: [
         IconButton(
-          icon: Icon(Icons.menu, color: Colors.white),
+          icon: Icon(
+            Icons.menu,
+            color: Theme.of(context).primaryColor,
+          ),
           onPressed: () {
             if (onMenuPressed != null) {
               onMenuPressed!();
@@ -26,11 +32,11 @@ class LeadingLogo extends StatelessWidget {
         ),
         SizedBox(width: 8),
         // Image is inside a ClipRect to prevent overflow
-        Image.asset(
+         Image.asset(
           logoAssetPath,
-          height: 25,
+          height: theme == ThemeMode.dark ? 22:32,
           fit: BoxFit.contain,
-        ),
+        ) ,
       ],
     );
   }

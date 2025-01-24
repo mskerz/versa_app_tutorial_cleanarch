@@ -3,25 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
-
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   MyApp({super.key});
 
-  final appRouter = AppRouter();
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  late final routerConfig;
 
   @override
+  void initState() {
+    super.initState();
+    routerConfig = AppRouter(ref).config();
+  }
 
-
-  Widget build(BuildContext context, WidgetRef ref) {
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(appThemeProvider);
+
     return MaterialApp.router(
       title: 'Versa',
+      routerConfig: routerConfig,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
-      
-      routeInformationParser: appRouter.defaultRouteParser(),
-      routerDelegate: appRouter.delegate(),
       debugShowCheckedModeBanner: false,
     );
   }

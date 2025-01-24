@@ -27,6 +27,25 @@ abstract class _$AppRouter extends RootStackRouter {
         child: SettingScreen(),
       );
     },
+     NotificationRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NotificationScreen(),
+      );
+    },
+     SubscriptionRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: SubscriptionScreen(),
+      );
+    },
+    TokenWalletRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: TokenWalletScreen(),
+      );
+    },
+    
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -89,6 +108,38 @@ class SettingRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingRoute';
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+class NotificationRoute extends PageRouteInfo<void> {
+  const NotificationRoute({List<PageRouteInfo>? children})
+      : super(
+          NotificationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NotificationRoute';
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+class SubscriptionRoute extends PageRouteInfo<void> {
+  const SubscriptionRoute({List<PageRouteInfo>? children})
+      : super(
+          SubscriptionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SubscriptionRoute';
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+class TokenWalletRoute extends PageRouteInfo<void> {
+  const TokenWalletRoute({List<PageRouteInfo>? children})
+      : super(
+          TokenWalletRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TokenWalletRoute';
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 

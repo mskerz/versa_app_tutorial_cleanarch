@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/token_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/tab_build.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
 class TokenListScreen extends ConsumerStatefulWidget {
   const TokenListScreen({super.key});
@@ -46,9 +46,9 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
     ];
 
     List<Widget> tabViews = [
-      buildTokenList(tokenData, 'open'),
-      buildTokenList(tokenData, 'coming'),
-      buildTokenList(tokenData, 'closed'),
+      buildTokenList(tokenData, 'open',context),
+      buildTokenList(tokenData, 'coming',context),
+      buildTokenList(tokenData, 'closed',context),
     ];
     void _handleBackButtonPress() {
       final previousIndex =
@@ -67,6 +67,8 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
     }
 
     return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+
       appBar: AppBar(
         leading: Container(
           margin: const EdgeInsets.only(left: 20),
@@ -75,7 +77,7 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                 // กดย้อนกลับและเรียกใช้ getPreviousIndex เพื่อกลับไปยังเมนูที่เคยเปิดก่อนหน้า
                 _handleBackButtonPress();
               },
-              icon: const Icon(Icons.arrow_back_ios),
+              icon: const Icon(Icons.arrow_back_ios,),
               color: Theme.of(context).primaryColor),
         ),
         actions: [
@@ -84,6 +86,16 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
             icon: const Icon(Icons.notifications_none),
             color: Theme.of(context).primaryColor,
           ),
+           IconButton(
+                onPressed: () {
+                  ref.read(appThemeProvider.notifier).toggleTheme();
+                },
+                icon: Icon(
+                  ref.watch(appThemeProvider) == ThemeMode.dark
+                      ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                      : Icons.light_mode,
+                  color: Theme.of(context).primaryColor,
+                ))
         ],
       ),
       body: Container(
@@ -97,6 +109,7 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
               margin: EdgeInsets.only(left: 20),
               child: Text("รายการโทเคน",
                   style: GoogleFonts.prompt(
+                    color: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.w600,
@@ -110,7 +123,7 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                 style: GoogleFonts.prompt(
                   textStyle: TextStyle(
                     fontSize: 18.0,
-                    color: Color.fromARGB(255, 112, 112, 112),
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
@@ -128,23 +141,8 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                       physics:
                           const AlwaysScrollableScrollPhysics(), // ป้องกันการเลื่อนไปซ้ายสุด,
                       dividerHeight: 0,
-                      labelColor: Colors.black,
-                      tabAlignment: TabAlignment.start,
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Colors.orange,
-                      labelPadding: EdgeInsets.symmetric(
-                          horizontal: 20), // เพิ่ม padding เพื่อขยายแท็บ
-                      indicator: MaterialIndicator(
-                        color: Colors.orange,
-                        height: 5,
-                        topLeftRadius: 8,
-                        topRightRadius: 8,
-                        horizontalPadding: 50,
-                        tabPosition: TabPosition.bottom,
-                      ),
-                      labelStyle: GoogleFonts.prompt(
-                        textStyle: TextStyle(fontSize: 18.0),
-                      ),
+                
+                    
                       onTap: (index) {
                         ref
                             .read(selectedTabIndexProvider.notifier)

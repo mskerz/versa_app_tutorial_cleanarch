@@ -10,3 +10,6 @@ analyzer:
     use_build_context_synchronously: ignore
     type_literal_in_constant_pattern: ignore
     unused_local_variable: ignore
+    avoid_unnecessary_containers: ignore
+    no_leading_underscores_for_local_identifiers: ignore
+    library_prefixes: ignore

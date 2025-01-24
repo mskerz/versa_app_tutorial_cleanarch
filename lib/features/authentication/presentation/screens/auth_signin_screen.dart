@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/state/auth_state.dart';
+import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets_app.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
 @RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {
@@ -23,8 +25,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    emailController.text = "johndoe@example.com";
-    passwordController.text = "securePassword123";
+    // emailController.text = "johndoe@example.com";
+    // passwordController.text = "securePassword123";
+
+    emailController.text = "testuser@example.com";
+
+    passwordController.text = "TestPassword123";
   }
 
   // สร้างฟังก์ชันสำหรับแสดง error snackbar
@@ -32,7 +38,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(authNotifierProvider.notifier);
+        final themeProvider = ref.read(appThemeProvider);
 
+    final themeNotifier = ref.read(appThemeProvider.notifier);
     // ฟังการเปลี่ยนแปลงสถานะของ loginNotifierProvider
 
     ref.listen(authNotifierProvider, (previous, next) {
@@ -81,8 +89,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        leading: BackButton(
+          color: Theme.of(context).colorScheme.primary,
+          onPressed: () {
+            context.router.back();
+          },
+        ),
+        backgroundColor: Colors.transparent,
+        actions: [
+           IconButton(
+                onPressed: () {
+                  themeNotifier.toggleTheme();
+                },
+                icon: Icon(
+                  themeProvider == ThemeMode.dark
+                      ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                      : Icons.light_mode,
+                  color: themeProvider == ThemeMode.dark ? Colors.white:Colors.black,
+                ))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,8 +118,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Container(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Image.asset(
-                LIGHT_LOGO_IMG,
-                width: 300,
+               LIGHT_LOGO_IMG,
+               width: 300,
               ),
             ),
             // แสดง error message ถ้ามี
@@ -199,13 +226,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.orange,
+                  backgroundColor:   Theme.of(context).primaryColor,
                   disabledBackgroundColor: Colors.grey,
                 ),
-                icon: Icon(Icons.login),
+                icon: Icon(Icons.login,color: themeProvider == ThemeMode.dark ? Colors.black:Colors.white,),
                 label: Text(
                   'Sign In',
-                  style: GoogleFonts.prompt(color: Colors.white),
+                  style: GoogleFonts.prompt(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
             ),
@@ -245,19 +272,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    AutoRouter.of(context).pushAndPopUntil(RegisterRoute(),
-                        predicate: (_) => false);
+                    context.router.push(RegisterRoute());
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Color(0xFF0D2B5B),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     disabledBackgroundColor: Colors.grey,
                   ),
                   label: Text(
                     "Sign Up",
-                    style: GoogleFonts.kanit(),
+                    style: GoogleFonts.kanit(color: Theme.of(context).colorScheme.secondary),
                   ),
-                  icon: Icon(Icons.create),
+                  icon: Icon(Icons.create,color: Theme.of(context).colorScheme.onPrimary ,),
                 ),
               ),
             )

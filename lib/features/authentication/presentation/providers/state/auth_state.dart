@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user_response.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
 part 'auth_state.freezed.dart'; // สร้างไฟล์ .freezed.dart

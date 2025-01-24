@@ -2,7 +2,7 @@ import 'package:versa_app_tutorial_cleanarch/features/authentication/data/data_s
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/either.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/login_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_model.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user_response.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
 class AuthLocalDataSource implements AuthDataSource {

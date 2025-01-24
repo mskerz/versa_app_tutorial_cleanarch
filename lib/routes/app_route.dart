@@ -1,20 +1,25 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/screens/auth_signin_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/screens/auth_signup_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_intro_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_list_screen.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/screens/token_wallet_screen.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/screens/subscription_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/screens/home_screen.dart';
+import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/screens/notification_screen.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/screens/setting/setting_screen.dart';
+import 'package:versa_app_tutorial_cleanarch/routes/guards/auth_guard.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 part 'app_route.gr.dart'; // ไฟล์นี้จะถูกสร้างโดย build_runner
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends _$AppRouter {
-  // final WidgetRef ref;
+  final WidgetRef ref;
 
-  // AppRouter(this.ref);
+  AppRouter(this.ref);
 
   @override
   RouteType get defaultRouteType => const RouteType.material();
@@ -32,6 +37,7 @@ class AppRouter extends _$AppRouter {
           page: LoginRoute.page,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
+          guards: [AuthGuard(ref)]
         ),
         CustomRoute(
           page: RegisterRoute.page,
@@ -50,6 +56,25 @@ class AppRouter extends _$AppRouter {
         ),
         CustomRoute(
           page: SettingRoute.page,
+          transitionsBuilder: _fadeTransition,
+          durationInMilliseconds: 200,
+        ),
+
+         CustomRoute(
+          page: NotificationRoute.page,
+          transitionsBuilder: _fadeTransition,
+          durationInMilliseconds: 200,
+        ),
+
+         CustomRoute(
+          page: SubscriptionRoute.page,
+          transitionsBuilder: _fadeTransition,
+          durationInMilliseconds: 200,
+        ),
+
+
+         CustomRoute(
+          page: TokenWalletRoute.page,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
         ),
@@ -77,3 +102,4 @@ class AppRouter extends _$AppRouter {
     );
   }
 }
+

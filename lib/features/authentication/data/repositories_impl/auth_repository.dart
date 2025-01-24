@@ -2,7 +2,7 @@ import 'package:versa_app_tutorial_cleanarch/features/authentication/data/data_s
 import 'package:versa_app_tutorial_cleanarch/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/either.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_model.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user_response.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
 class AuthRepositoryImpl implements AuthRepository{
@@ -25,6 +25,14 @@ class AuthRepositoryImpl implements AuthRepository{
   Future<Either<VersaException, UserResponse>> verifyUser()async {
     // TODO: implement verifyUser
     return await authDataSource.verifyUser();
+  }
+  
+  @override
+  Future<Either<VersaException, void>> signout()async {
+    // TODO: implement logout
+    return await authDataSource.logout();
   }}
+
+  
 
   

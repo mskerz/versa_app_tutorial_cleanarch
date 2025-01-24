@@ -19,6 +19,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       },
       (_) {
         state = AuthState.success();
+        
         verify();
       },
     );
@@ -47,6 +48,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
         final updatedResponse = response.copyWith(isloggedIn: true);
         print("Updated UserResponse: ${updatedResponse.isloggedIn}");
         state = AuthState.success(updatedResponse);
+      },
+    );
+  }
+
+   // ฟังก์ชันสำหรับ signout
+  Future<void> signout(BuildContext context) async {
+    final result = await authRepository.signout();
+
+    result.fold(
+      (exception) {
+        state = AuthState.failure(exception);
+        showErrorSnackBar("Logout failed", context);  // แสดง error snackbar ถ้า signout ล้มเหลว
+      },
+      (_) {
+        state = AuthState.initial();  // รีเซ็ตสถานะเมื่อ signout สำเร็จ
+        showSuccessSnackbar("Logout successful", context);  // แสดง success snackbar ถ้า signout สำเร็จ
       },
     );
   }

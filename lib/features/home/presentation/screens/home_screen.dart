@@ -6,11 +6,13 @@ import 'package:versa_app_tutorial_cleanarch/features/authentication/presentatio
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/leading_logo.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/notification/notification_icon.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/progress_signup.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/user_drawer.dart';
+import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
+import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification_badge.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -27,20 +29,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     const double percent = progress * 100;
     final authState = ref.watch(authNotifierProvider);
 // เช็คว่า user login แล้วหรือยัง
-    final isLoggedIn = authState.maybeWhen(
-      success: (userResponse) => userResponse?.isloggedIn ?? false,
-      orElse: () => false,
-    );
+    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final user = ref.watch(userProvider);
+    final prefix = user?.gender == 'Male'
+        ? 'Mr.'
+        : user?.gender == 'Female'
+            ? 'Mrs.'
+            : 'คุณ';
 
-    final prefix = authState.maybeWhen(
-      success: (userResponse) => userResponse?.user.gender == 'Male'
-          ? 'Mr.'
-          : userResponse?.user.gender == 'Female'
-              ? 'Mrs.'
-              : 'คุณ', // ใช้ Mx. สำหรับกรณีที่ไม่ต้องการระบุเพศ
-      orElse: () => '',
-    );
+    List<String> bannerContent = [
+      'ICO Portal คืออะไร? \nทำความรู้จักกับ ICO',
+      'Digital Token คืออะไร? \nเริ่มต้นกับเหรียญดิจิทัล',
+      'วิธีการเลือกกระเป๋าเงินดิจิทัล (Digital Wallet)',
+      'ทำไมการลงทุนใน ICO จึงสำคัญในยุคนี้?',
+      'เข้าใจเทคโนโลยี Blockchain และการใช้งานใน ICO'
+    ];
+
+    final notificationCount = ref.watch(notificationCountUnreadProvider);
+    final appThemeNotifier = ref.read(appThemeProvider.notifier);
+    final  theme = ref.watch(appThemeProvider);
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
         drawer: UserDrawer(),
         appBar: AppBar(
           elevation: 0,
@@ -48,7 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           leading: Builder(
             builder: (BuildContext context) {
               return LeadingLogo(
-                logoAssetPath: DARK_LOGO_IMG,
+                logoAssetPath: theme == ThemeMode.dark ? DARK_LOGO_IMG :LIGHT_LOGO_IMG,
                 onMenuPressed: () {
                   // Open the drawer using the correct context
                   Scaffold.of(context).openDrawer();
@@ -58,11 +67,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           actions: [
             NotificationBadge(
-              notificationCount: 1, // Example: 3 notifications
-              onPressed: () {
-                print("Notification Icon Pressed");
-              },
+              notificationCount: notificationCount, // Example: 3 notifications
+              
             ),
+            IconButton(
+                onPressed: () {
+                  appThemeNotifier.toggleTheme();
+                },
+                icon: Icon(
+                  ref.watch(appThemeProvider) == ThemeMode.dark
+                      ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                      : Icons.light_mode,
+                  color: Theme.of(context).primaryColor,
+                ))
           ],
         ),
         body: Padding(
@@ -70,48 +87,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   "Versa",
-              //   style: TextStyle(
-              //       fontFamily: AppTextStyles.fontFamily,
-              //       fontSize: 30,
-              //       fontWeight: FontWeight.bold),
-              // ),
+    
 
               const SizedBox(
                 height: 20,
               ),
-              authState.maybeWhen(
-                success: (userResponse) => Column(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start, // Aligns text to start horizontally
-                  mainAxisAlignment:
-                      MainAxisAlignment.start, // Aligns content at the top
-                  children: [
-                    Text(
-                      "สวัสดี $prefix ${userResponse?.user.firstName} ${userResponse?.user.lastName}",
-                      style: GoogleFonts.kanit(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(height: 5), // Adjust the space between texts
-                    Text(
-                      "Welcome to Versa ",
-                      style: GoogleFonts.kanit(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-                orElse: () => Container(),
-              ),
+              isLoggedIn
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Aligns text to start horizontally
+                      mainAxisAlignment:
+                          MainAxisAlignment.start, // Aligns content at the top
+                      children: [
+                        Text(
+                          "สวัสดี $prefix ${user?.firstName} ${user?.lastName}",
+                          style: GoogleFonts.kanit(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).primaryColor
+                          ),
+                        ),
+                        SizedBox(height: 5), // Adjust the space between texts
+                        // Text(
+                        //   "Welcome to Versa ",
+                        //   style: GoogleFonts.kanit(
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.w400,
+                        //   ),
+                        // ),
+                      ],
+                    )
+                  : Container(),
               Container(
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: isLoggedIn
-                      ? Colors.white
+                      ? Theme.of(context).colorScheme.primaryContainer
                       : const Color.fromARGB(255, 238, 238, 238),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
@@ -120,7 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
                 child: isLoggedIn
-                    ? buildLoggedInProgressBar(progress, percent)
+                    ? buildLoggedInProgressBar(progress, percent,context)
                     : buildUnloggedInMessage(context),
               ),
               SizedBox(height: 20),
@@ -153,7 +164,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             Text(
                               "โทเคนดิจิทัล",
-                              style: GoogleFonts.prompt(),
+                              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
                             ),
                           ],
                         ),
@@ -185,7 +196,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             Text(
                               "การจองซื้อ",
-                              style: GoogleFonts.prompt(),
+                              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
                             ),
                           ],
                         ),
@@ -218,7 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             Text(
                               "วอลเล็ท",
-                              style: GoogleFonts.prompt(),
+                              style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
                             ),
                           ],
                         ),
@@ -227,7 +238,56 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 20), // เพิ่มระยะห่างก่อนที่จะแสดงรายการที่เลื่อน
+              SizedBox(height: 30), // เพิ่มระยะห่างก่อนที่จะแสดงรายการที่เลื่อน
+              // การสร้างแบนเนอร์ด้วย ListView.builder
+              Container(
+                child: Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true, // ปรับขนาดตามเนื้อหา
+                    scrollDirection: Axis.vertical, // เลื่อนแนวตั้ง
+                    itemCount: bannerContent.length, // จำนวนแบนเนอร์ที่แสดง
+                    itemBuilder: (context, index) {
+                      String content =
+                          bannerContent[index]; // รับเนื้อหาจาก bannerContent
+
+                      return GestureDetector(
+                        onTap: () {
+                          // เมื่อคลิกแบนเนอร์ จะพิมพ์ข้อความ
+                          print('คุณได้เลือก: $content');
+                        },
+                        child: Container(
+                          width: double.infinity, // กำหนดความกว้างเต็มหน้าจอ
+                          height: 140, // ความสูงของแบนเนอร์
+                          margin: EdgeInsets.only(
+                              bottom: 10), // ระยะห่างระหว่างแบนเนอร์
+                          decoration: BoxDecoration(
+                            // การตกแต่งแบนเนอร์
+                            color: index % 2 == 0
+                                ? Theme.of(context).colorScheme.secondary
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .primary, // เปลี่ยนสีตาม index
+                            borderRadius: BorderRadius.circular(8), // มุมโค้งมน
+                          ),
+                          child: Center(
+                            child: Text(
+                              content, // ข้อความของแบนเนอร์
+                              style: GoogleFonts.kanit(
+                                  color: index % 2 == 0
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context)
+                                          .appBarTheme
+                                          .backgroundColor,
+                                  fontSize: 20),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
             ],
           ),
         ),

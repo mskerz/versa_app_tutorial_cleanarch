@@ -6,3 +6,4 @@ import 'package:versa_app_tutorial_cleanarch/features/home/presentation/provider
 final transitionProvider = StateNotifierProvider<AnimateTransitionNotifier, IndicatorState>(
      (ref) => AnimateTransitionNotifier()
 );
+

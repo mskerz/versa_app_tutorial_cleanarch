@@ -4,7 +4,7 @@ import 'package:versa_app_tutorial_cleanarch/shared/data/remote/remote.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/either.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/login_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/models.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user_response.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_response.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/exceptions/http_exception.dart';
 
 class AuthRemoteDataSource implements AuthDataSource {
@@ -22,7 +22,6 @@ class AuthRemoteDataSource implements AuthDataSource {
       final eitherResponse =
           await networkService.post('/auth/signin', data: loginData);
       return eitherResponse.fold((exception) {
-      
         return Left(exception);
       }, (response) async {
         final loginResponse = LoginResponse.fromJson(response.data);
@@ -78,20 +77,49 @@ class AuthRemoteDataSource implements AuthDataSource {
   Future<Either<VersaException, UserResponse>> verifyUser() async {
     // TODO: implement verifyUser
     final eitherResponse = await networkService.get('/auth/verify');
-    return eitherResponse.fold(
-      (exception) {
-                return Left(exception);
-    },
-      (response) {
-                final userResponse = UserResponse.fromJson(response.data);
-                print(userResponse.user);
-                return Right(userResponse); // On success, return null
+    return eitherResponse.fold((exception) {
+      return Left(exception);
+    }, (response) {
+      final userResponse = UserResponse.fromJson(response.data);
+      print(userResponse.user);
+      return Right(userResponse); // On success, return null
     });
   }
 
   @override
-  Future<Either<VersaException, void>> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<Either<VersaException, void>> logout() async {
+    try {
+      // เรียก API POST สำหรับ logout
+      final eitherResponse = await networkService.post('/auth/signout');
+
+      // ใช้ fold เพื่อจัดการผลลัพธ์จาก eitherResponse
+      return eitherResponse.fold(
+        (exception) {
+          // ถ้ามี exception ก็ส่งกลับ Left
+          return Left(exception);
+        },
+        (_) async {
+          // เมื่อ logout สำเร็จ, ลบ accessToken และ refreshToken ออกจาก storage
+          
+          var tokenisNotExist = await storageService.remove("accessToken");
+          
+          if(tokenisNotExist){
+            print("token does not exist");
+          }
+          print(tokenisNotExist);
+          // คืนค่า Right(null) เพื่อแสดงว่า logout สำเร็จ
+          return Right(null);
+        },
+      );
+    } catch (e) {
+      // หากเกิดข้อผิดพลาดอื่นๆ ในกระบวนการ (เช่น network error), คืนค่า Left
+      return Left(
+        VersaException(
+          message: 'An error occurred during sign out: ${e.toString()}',
+          statusCode: 1,
+          identifier: 'Network error',
+        ),
+      );
+    }
   }
 }

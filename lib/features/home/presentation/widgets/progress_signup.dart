@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 
 // ฟังก์ชันที่ใช้แสดง progress bar ถ้าผู้ใช้ล็อกอินแล้ว
-Widget buildLoggedInProgressBar(double progress, double percent) {
+Widget buildLoggedInProgressBar(double progress, double percent, BuildContext context) {
   return Row(
     children: [
       Expanded(
@@ -13,13 +13,13 @@ Widget buildLoggedInProgressBar(double progress, double percent) {
           children: [
             Text(
               '${percent.floor()}%',
-              style: TextStyle(fontSize: 12),
+              style: GoogleFonts.prompt(fontSize: 12,color: Theme.of(context).primaryColor),
             ),
             Container(
               child: CircularProgressIndicator(
                 value: progress,
-                backgroundColor: Colors.grey[300],
-                color: Colors.orange,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ],
@@ -32,12 +32,12 @@ Widget buildLoggedInProgressBar(double progress, double percent) {
           Text(
             "การสมัครของคุณยังไม่เสร็จสมบูรณ์",
             style:
-                GoogleFonts.prompt(fontSize: 17, fontWeight: FontWeight.w500),
+                GoogleFonts.prompt(color: Theme.of(context).primaryColor, fontSize: 17, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 4),
           Text(
             "กรุณาสมัครให้สำเร็จก่อนทำการจองซื้อโทเคน",
-            style: GoogleFonts.prompt(color: Colors.black, fontSize: 14),
+            style: GoogleFonts.prompt(                  color: Theme.of(context).primaryColor, fontSize: 14),
           ),
         ],
       ),
@@ -61,13 +61,13 @@ Widget buildUnloggedInMessage(BuildContext context) {
         cursor: SystemMouseCursors.click, // ตั้งค่าเคอร์เซอร์เป็น Pointer
         child: TextButton(
           onPressed: () {
-            context.router.replace(LoginRoute());
+            context.router.push(LoginRoute());
           },
           child: Text(
             "เข้าสู่ระบบ",
             style: GoogleFonts.prompt(
               fontSize: 16,
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w600,
             ),
           ),
