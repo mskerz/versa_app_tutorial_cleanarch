@@ -30,4 +30,10 @@ class AuthLocalDataSource implements AuthDataSource {
     // TODO: implement verifyUser
     throw UnimplementedError();
   }
+  
+  @override
+  Future<Either<VersaException, bool>> hasAccessToken() {
+    // TODO: implement hasAccessToken
+    throw UnimplementedError();
+  }
 }

@@ -8,4 +8,5 @@ abstract class AuthDataSource {
   Future<Either<VersaException,void>> signup(User user);
 Future<Either<VersaException,UserResponse>> verifyUser();
   Future<Either<VersaException, void>> logout();
+  Future<Either<VersaException, bool>> hasAccessToken();
 }

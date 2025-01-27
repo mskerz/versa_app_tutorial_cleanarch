@@ -21,13 +21,13 @@ class NotificationScreen extends ConsumerWidget {
     final notificationNotifier = ref.read(notificationStateProvider.notifier);
 
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
-    final theme = ref.watch(appThemeProvider);
+    final appTheme = ref.watch(appThemeProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          "Notifications",
-          style: GoogleFonts.kanit(
+          "การแจ้งเตือน",
+          style: GoogleFonts.prompt(
             color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w300,
           ),
@@ -45,7 +45,7 @@ class NotificationScreen extends ConsumerWidget {
                 print("Changed! theme");
               },
               icon: Icon(
-                ref.watch(appThemeProvider) == ThemeMode.dark
+                appTheme == ThemeMode.dark
                     ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
                     : Icons.light_mode,
                 color: Theme.of(context).primaryColor,

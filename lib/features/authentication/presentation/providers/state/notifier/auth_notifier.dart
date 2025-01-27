@@ -8,7 +8,31 @@ import 'package:versa_app_tutorial_cleanarch/shared/domain/models/models.dart';
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
 
-  AuthNotifier(this.authRepository) : super(AuthState.initial()) {}
+  // คอนสตรัคเตอร์ของ AuthNotifier
+  AuthNotifier(this.authRepository) : super(AuthState.initial()) {
+    // เรียกใช้ฟังก์ชัน init() เพื่อทำการเช็คสถานะการล็อกอิน
+    _init();
+  }
+  // ฟังก์ชัน _init() ที่ทำงานแบบ async
+
+  Future<void> _init() async {
+    await _checkAuthStatus(); // เช็คสถานะการล็อกอิน
+  }
+
+  Future<void> _checkAuthStatus() async {
+    // ตรวจสอบว่ามี token หรือไม่
+    final token = await authRepository
+        .hasToken(); // ฟังก์ชันที่จะดึง token จาก local storage
+    token.fold((e) {
+      state = AuthState.failure(e);
+    }, (hasTokenNotExpired) async {
+      if (!hasTokenNotExpired) {
+        state = AuthState.initial();
+      } else {
+        await verify();
+      }
+    });
+  }
 
   Future<void> signin(String email, String password) async {
     final result = await authRepository.signin(email, password);
@@ -19,7 +43,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       },
       (_) {
         state = AuthState.success();
-        
+
         verify();
       },
     );
@@ -52,18 +76,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-   // ฟังก์ชันสำหรับ signout
+  // ฟังก์ชันสำหรับ signout
   Future<void> signout(BuildContext context) async {
     final result = await authRepository.signout();
 
     result.fold(
       (exception) {
         state = AuthState.failure(exception);
-        showErrorSnackBar("Logout failed", context);  // แสดง error snackbar ถ้า signout ล้มเหลว
+        showErrorSnackBar("Logout failed",
+            context); // แสดง error snackbar ถ้า signout ล้มเหลว
       },
       (_) {
-        state = AuthState.initial();  // รีเซ็ตสถานะเมื่อ signout สำเร็จ
-        showSuccessSnackbar("Logout successful", context);  // แสดง success snackbar ถ้า signout สำเร็จ
+        state = AuthState.initial(); // รีเซ็ตสถานะเมื่อ signout สำเร็จ
+        showSuccessSnackbar("Logout successful",
+            context); // แสดง success snackbar ถ้า signout สำเร็จ
       },
     );
   }

@@ -1,14 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/state/notifier/token_list_notifier.dart';
-import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/state/token_list_state.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/token_provider.dart';
-import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/notify/notify_model.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 
 class NotificationSuccess extends ConsumerStatefulWidget {
   final List<Notify> notifications;
@@ -48,50 +43,6 @@ class _NotificationSuccessState extends ConsumerState<NotificationSuccess> {
             child: GestureDetector(
               onTap: () {
                 widget.onMarkAsRead(index);
-                tokenNotifier.RouteToken(notification.info.symbol,
-                    (found, item) {
-                  if (found) {
-                    context.router.push(TokenIntroRoute(tokenItem: item));
-                  } else {
-                     showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
-                          title: Text(
-                            'แจ้งเตือน',
-                            style: GoogleFonts.kanit(
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          content: Text(
-                            'ไม่พบโทเคนที่ต้องการ',
-                            style: GoogleFonts.kanit(
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .inversePrimary,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // ปิด Dialog
-                              },
-                              child: Text(
-                                'ปิด',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyMedium,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                });
               },
               child: Container(
                 margin:

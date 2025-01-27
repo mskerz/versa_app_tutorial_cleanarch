@@ -27,7 +27,6 @@ class AuthRemoteDataSource implements AuthDataSource {
         final loginResponse = LoginResponse.fromJson(response.data);
         await storageService.set("accessToken", loginResponse.idToken!);
 
-        await storageService.set("refreshToken", loginResponse.refreshToken!);
         return Right(null); // On success, return the LoginResponse
       });
     } catch (e) {
@@ -121,5 +120,23 @@ class AuthRemoteDataSource implements AuthDataSource {
         ),
       );
     }
+  }
+  
+  @override
+  Future<Either<VersaException, bool>> hasAccessToken() async {
+    // TODO: implement hasAccessToken
+     try{
+      final hasToken = await storageService.has("accessToken");
+
+     return Right(hasToken); // On success, return null
+     }catch(exception){
+       return Left(
+        VersaException(
+          message: 'An error occurred : ${exception.toString()}',
+          statusCode: 1,
+          identifier: 'Storage error',
+        ),
+      );
+     }
   }
 }

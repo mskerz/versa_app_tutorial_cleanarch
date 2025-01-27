@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
-class MyApp extends ConsumerStatefulWidget {
-  MyApp({super.key});
+class VersaMainApp extends ConsumerStatefulWidget {
+  VersaMainApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _VersaMainAppState createState() => _VersaMainAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> {
+class _VersaMainAppState extends ConsumerState<VersaMainApp> {
   late final routerConfig;
 
   @override

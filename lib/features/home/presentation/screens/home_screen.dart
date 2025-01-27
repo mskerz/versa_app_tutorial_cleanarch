@@ -13,6 +13,7 @@ import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -30,6 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final authState = ref.watch(authNotifierProvider);
 // เช็คว่า user login แล้วหรือยัง
     final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isInitial = ref.watch(isInitialProvider);
     final user = ref.watch(userProvider);
     final prefix = user?.gender == 'Male'
         ? 'Mr.'
@@ -48,8 +50,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final notificationCount = ref.watch(notificationCountUnreadProvider);
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final theme = ref.watch(appThemeProvider);
+    final gradient =
+        Theme.of(context).extension<GradientBackgroundExtention>();
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Colors.transparent,
         drawer: UserDrawer(),
         appBar: AppBar(
           elevation: 0,
@@ -75,225 +79,228 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   appThemeNotifier.toggleTheme();
                 },
                 icon: Icon(
-                  ref.watch(appThemeProvider) == ThemeMode.dark
+                 theme == ThemeMode.dark
                       ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
                       : Icons.light_mode,
                   color: Theme.of(context).primaryColor,
                 ))
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              isLoggedIn
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment
-                          .start, // Aligns text to start horizontally
-                      mainAxisAlignment:
-                          MainAxisAlignment.start, // Aligns content at the top
-                      children: [
-                        Text(
-                          "สวัสดี $prefix ${user?.firstName} ${user?.lastName}",
-                          style: GoogleFonts.kanit(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: gradient?.gradientBackground, 
+           ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                 isLoggedIn
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // Aligns text to start horizontally
+                        mainAxisAlignment:
+                            MainAxisAlignment.start, // Aligns content at the top
+                        children: [
+                          Text(
+                            "สวัสดี $prefix ${user?.firstName} ${user?.lastName}",
+                            style: GoogleFonts.kanit(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          SizedBox(height: 5), // Adjust the space between texts
+                          // Text(
+                          //   "Welcome to Versa ",
+                          //   style: GoogleFonts.kanit(
+                          //     fontSize: 20,
+                          //     fontWeight: FontWeight.w400,
+                          //   ),
+                          // ),
+                        ],
+                      )
+                    : Container(),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: isLoggedIn
+                        ? Theme.of(context).colorScheme.primaryContainer
+                        : const Color.fromARGB(255, 238, 238, 238),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color.fromARGB(15, 0, 0, 0),
+                      width: isLoggedIn ? 1 : 0,
+                    ),
+                  ),
+                  child: isLoggedIn
+                      ? buildLoggedInProgressBar(progress, percent, context)
+                      : buildUnloggedInMessage(context),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    //home
+                    GestureDetector(
+                      child: Material(
+                        color: Colors.transparent, // ตั้งสีพื้นหลังเป็นโปร่งใส
+                        child: InkWell(
+                          onTap: () {
+                            AutoRouter.of(context).pushAndPopUntil(TokenRoute(),
+                                predicate: (_) => false);
+                            ref.read(transitionProvider.notifier).transitionTo(1);
+                          },
+                          borderRadius:
+                              BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
+                          splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                child: Icon(Icons.widgets,
+                                    color:
+                                        Theme.of(context).primaryIconTheme.color),
+                              ),
+                              Text(
+                                "โทเคนดิจิทัล",
+                                style: GoogleFonts.prompt(
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 5), // Adjust the space between texts
-                        // Text(
-                        //   "Welcome to Versa ",
-                        //   style: GoogleFonts.kanit(
-                        //     fontSize: 20,
-                        //     fontWeight: FontWeight.w400,
-                        //   ),
-                        // ),
-                      ],
+                      ),
+                    ),
+                    // reservations
+                    GestureDetector(
+                      child: Material(
+                        color: Colors.transparent, // ตั้งสีพื้นหลังเป็นโปร่งใส
+                        child: InkWell(
+                          onTap: () {
+                            print("Reserve Token  tapped!");
+                          },
+                          borderRadius:
+                              BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
+                          splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                child: Icon(Icons.shopping_cart,
+                                    color:
+                                        Theme.of(context).primaryIconTheme.color),
+                              ),
+                              Text(
+                                "การจองซื้อ",
+                                style: GoogleFonts.prompt(
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+          
+                    // wallet
+                    GestureDetector(
+                      child: Material(
+                        color: Colors.transparent, // ตั้งสีพื้นหลังเป็นโปร่งใส
+                        child: InkWell(
+                          onTap: () {
+                            print("Reserve Token  tapped!");
+                          },
+                          borderRadius:
+                              BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
+                          splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
+          
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                child: Icon(Icons.wallet,
+                                    color:
+                                        Theme.of(context).primaryIconTheme.color),
+                              ),
+                              Text(
+                                "วอลเล็ท",
+                                style: GoogleFonts.prompt(
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     )
-                  : Container(),
-              Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: isLoggedIn
-                      ? Theme.of(context).colorScheme.primaryContainer
-                      : const Color.fromARGB(255, 238, 238, 238),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color.fromARGB(15, 0, 0, 0),
-                    width: isLoggedIn ? 1 : 0,
-                  ),
+                  ],
                 ),
-                child: isLoggedIn
-                    ? buildLoggedInProgressBar(progress, percent, context)
-                    : buildUnloggedInMessage(context),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  //home
-                  GestureDetector(
-                    child: Material(
-                      color: Colors.transparent, // ตั้งสีพื้นหลังเป็นโปร่งใส
-                      child: InkWell(
-                        onTap: () {
-                          AutoRouter.of(context).pushAndPopUntil(TokenRoute(),
-                              predicate: (_) => false);
-                          ref.read(transitionProvider.notifier).transitionTo(1);
-                        },
-                        borderRadius:
-                            BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
-                        splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Theme.of(context).colorScheme.primary,
+                SizedBox(height: 30), // เพิ่มระยะห่างก่อนที่จะแสดงรายการที่เลื่อน
+                // การสร้างแบนเนอร์ด้วย ListView.builder
+                Container(
+                  child: Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true, // ปรับขนาดตามเนื้อหา
+                      scrollDirection: Axis.vertical, // เลื่อนแนวตั้ง
+                      itemCount: bannerContent.length, // จำนวนแบนเนอร์ที่แสดง
+                      itemBuilder: (context, index) {
+                        String content =
+                            bannerContent[index]; // รับเนื้อหาจาก bannerContent
+          
+                        return GestureDetector(
+                          onTap: () {
+                            // เมื่อคลิกแบนเนอร์ จะพิมพ์ข้อความ
+                            print('คุณได้เลือก: $content');
+                          },
+                          child: Container(
+                            width: double.infinity, // กำหนดความกว้างเต็มหน้าจอ
+                            height: 140, // ความสูงของแบนเนอร์
+                            margin: EdgeInsets.only(
+                                bottom: 10), // ระยะห่างระหว่างแบนเนอร์
+                            decoration: BoxDecoration(
+                              // การตกแต่งแบนเนอร์
+                              gradient: index % 2 == 0
+                                  ? gradient?.gradientContainerPrimary
+                                  : gradient?.gradientContainerSecondary, // เปลี่ยนสีตาม index
+                              borderRadius: BorderRadius.circular(8), // มุมโค้งมน
+                            ),
+                            child: Center(
+                              child: Text(
+                                content, // ข้อความของแบนเนอร์
+                                style: GoogleFonts.kanit(
+                                    color: index % 2 == 0
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context)
+                                            .appBarTheme
+                                            .backgroundColor,
+                                    fontSize: 20),
+                                textAlign: TextAlign.center,
                               ),
-                              child: Icon(Icons.widgets,
-                                  color:
-                                      Theme.of(context).primaryIconTheme.color),
-                            ),
-                            Text(
-                              "โทเคนดิจิทัล",
-                              style: GoogleFonts.prompt(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  // reservations
-                  GestureDetector(
-                    child: Material(
-                      color: Colors.transparent, // ตั้งสีพื้นหลังเป็นโปร่งใส
-                      child: InkWell(
-                        onTap: () {
-                          print("Reserve Token  tapped!");
-                        },
-                        borderRadius:
-                            BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
-                        splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              child: Icon(Icons.shopping_cart,
-                                  color:
-                                      Theme.of(context).primaryIconTheme.color),
-                            ),
-                            Text(
-                              "การจองซื้อ",
-                              style: GoogleFonts.prompt(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // wallet
-                  GestureDetector(
-                    child: Material(
-                      color: Colors.transparent, // ตั้งสีพื้นหลังเป็นโปร่งใส
-                      child: InkWell(
-                        onTap: () {
-                          print("Reserve Token  tapped!");
-                        },
-                        borderRadius:
-                            BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
-                        splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
-
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              child: Icon(Icons.wallet,
-                                  color:
-                                      Theme.of(context).primaryIconTheme.color),
-                            ),
-                            Text(
-                              "วอลเล็ท",
-                              style: GoogleFonts.prompt(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 30), // เพิ่มระยะห่างก่อนที่จะแสดงรายการที่เลื่อน
-              // การสร้างแบนเนอร์ด้วย ListView.builder
-              Container(
-                child: Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true, // ปรับขนาดตามเนื้อหา
-                    scrollDirection: Axis.vertical, // เลื่อนแนวตั้ง
-                    itemCount: bannerContent.length, // จำนวนแบนเนอร์ที่แสดง
-                    itemBuilder: (context, index) {
-                      String content =
-                          bannerContent[index]; // รับเนื้อหาจาก bannerContent
-
-                      return GestureDetector(
-                        onTap: () {
-                          // เมื่อคลิกแบนเนอร์ จะพิมพ์ข้อความ
-                          print('คุณได้เลือก: $content');
-                        },
-                        child: Container(
-                          width: double.infinity, // กำหนดความกว้างเต็มหน้าจอ
-                          height: 140, // ความสูงของแบนเนอร์
-                          margin: EdgeInsets.only(
-                              bottom: 10), // ระยะห่างระหว่างแบนเนอร์
-                          decoration: BoxDecoration(
-                            // การตกแต่งแบนเนอร์
-                            color: index % 2 == 0
-                                ? Theme.of(context).colorScheme.secondary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .primary, // เปลี่ยนสีตาม index
-                            borderRadius: BorderRadius.circular(8), // มุมโค้งมน
-                          ),
-                          child: Center(
-                            child: Text(
-                              content, // ข้อความของแบนเนอร์
-                              style: GoogleFonts.kanit(
-                                  color: index % 2 == 0
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context)
-                                          .appBarTheme
-                                          .backgroundColor,
-                                  fontSize: 20),
-                              textAlign: TextAlign.center,
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: BottomNavBar());

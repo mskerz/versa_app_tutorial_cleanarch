@@ -76,7 +76,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
     });
   }
 
-  void RouteToken(String symbol, Function callback) {
+  void RouteToken(String symbol, Function routeCallback) {
     final tokenItem =
         state.tokenList.where((item) => item.symbol == symbol).toList();
 
@@ -85,11 +85,11 @@ class TokenNotifier extends StateNotifier<TokenState> {
       // เรียก callback พร้อมข้อมูล firstItem เมื่อพบ
 
       state = state.copyWith(state: TokenConcreteState.loaded);
-      callback(true, firstItem); 
+      routeCallback(true, firstItem); 
     } else {
       // ถ้าไม่พบ token ที่ตรงกับเงื่อนไข
       state = state.copyWith(state: TokenConcreteState.failure);
-      callback(false, null);
+      routeCallback(false, null);
     }
   }
 }

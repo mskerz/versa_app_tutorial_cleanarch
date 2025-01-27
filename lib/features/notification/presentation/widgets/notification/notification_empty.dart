@@ -6,18 +6,36 @@ class NotificationEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).colorScheme.secondaryContainer,
-      ),
-      child: Center(
-        child: Text(
-          "No notifications at this time.",
-          style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),
-        ),
+    return Center(
+      // ใช้ Center เพื่อให้ตรงกลางทั้งแนวตั้งและแนวนอน
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // ตรงกลางแนวตั้ง
+        crossAxisAlignment: CrossAxisAlignment.center, // ตรงกลางแนวนอน
+        mainAxisSize: MainAxisSize.min, // ให้ Column มีขนาดเท่าที่จำเป็น
+        children: [
+          SizedBox(
+            height: 150,
+          ),
+          Container(
+            padding: EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+      borderRadius: BorderRadius.circular(100)
+            ),
+              child: Icon(
+            Icons.notifications_off,
+            color: Theme.of(context).colorScheme.onPrimaryFixed,
+            size: 100,
+          )),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "No notifications.",
+            style: GoogleFonts.prompt(
+                color: Theme.of(context).colorScheme.primaryContainer, fontSize: 25,fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
     );
   }

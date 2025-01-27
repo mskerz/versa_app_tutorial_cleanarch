@@ -31,6 +31,12 @@ class AuthRepositoryImpl implements AuthRepository{
   Future<Either<VersaException, void>> signout()async {
     // TODO: implement logout
     return await authDataSource.logout();
+  }
+  
+  @override
+  Future<Either<VersaException, bool>> hasToken() async{
+    // TODO: implement hasToken
+    return await authDataSource.hasAccessToken();
   }}
 
   

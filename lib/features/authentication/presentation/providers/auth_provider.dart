@@ -32,3 +32,12 @@ final isLoggedInProvider = Provider<bool>((ref) {
     orElse: () => false,
   );
 });
+
+
+final isInitialProvider = Provider<bool>((ref) {
+  final authState = ref.watch(authNotifierProvider);
+  return authState.maybeWhen(
+    initial: ()=> true,
+    orElse: () => false,
+  );
+});

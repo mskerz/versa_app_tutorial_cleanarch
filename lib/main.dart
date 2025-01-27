@@ -23,6 +23,6 @@ Future<void> mainCommon(AppEnvironment environment) async {
     observers: [
       Observers(),
     ],
-    child: MyApp(),
+    child: VersaMainApp(),
   ));
 }

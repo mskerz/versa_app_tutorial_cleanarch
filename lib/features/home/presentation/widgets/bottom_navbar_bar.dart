@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 
@@ -11,7 +12,7 @@ class BottomNavBar extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final transionNavigator = ref.watch(transitionProvider);
     int currentIndex = transionNavigator.index;
-
+    final indicator = Theme.of(context).tabBarTheme.indicator as MaterialIndicator;
     Icon _getIcon(
         {required int index,
         required IconData selectedIcon,
@@ -131,7 +132,7 @@ class BottomNavBar extends ConsumerWidget {
                 child: Container(
                   width: 40, // ขนาดของเส้น indicator ที่สั้นลง
                   height: 3,
-                  color: Colors.orange, // สีของ indicator
+                  color: indicator.color , // สีของ indicator
                 ),
               ),
             ),
