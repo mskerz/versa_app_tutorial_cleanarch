@@ -32,13 +32,14 @@ class AppRouter extends _$AppRouter {
 
           transitionsBuilder: _fadeTransition, // ใช้ Fade Transition
           durationInMilliseconds: 200, // ระยะเวลา Fade
+
+          
         ),
         CustomRoute(
-          page: LoginRoute.page,
-          transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
-          guards: [AuthGuard(ref)]
-        ),
+            page: LoginRoute.page,
+            transitionsBuilder: _fadeTransition,
+            durationInMilliseconds: 200,
+            guards: [AuthGuard(ref)]),
         CustomRoute(
           page: RegisterRoute.page,
           transitionsBuilder: _fadeTransition,
@@ -59,21 +60,17 @@ class AppRouter extends _$AppRouter {
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
         ),
-
-         CustomRoute(
+        CustomRoute(
           page: NotificationRoute.page,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
         ),
-
-         CustomRoute(
+        CustomRoute(
           page: SubscriptionRoute.page,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
         ),
-
-
-         CustomRoute(
+        CustomRoute(
           page: TokenWalletRoute.page,
           transitionsBuilder: _fadeTransition,
           durationInMilliseconds: 200,
@@ -102,4 +99,3 @@ class AppRouter extends _$AppRouter {
     );
   }
 }
-

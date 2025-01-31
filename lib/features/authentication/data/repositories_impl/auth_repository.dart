@@ -36,7 +36,7 @@ class AuthRepositoryImpl implements AuthRepository{
   @override
   Future<Either<VersaException, bool>> hasToken() async{
     // TODO: implement hasToken
-    return await authDataSource.hasAccessToken();
+    return await authDataSource.hasAccessTokenNotExpired();
   }}
 
   

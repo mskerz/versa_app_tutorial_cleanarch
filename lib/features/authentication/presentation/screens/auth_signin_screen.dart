@@ -146,39 +146,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
-                labelStyle: const TextStyle(color: Colors.black),
+                labelStyle:   TextStyle(color:Theme.of(context).primaryColor),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black38),
+                  borderSide:   BorderSide(color:Theme.of(context).primaryColor),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
-                      const BorderSide(color: Colors.black38, width: 2.0),
+                        BorderSide(color:Theme.of(context).primaryColor, width: 2.0),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              style: const TextStyle(color: Colors.black),
-              cursorColor: Colors.black,
+              style:   GoogleFonts.prompt(color:Theme.of(context).primaryColor),
+              cursorColor:Theme.of(context).primaryColor,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
-                labelStyle: const TextStyle(color: Colors.black),
+                labelStyle:   TextStyle(color:Theme.of(context).primaryColor),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black38),
+                  borderSide:   BorderSide(color:Theme.of(context).primaryColor),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
-                      const BorderSide(color: Colors.black38, width: 2.0),
+                        BorderSide(color:Theme.of(context).primaryColor),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.black54,
+                    color: Theme.of(context).primaryColor,
                   ),
                   onPressed: () {
                     setState(() {
@@ -188,8 +188,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
               obscureText: obscurePassword,
-              style: const TextStyle(color: Colors.black),
-              cursorColor: Colors.black,
+              style:   TextStyle(color:Theme.of(context).primaryColor),
+              cursorColor:  Theme.of(context).primaryColor,
             ),
             Container(
               margin: EdgeInsets.only(top: 5),
@@ -201,7 +201,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       },
                       child: Text(
                         "Forget Password ?",
-                        style: GoogleFonts.prompt(color: Colors.black),
+                        style: GoogleFonts.prompt(color:Theme.of(context).primaryColor),
                       )),
                 ],
               ),

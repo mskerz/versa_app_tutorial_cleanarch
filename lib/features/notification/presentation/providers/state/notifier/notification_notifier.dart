@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:versa_app_tutorial_cleanarch/configs/notifications_platform_configs.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/domain/repository/notify_repository.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/notify/notify_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/utils/sort.dart';
@@ -52,12 +53,20 @@ class NotificationStateNotifier extends StateNotifier<NotificationState> {
                   [...notifications, ...data.notifications],
                   (notification) => notification.isRead,
                 );
+
                 return NotificationState.success(sortedNotifications);
               },
               orElse: () {
                 return NotificationState.success(data.notifications);
               },
             );
+            // ย้ายการแสดงการแจ้งเตือนมาไว้จุดเดียว
+            final currentNotifications = state.maybeMap(
+              success: (value) => value.notifications,
+              orElse: () => <Notify>[],
+            );
+            NotificationConfig.showNotify(
+                currentNotifications.length, currentNotifications);
           },
         );
       },
@@ -123,26 +132,24 @@ class NotificationStateNotifier extends StateNotifier<NotificationState> {
     // อัปเดตรายการ notifications ทั้งหมดให้ isRead = true
   }
 
- void tryRemove(String id) {
-  final notifications = state.maybeMap(
-    success: (value) => value.notifications,
-    orElse: () => <Notify>[],
-  );
+  void tryRemove(String id) {
+    final notifications = state.maybeMap(
+      success: (value) => value.notifications,
+      orElse: () => <Notify>[],
+    );
 
-  // ใช้ `where` เพื่อกรองรายการที่ messageId ไม่ตรงกับ id ที่ส่งเข้ามา
-  // ignore: unrelated_type_equality_checks
-  final updateNotifications = notifications.where((notification) => notification.messageId != id).toList();
+    // ใช้ `where` เพื่อกรองรายการที่ messageId ไม่ตรงกับ id ที่ส่งเข้ามา
+    // ignore: unrelated_type_equality_checks
+    final updateNotifications = notifications
+        .where((notification) => notification.messageId != id)
+        .toList();
 
-  if(updateNotifications.isEmpty){
-    state = NotificationState.empty();
+    if (updateNotifications.isEmpty) {
+      state = NotificationState.empty();
+    } else {
+      state = NotificationState.success(updateNotifications);
+    }
+
+    // อัปเดต state ใหม่ด้วยรายการที่กรองแล้ว
   }
-  else{
-    state = NotificationState.success(updateNotifications);
-  }
-
-  // อัปเดต state ใหม่ด้วยรายการที่กรองแล้ว
-  
-
-}
-
 }

@@ -37,30 +37,22 @@ class AppColors {
 
   static const Gradient gradientOrange = LinearGradient(
     colors: [
-            greyBlue, //
+      primary,
 
-             primary,
-
+      greyBlue, //
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
   // gradient container banner
-  static const Gradient gradientPrimary = RadialGradient(
-    colors: [
-          primary,
-secondary,
-      greyBlue,
-    ],
-      radius: 3
+  static const Gradient gradientPrimary = RadialGradient(colors: [
+    primary,
+    secondary,
+    greyBlue,
+  ], radius: 3);
 
-  );
-
-  static const Gradient gradientSecondary = RadialGradient(
-    colors: [
-      lightBlue,
-      backgroundDarkBlue,
-    ],
- radius: 3
-  );
+  static const Gradient gradientSecondary = RadialGradient(colors: [
+    lightBlue,
+    backgroundDarkBlue,
+  ], radius: 3);
 }

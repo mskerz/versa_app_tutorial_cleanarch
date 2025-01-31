@@ -5,9 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/leading_logo.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/appbar/leading_logo.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/progress_signup.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/drawer.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/appbar/drawer.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/user_skeleton.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification_badge.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
@@ -33,11 +34,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final isLoggedIn = ref.watch(isLoggedInProvider);
     final isInitial = ref.watch(isInitialProvider);
     final user = ref.watch(userProvider);
-    final prefix = user?.gender == 'Male'
-        ? 'Mr.'
-        : user?.gender == 'Female'
-            ? 'Mrs.'
-            : 'คุณ';
+
+    String get_prefix(String gender) {
+      switch (gender) {
+        case "Male":
+          return "Mr.";
+        case "Female":
+          return "Mrs.";
+        default:
+          return "คุณ";
+      }
+    }
 
     List<String> bannerContent = [
       'ICO Portal คืออะไร? \nทำความรู้จักกับ ICO',
@@ -50,8 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final notificationCount = ref.watch(notificationCountUnreadProvider);
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final theme = ref.watch(appThemeProvider);
-    final gradient =
-        Theme.of(context).extension<GradientBackgroundExtention>();
+    final gradient = Theme.of(context).extension<GradientBackgroundExtention>();
     return Scaffold(
         backgroundColor: Colors.transparent,
         drawer: UserDrawer(),
@@ -79,7 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   appThemeNotifier.toggleTheme();
                 },
                 icon: Icon(
-                 theme == ThemeMode.dark
+                  theme == ThemeMode.dark
                       ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
                       : Icons.light_mode,
                   color: Theme.of(context).primaryColor,
@@ -88,8 +94,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         body: Container(
           decoration: BoxDecoration(
-            gradient: gradient?.gradientBackground, 
-           ),
+            gradient: gradient?.gradientBackground,
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -98,46 +104,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                 isLoggedIn
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment
-                            .start, // Aligns text to start horizontally
-                        mainAxisAlignment:
-                            MainAxisAlignment.start, // Aligns content at the top
-                        children: [
-                          Text(
-                            "สวัสดี $prefix ${user?.firstName} ${user?.lastName}",
-                            style: GoogleFonts.kanit(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          SizedBox(height: 5), // Adjust the space between texts
-                          // Text(
-                          //   "Welcome to Versa ",
-                          //   style: GoogleFonts.kanit(
-                          //     fontSize: 20,
-                          //     fontWeight: FontWeight.w400,
-                          //   ),
-                          // ),
-                        ],
-                      )
-                    : Container(),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: isLoggedIn
-                        ? Theme.of(context).colorScheme.primaryContainer
-                        : const Color.fromARGB(255, 238, 238, 238),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color.fromARGB(15, 0, 0, 0),
-                      width: isLoggedIn ? 1 : 0,
+                authState.when(
+                  initial: () => SizedBox.shrink(), // กรณีโหลดข้อมูลอยู่
+                  loading: () =>
+                      shimmerLabelLoading(context), // กรณีโหลดข้อมูลระหว่างการเข้าสู่ระบบ
+                  success: (userResponse) => userResponse != null ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "สวัสดี ${get_prefix(userResponse.user.gender)} ${userResponse.user.firstName} ${userResponse.user.lastName}",
+                        style: GoogleFonts.kanit(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                    ],
+                  ):SizedBox.shrink(),
+                  failure: (exception) => Container(), // กรณีที่ไม่สำเร็จ
+                ), // กรณีที่ยังไม่ได้ล็อกอิน
+// ถ้าไม่ได้ล็อกอินจะไม่แสดงอะไร
+                authState.when(
+                  initial: () => Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color:  
+                             const Color.fromARGB(255, 238, 238, 238),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: const Color.fromARGB(15, 0, 0, 0),
+                          width: 0,
+                        ),
+                      ),
+                      child: buildUnloggedInMessage(
+                          context)), // กรณีโหลดข้อมูลอยู่
+                  loading: () =>
+                      shimmerProgressBar(context), // กรณีโหลดข้อมูลระหว่างการเข้าสู่ระบบ
+                  success: (_) => Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer
+                            ,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: const Color.fromARGB(15, 0, 0, 0),
+                          width: 1,
+                        ),
+                      ),
+                      child:
+                          buildLoggedInProgressBar(progress, percent, context)),
+                  failure: (error) => Center(
+                    child: Text(
+                      "เกิดข้อผิดพลาด: $error",
+                      style: TextStyle(color: Colors.red, fontSize: 16),
                     ),
                   ),
-                  child: isLoggedIn
-                      ? buildLoggedInProgressBar(progress, percent, context)
-                      : buildUnloggedInMessage(context),
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -151,7 +174,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           onTap: () {
                             AutoRouter.of(context).pushAndPopUntil(TokenRoute(),
                                 predicate: (_) => false);
-                            ref.read(transitionProvider.notifier).transitionTo(1);
+                            ref
+                                .read(transitionProvider.notifier)
+                                .transitionTo(1);
                           },
                           borderRadius:
                               BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
@@ -166,8 +191,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 child: Icon(Icons.widgets,
-                                    color:
-                                        Theme.of(context).primaryIconTheme.color),
+                                    color: Theme.of(context)
+                                        .primaryIconTheme
+                                        .color),
                               ),
                               Text(
                                 "โทเคนดิจิทัล",
@@ -200,8 +226,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 child: Icon(Icons.shopping_cart,
-                                    color:
-                                        Theme.of(context).primaryIconTheme.color),
+                                    color: Theme.of(context)
+                                        .primaryIconTheme
+                                        .color),
                               ),
                               Text(
                                 "การจองซื้อ",
@@ -213,7 +240,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                     ),
-          
+
                     // wallet
                     GestureDetector(
                       child: Material(
@@ -225,7 +252,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           borderRadius:
                               BorderRadius.circular(20), // ให้ขอบกลมเหมือนกัน
                           splashColor: Colors.grey[200], // สีที่จะแสดงตอนคลิก
-          
+
                           child: Column(
                             children: [
                               Container(
@@ -236,8 +263,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 child: Icon(Icons.wallet,
-                                    color:
-                                        Theme.of(context).primaryIconTheme.color),
+                                    color: Theme.of(context)
+                                        .primaryIconTheme
+                                        .color),
                               ),
                               Text(
                                 "วอลเล็ท",
@@ -251,7 +279,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     )
                   ],
                 ),
-                SizedBox(height: 30), // เพิ่มระยะห่างก่อนที่จะแสดงรายการที่เลื่อน
+                SizedBox(
+                    height: 30), // เพิ่มระยะห่างก่อนที่จะแสดงรายการที่เลื่อน
                 // การสร้างแบนเนอร์ด้วย ListView.builder
                 Container(
                   child: Expanded(
@@ -262,7 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       itemBuilder: (context, index) {
                         String content =
                             bannerContent[index]; // รับเนื้อหาจาก bannerContent
-          
+
                         return GestureDetector(
                           onTap: () {
                             // เมื่อคลิกแบนเนอร์ จะพิมพ์ข้อความ
@@ -277,8 +306,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               // การตกแต่งแบนเนอร์
                               gradient: index % 2 == 0
                                   ? gradient?.gradientContainerPrimary
-                                  : gradient?.gradientContainerSecondary, // เปลี่ยนสีตาม index
-                              borderRadius: BorderRadius.circular(8), // มุมโค้งมน
+                                  : gradient
+                                      ?.gradientContainerSecondary, // เปลี่ยนสีตาม index
+                              borderRadius:
+                                  BorderRadius.circular(8), // มุมโค้งมน
                             ),
                             child: Center(
                               child: Text(

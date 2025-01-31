@@ -11,25 +11,26 @@ class VersaMainApp extends ConsumerStatefulWidget {
 }
 
 class _VersaMainAppState extends ConsumerState<VersaMainApp> {
-  late final routerConfig;
-
+ 
   @override
   void initState() {
     super.initState();
-    routerConfig = AppRouter(ref).config();
-  }
+   }
 
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(appThemeProvider);
+    final appRouter = AppRouter(ref);
 
     return MaterialApp.router(
       title: 'Versa',
-      routerConfig: routerConfig,
+
+      routerConfig: appRouter.config(),
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       debugShowCheckedModeBanner: false,
+      
     );
   }
 }

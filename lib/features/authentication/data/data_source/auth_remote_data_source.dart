@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/data/data_source/auth_data_source.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/data/local/storage_service.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/data/remote/remote.dart';
@@ -25,8 +26,11 @@ class AuthRemoteDataSource implements AuthDataSource {
         return Left(exception);
       }, (response) async {
         final loginResponse = LoginResponse.fromJson(response.data);
-        await storageService.set("accessToken", loginResponse.idToken!);
 
+        // เก็บ accessToken และเวลา expiry
+        await storageService.set("accessToken", loginResponse.idToken!);
+        await storageService.set(
+            "tokenExpirationTime", loginResponse.expirationTime!);
         return Right(null); // On success, return the LoginResponse
       });
     } catch (e) {
@@ -98,15 +102,10 @@ class AuthRemoteDataSource implements AuthDataSource {
           return Left(exception);
         },
         (_) async {
-          // เมื่อ logout สำเร็จ, ลบ accessToken และ refreshToken ออกจาก storage
-          
-          var tokenisNotExist = await storageService.remove("accessToken");
-          
-          if(tokenisNotExist){
-            print("token does not exist");
-          }
-          print(tokenisNotExist);
-          // คืนค่า Right(null) เพื่อแสดงว่า logout สำเร็จ
+
+         await clearAuth();  
+
+   
           return Right(null);
         },
       );
@@ -121,22 +120,68 @@ class AuthRemoteDataSource implements AuthDataSource {
       );
     }
   }
-  
-  @override
-  Future<Either<VersaException, bool>> hasAccessToken() async {
-    // TODO: implement hasAccessToken
-     try{
-      final hasToken = await storageService.has("accessToken");
 
-     return Right(hasToken); // On success, return null
-     }catch(exception){
-       return Left(
+  @override
+  Future<Either<VersaException, bool>> hasAccessTokenNotExpired() async {
+    try {
+      final accessToken = await storageService.get("accessToken");
+      final expirationTime =
+          await storageService.get("tokenExpirationTime") as String?;
+
+      if (expirationTime == null) {
+        return Right(false);
+      }
+      final expiryTime = _parseExpirationTime(expirationTime);
+
+      if (expiryTime == null) {
+        return Right(false);
+      }
+      final tokenNotExpire = tokenIsNotExpired(expiryTime);
+
+      final result = accessToken != null && tokenNotExpire;
+      if (!result) {
+        print("Token was expired");
+        await storageService.remove("tokenExpirationTime");
+      }
+      return Right(result);
+    } catch (exception) {
+      return Left(
         VersaException(
-          message: 'An error occurred : ${exception.toString()}',
+          message: 'An error occurred: ${exception.toString()}',
           statusCode: 1,
           identifier: 'Storage error',
         ),
       );
-     }
+    }
+  }
+
+  // Helper function to parse expiration time
+  DateTime? _parseExpirationTime(String expirationTime) {
+    try {
+      return DateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+          .parseUtc(expirationTime);
+    } catch (e) {
+      throw Error;
+    }
+  }
+
+  bool tokenIsNotExpired(DateTime expiredTime) {
+    final currentTime = DateTime.now().toUtc();
+    return expiredTime
+        .isAfter(currentTime); // เช็คว่า expiredTime ยังไม่หมดอายุ
+  }
+
+  Future<void> clearAuth() async {
+    await Future.wait([
+      storageService.remove("accessToken"),
+      storageService.remove("tokenExpirationTime"),
+    ]);
+
+    var tokenisNotExist = await storageService.get("accessToken");
+    var expirationIdToken = await storageService.get("tokenExpirationTime");
+
+    if (tokenisNotExist == null && expirationIdToken == null) {
+      print("Token and expiration time have been cleared.");
+    }
   }
 }

@@ -9,11 +9,17 @@ import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification/notification_success.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 
-class NotificationScreen extends ConsumerWidget {
+@RoutePage()
+class NotificationScreen extends ConsumerStatefulWidget {
   const NotificationScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotificationScreen> createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends ConsumerState<NotificationScreen> {
+  @override
+  Widget build(BuildContext context) {
     // ตัวอย่างข้อมูลการแจ้งเตือน
 
     // ดึงสถานะการอ่านจาก provider
@@ -22,6 +28,7 @@ class NotificationScreen extends ConsumerWidget {
 
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final appTheme = ref.watch(appThemeProvider);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(

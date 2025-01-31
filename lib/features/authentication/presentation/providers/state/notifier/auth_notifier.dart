@@ -21,17 +21,32 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> _checkAuthStatus() async {
     // ตรวจสอบว่ามี token หรือไม่
-    final token = await authRepository
+
+    final stopwatch = Stopwatch(); // เริ่มจับเวลา
+    stopwatch.start(); // เริ่มจับเวลา
+    final checkToken = await authRepository
         .hasToken(); // ฟังก์ชันที่จะดึง token จาก local storage
-    token.fold((e) {
+    checkToken.fold((e) {
       state = AuthState.failure(e);
     }, (hasTokenNotExpired) async {
-      if (!hasTokenNotExpired) {
-        state = AuthState.initial();
+      if (hasTokenNotExpired) {
+        // count time ตอนเรียกข้อมูล
+     state = AuthState.loading(); // เปลี่ยนสถานะเป็น loading
+
+        Future.delayed(Duration(seconds: 2),()async{
+                  await verify();
+
+
+        });
       } else {
-        await verify();
+        state = AuthState.initial(); // เปลี่ยนสถานะเป็น loggedOut
+        print('state token expired :  $hasTokenNotExpired');
       }
     });
+
+    stopwatch.stop(); // หยุดจับเวลา
+    print(
+        'Time taken: ${stopwatch.elapsedMilliseconds} ms'); // แสดงเวลาที่ใช้ในการเรียกข้อมูล
   }
 
   Future<void> signin(String email, String password) async {

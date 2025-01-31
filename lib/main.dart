@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:versa_app_tutorial_cleanarch/configs/notifications_platform_configs.dart';
 import 'package:versa_app_tutorial_cleanarch/main/app.dart';
 import 'package:versa_app_tutorial_cleanarch/main/app_env.dart';
 import 'package:versa_app_tutorial_cleanarch/main/observers.dart';
@@ -19,6 +20,10 @@ Future<void> mainCommon(AppEnvironment environment) async {
       statusBarBrightness: Brightness.light,
     ),
   );
+
+  
+  await NotificationConfig.initialize();  // ส่ง router เข้าไป
+  
   runApp(ProviderScope(
     observers: [
       Observers(),

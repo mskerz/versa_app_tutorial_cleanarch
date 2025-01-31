@@ -32,7 +32,7 @@ class AuthLocalDataSource implements AuthDataSource {
   }
   
   @override
-  Future<Either<VersaException, bool>> hasAccessToken() {
+  Future<Either<VersaException, bool>> hasAccessTokenNotExpired() {
     // TODO: implement hasAccessToken
     throw UnimplementedError();
   }
