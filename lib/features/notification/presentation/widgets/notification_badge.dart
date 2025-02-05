@@ -20,7 +20,7 @@ class NotificationBadge extends StatelessWidget {
         icon: Stack(
           children: [
             Icon(
-              Icons.notifications,
+              Icons.notifications_outlined,
               size: 30.0,
               color: Theme.of(context).primaryColor,
             ),

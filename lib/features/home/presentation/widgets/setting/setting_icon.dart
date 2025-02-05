@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingIconTile extends StatelessWidget {
   final String title;
@@ -19,8 +20,8 @@ class SettingIconTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 16),
       
       child: ListTile(
-        leading: Icon(icon, color: Colors.black),
-        title: Text(title),
+        leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+        title: Text(title,style: GoogleFonts.prompt(color: Theme.of(context).primaryColor),),
         trailing: Icon(Icons.arrow_forward_ios),
         onTap: onTap,
       ),

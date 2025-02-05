@@ -88,7 +88,7 @@ class AppTheme {
         ),
         extensions: const [
           GradientBackgroundExtention(
-            gradientBackground: AppColors.gradientDarkBlue,
+            gradientBackground: AppColors.gradientVersaBlackground,
      gradientContainerPrimary: AppColors.gradientSecondary,
             gradientContainerSecondary: AppColors.gradientPrimary,
           ),

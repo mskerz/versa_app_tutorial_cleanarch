@@ -24,6 +24,8 @@ dependencies:
   socket_io_client: ^3.0.2
   shimmer: ^3.0.0
   flutter_local_notifications: ^18.0.1
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -40,3 +42,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/svg/coin/  
+    - assets/svg/home/

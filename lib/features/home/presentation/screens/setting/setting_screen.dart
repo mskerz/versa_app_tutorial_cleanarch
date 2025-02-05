@@ -5,9 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/setting/setting_icon.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
 
 class SettingScreen extends ConsumerWidget {
   @override
@@ -31,7 +31,8 @@ class SettingScreen extends ConsumerWidget {
       context.router.back();
     }
 
-    return Scaffold(
+    return AppScaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
           "App Settings",
@@ -96,6 +97,8 @@ class SettingScreen extends ConsumerWidget {
           ):Container(),
           SettingIconTile(
             title: "Privacy & Security",
+
+          
             icon: Icons.lock_outline,
             onTap: () {},
           ),
@@ -144,7 +147,6 @@ class SettingScreen extends ConsumerWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

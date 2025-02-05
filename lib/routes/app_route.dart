@@ -31,49 +31,49 @@ class AppRouter extends _$AppRouter {
           initial: true,
 
           transitionsBuilder: _fadeTransition, // ใช้ Fade Transition
-          durationInMilliseconds: 200, // ระยะเวลา Fade
+          durationInMilliseconds: 100, // ระยะเวลา Fade
 
           
         ),
         CustomRoute(
             page: LoginRoute.page,
             transitionsBuilder: _fadeTransition,
-            durationInMilliseconds: 200,
+            durationInMilliseconds: 100,
             guards: [AuthGuard(ref)]),
         CustomRoute(
           page: RegisterRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
         CustomRoute(
           page: TokenRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
         CustomRoute(
           page: TokenIntroRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
         CustomRoute(
           page: SettingRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
         CustomRoute(
           page: NotificationRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
         CustomRoute(
           page: SubscriptionRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
         CustomRoute(
           page: TokenWalletRoute.page,
           transitionsBuilder: _fadeTransition,
-          durationInMilliseconds: 200,
+          durationInMilliseconds: 100,
         ),
       ];
 

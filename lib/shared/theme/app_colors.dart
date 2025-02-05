@@ -27,12 +27,24 @@ class AppColors {
 
   static const Gradient gradientDarkBlue = LinearGradient(
     colors: [
-      lightBlue,
-      backgroundDarkBlue, // สีฟ้าอ่อน
-      backgroundBlueBlack, // สีน้ำเงินเข้ม
+      Color(0x002F5CFF),
+      Color.fromARGB(255, 197, 38, 255), // สีฟ้าอ่อน
     ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+    begin: Alignment.topRight,
+    end: Alignment.bottomLeft,
+  );
+
+  static const Gradient gradientVersaBlackground = RadialGradient(
+    center: Alignment.topRight, // จุดเริ่มต้นของ gradient ที่มุมบนขวา
+    radius: 1.0, // ขยายขอบเขตของ Gradient
+    colors: [
+      Color(0xFF2F5CFF), // สีของจุด gradient ที่ 1
+      Color(0x978D1BBA), // สีของจุด gradient ที่ 2 (rgba(141, 27, 186, 0.97))
+      Colors.black, // สีที่เหลือจะเป็นสีดำ
+
+      
+    ],
+    stops: [0.1, 0.6, 2], // การควบคุมระยะของสี
   );
 
   static const Gradient gradientOrange = LinearGradient(

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
 
 class TokenWalletScreen extends ConsumerWidget {
   const TokenWalletScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
           leadingWidth: 150,
           leading: Container(
@@ -41,7 +42,7 @@ class TokenWalletScreen extends ConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
+       backgroundColor: Colors.transparent,
     );
   }
 }
