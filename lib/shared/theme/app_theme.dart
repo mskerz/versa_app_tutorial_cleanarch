@@ -43,6 +43,7 @@ class AppTheme {
   // Dark theme data of the app
   static ThemeData get darkTheme {
     return ThemeData(
+        scaffoldBackgroundColor: AppColors.black,
         brightness: Brightness.dark,
         fontFamily: AppTextStyles.fontFamily,
         primaryColor: AppColors.primary,
@@ -77,9 +78,19 @@ class AppTheme {
             secondaryContainer: AppColors.lightSkyBlue,
             error: AppColors.error,
             inversePrimary: AppColors.primary),
-        scaffoldBackgroundColor: AppColors.backgroundDarkBlue,
         textTheme: TextThemes.textTheme,
         primaryTextTheme: TextThemes.darkTextTheme,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+          
+          surfaceTintColor: Color(0xFF252525),
+          splashFactory: NoSplash.splashFactory,
+        )),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Color(0x66FFFFFF)),
         appBarTheme: AppBarTheme(
           elevation: 0,
           foregroundColor: AppColors.primary,
@@ -88,10 +99,10 @@ class AppTheme {
         ),
         extensions: const [
           GradientBackgroundExtention(
-            gradientBackground: AppColors.gradientVersaBlackground,
-     gradientContainerPrimary: AppColors.gradientSecondary,
-            gradientContainerSecondary: AppColors.gradientPrimary,
-          ),
+              gradientBackground: AppColors.gradientVersaDarkBlackground,
+              gradientContainerPrimary: AppColors.gradientSecondary,
+              gradientContainerSecondary: AppColors.gradientPrimary,
+              gradientBottomBar: AppColors.gradientBottomBarDark),
         ]);
   }
 
@@ -124,6 +135,13 @@ class AppTheme {
           unselectedLabelStyle:
               GoogleFonts.prompt(textStyle: TextStyle(fontSize: 18.0)), // ฟอนต์
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          surfaceTintColor: Color.fromARGB(255, 189, 189, 189),
+          splashFactory: NoSplash.splashFactory,
+        )),
         colorScheme: const ColorScheme.light(
             primary: AppColors.backgroundDarkBlue,
             onPrimary: AppColors.primary,
@@ -140,12 +158,18 @@ class AppTheme {
 
           backgroundColor: AppColors.primary, // เปลี่ยนสีของ app bar
         ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: Colors.black,
+            unselectedItemColor: AppColors.greyBlue
+           
+            
+            ),
         extensions: const [
           GradientBackgroundExtention(
-            gradientBackground: AppColors.gradientOrange,
-            gradientContainerPrimary: AppColors.gradientPrimary,
-            gradientContainerSecondary: AppColors.gradientSecondary,
-          ),
+              gradientBackground: AppColors.gradientVersaLightBlackground,
+              gradientContainerPrimary: AppColors.gradientPrimary,
+              gradientContainerSecondary: AppColors.gradientSecondary,
+              gradientBottomBar: AppColors.gradientBottomBarLight),
         ]);
   }
 }

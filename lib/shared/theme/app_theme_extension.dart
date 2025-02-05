@@ -4,16 +4,17 @@ class GradientBackgroundExtention extends ThemeExtension<GradientBackgroundExten
   final Gradient? gradientBackground;
   final Gradient? gradientContainerPrimary;
   final Gradient? gradientContainerSecondary;
+  final Gradient? gradientBottomBar;
 
-
-  const GradientBackgroundExtention({this.gradientBackground,this.gradientContainerPrimary,this.gradientContainerSecondary});
+  const GradientBackgroundExtention({this.gradientBackground,this.gradientContainerPrimary,this.gradientContainerSecondary,this.gradientBottomBar});
 
   @override
-  GradientBackgroundExtention copyWith({Gradient? gradientBackground,Gradient? gradientContainerPrimary,Gradient? gradientContainerSecondary}) {
+  GradientBackgroundExtention copyWith({Gradient? gradientBackground,Gradient? gradientContainerPrimary,Gradient? gradientContainerSecondary,Gradient? gradientBottomBar}) {
     return GradientBackgroundExtention(
       gradientBackground: gradientBackground ?? this.gradientBackground,
       gradientContainerPrimary: gradientContainerPrimary ?? this.gradientContainerPrimary,
-      gradientContainerSecondary: gradientContainerSecondary ?? this.gradientContainerSecondary
+      gradientContainerSecondary: gradientContainerSecondary ?? this.gradientContainerSecondary,
+      gradientBottomBar: gradientBottomBar ?? this.gradientBottomBar
     );
   }
 

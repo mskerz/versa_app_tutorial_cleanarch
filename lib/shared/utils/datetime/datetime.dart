@@ -12,8 +12,20 @@ class DateTimeTH {
     int buddhistYear = (date.year + 543)%100;
 
     // จัดรูปแบบวันที่เป็น "วันที่ dd MMM yyyy"
-    final formatter = DateFormat('d MMM ', 'th');
+    final formatter = DateFormat('dd MMM ', 'th');
     return "${formatter.format(date)}$buddhistYear";
+  }
+
+  String formatDateStartToEnd(String startDate,String endDate) {
+       DateTime start = DateTime.parse(startDate);
+    DateTime end = DateTime.parse(endDate);
+
+    // ใช้ DateFormat ในการจัดรูปแบบ
+    final dateFormat = DateFormat('d MMM yy');
+     // จัดรูปแบบวันที่
+    String formattedStart = dateFormat.format(start);
+    String formattedEnd = dateFormat.format(end);
+    return "$formattedStart - $formattedEnd";
   }
 
   /// Parse and format a date string like "2024-07-15"
@@ -26,3 +38,9 @@ class DateTimeTH {
 
   
 }
+
+
+final datetime = new DateTimeTH();
+
+
+

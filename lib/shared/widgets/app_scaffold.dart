@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/appbar/drawer.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
@@ -11,12 +11,14 @@ class AppScaffold extends ConsumerStatefulWidget {
   final Widget? body;
   final PreferredSizeWidget? appBar;
   final bool showDrawer;
+  final bool isVisibleBottomBar;
   final Color backgroundColor;
   const AppScaffold({
     super.key,
     this.body,
     this.appBar,
     this.showDrawer = false, // Default value for showDrawer
+    this.isVisibleBottomBar = true, // Default value for isVisibleBottomBar
     required this.backgroundColor,
   });
 
@@ -40,13 +42,14 @@ class _MainScaffoldState extends ConsumerState<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor:  widget.backgroundColor,
       drawer: widget.showDrawer ? UserDrawer() : null,
       appBar: widget.appBar,
       body: widget.body,
               extendBodyBehindAppBar: true, // ทำให้เนื้อหาทับแอปบาร์
 
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: widget.isVisibleBottomBar ? const BottomNavBar():null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: Container(
@@ -69,7 +72,7 @@ class _MainScaffoldState extends ConsumerState<AppScaffold> {
             ),
           ],
         ),
-        child: FloatingActionButton(
+        child: widget.isVisibleBottomBar ? FloatingActionButton(
           foregroundColor: Colors.transparent,
           backgroundColor: Colors.transparent,
           onPressed: () {
@@ -81,7 +84,7 @@ class _MainScaffoldState extends ConsumerState<AppScaffold> {
             borderRadius: BorderRadius.circular(30), // ทำให้ปุ่มกลมๆ
           ),
           child: Icon(FontAwesomeIcons.wallet, color: Colors.white),
-        ),
+        ):SizedBox.shrink(),
       ),
     );
   }

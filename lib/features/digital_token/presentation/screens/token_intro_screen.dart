@@ -7,6 +7,8 @@ import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_background.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
 
 @RoutePage()
 class TokenIntroScreen extends ConsumerWidget {
@@ -25,44 +27,41 @@ class TokenIntroScreen extends ConsumerWidget {
         Theme.of(context).extension<GradientBackgroundExtention>()?.gradientBackground;
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final theme = ref.watch(appThemeProvider);
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradient,
-      ),
-      child: Scaffold(
-        extendBodyBehindAppBar: true, // ทำให้เนื้อหาทับแอปบาร์
-
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0, // ไม่มีเงา
-          leading: Container(
-            margin: const EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios,
-                  color: Theme.of(context).primaryColor),
-              onPressed: () {
-                context.router.back();
-              },
-            ),
-          ),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: IconButton(
-                  onPressed: () {
-                    appThemeNotifier.toggleTheme();
-                  },
-                  icon: Icon(
-                    theme == ThemeMode.dark
-                        ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
-                        : Icons.light_mode,
-                    color: Theme.of(context).primaryColor,
-                  )),
-            )
-          ],
-        ),
+    return AppScaffold(
+      isVisibleBottomBar: false,
+      
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        body: Container(
+        elevation: 0, // ไม่มีเงา
+        leading: Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Theme.of(context).primaryColor),
+            onPressed: () {
+              context.router.back();
+            },
+          ),
+        ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: IconButton(
+                onPressed: () {
+                  appThemeNotifier.toggleTheme();
+                },
+                icon: Icon(
+                  theme == ThemeMode.dark
+                      ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                      : Icons.light_mode,
+                  color: Theme.of(context).primaryColor,
+                )),
+          )
+        ],
+      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: AppBodyWithGredient(
+        content: Container(
           margin: EdgeInsets.only(top: 250),
           child: Center(
             child: Column(
@@ -139,7 +138,7 @@ class TokenIntroScreen extends ConsumerWidget {
                               style: GoogleFonts.kanit(color: Colors.white),
                             )),
                 Spacer(), // This will push the ElevatedButton to the bottom
-
+            
                 // GestureDetector + ElevatedButton
                 Align(
                   alignment: Alignment.bottomCenter,

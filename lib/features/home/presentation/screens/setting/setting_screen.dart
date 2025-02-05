@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/navigator_provider.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/setting/setting_icon.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';

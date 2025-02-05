@@ -1,8 +1,7 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/main_container.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/home/home_container.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification_badge.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
@@ -25,7 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final theme = ref.watch(appThemeProvider);
      return AppScaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       showDrawer: false,
       
       appBar: AppBar(
@@ -61,8 +60,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ))
         ],
       ),
-      body: AppDefaultBackground(
-        main_widget: MainContainer(),
+      body: AppBodyWithGredient(
+        content: HomeContainer(),
       )
     );
   }

@@ -5,20 +5,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SVGIcons {
   static const String _basePath = 'assets/svg';
 
-  static Widget get coin => SvgPicture.asset(
-        '$_basePath/coin/coins.svg',
-        width: 24.0,
-        height: 24.0,
-        colorFilter: ColorFilter.mode(
-            Colors.white, BlendMode.srcIn), // เพิ่ม colorFilter
-      );
-
-  static Widget get coin_outlined => SvgPicture.asset(
+  // เพิ่มพารามิเตอร์ `color` เพื่อให้สามารถเลือกสีได้
+  static Widget coin(Color color) {
+    return SvgPicture.asset(
+      '$_basePath/coin/coins.svg',
+      width: 24.0,
+      height: 24.0,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn), // ใช้สีที่ส่งเข้ามา
+    );
+  }
+  static Widget  coin_outlined(Color color){
+    return SvgPicture.asset(
         '$_basePath/coin/coin_outlined.svg',
         width: 24.0,
         height: 24.0,
-     );
+        
+              colorFilter: ColorFilter.mode(color, BlendMode.srcIn), // ใช้สีที่ส่งเข้ามา
 
+     );
+  }
   static Widget get home => SvgPicture.asset(
         '$_basePath/home/home_filled.svg',
         width: 24.0,
