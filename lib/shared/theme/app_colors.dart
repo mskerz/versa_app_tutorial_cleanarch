@@ -81,8 +81,8 @@ class AppColors {
          static const Gradient gradientBottomBarLight= LinearGradient(
  
           colors: [
-            Color.fromARGB(255, 255, 255, 255),  // First color in gradient
-            Color.fromARGB(255, 221, 221, 221),  // Second color in gradient
+            Color.fromARGB(255, 255, 142, 142),  // First color in gradient
+            Color.fromARGB(255, 149, 255, 10),  // Second color in gradient
           ],
         );
 }

@@ -6,12 +6,12 @@ class SVGIcons {
   static const String _basePath = 'assets/svg';
 
   // เพิ่มพารามิเตอร์ `color` เพื่อให้สามารถเลือกสีได้
-  static Widget coin(Color color) {
+  static Widget coin(Color? color) {
     return SvgPicture.asset(
       '$_basePath/coin/coins.svg',
       width: 24.0,
       height: 24.0,
-      colorFilter: ColorFilter.mode(color, BlendMode.srcIn), // ใช้สีที่ส่งเข้ามา
+      colorFilter: ColorFilter.mode(color!, BlendMode.srcIn), // ใช้สีที่ส่งเข้ามา
     );
   }
   static Widget  coin_outlined(Color color){

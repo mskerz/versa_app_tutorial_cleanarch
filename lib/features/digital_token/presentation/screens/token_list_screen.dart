@@ -35,19 +35,25 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
   @override
   Widget build(BuildContext context) {
     final token = TokenInstanceProvider(ref);
-      final theme = ref.watch(appThemeProvider);
-      final selectedColor = theme == ThemeMode.dark ? Theme.of(context)
-        .elevatedButtonTheme
-        .style
-        ?.backgroundColor
-        ?.resolve({}):Colors.white;
+    final theme = ref.watch(appThemeProvider);
+    final selectedColor = theme == ThemeMode.dark
+        ? Theme.of(context)
+            .elevatedButtonTheme
+            .style
+            ?.backgroundColor
+            ?.resolve({})
+        : Colors.white;
+
+    final selectColorLabel =
+        theme == ThemeMode.dark ? Colors.white : Colors.black;
+    final unselectColorLabel =
+        theme == ThemeMode.dark ? Colors.grey : Colors.black;
     final unselectedColor = Theme.of(context)
         .elevatedButtonTheme
         .style
         ?.surfaceTintColor
         ?.resolve({});
- 
- 
+
     void _handleBackButtonPress() {
       final previousIndex =
           ref.read(transitionProvider.notifier).getPreviousIndex();
@@ -64,12 +70,10 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
       context.router.back();
     }
 
-
-  Widget buildButton(String label, int index) {
+    Widget buildButton(String label, int index) {
       return Container(
-        padding: const EdgeInsets.symmetric( horizontal: 2),
+        padding: const EdgeInsets.all(2),
         margin: const EdgeInsets.only(top: 10),
-      
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: token.selectedButtonIndex == index
@@ -81,8 +85,9 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                     color: token.selectedButtonIndex == index
                         ? Colors.white
                         : Color(0x4DFFFFFF),
-                    width:
-                        token.selectedButtonIndex == index ? 1 : 0.8), // ขอบของปุ่ม
+                    width: token.selectedButtonIndex == index
+                        ? 1
+                        : 0.8), // ขอบของปุ่ม
               ),
             ),
             onPressed: () {
@@ -90,33 +95,40 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
             },
             child: Text(
               label,
-              style: GoogleFonts.poppins(fontSize: 10),
+              style: GoogleFonts.poppins(
+                  fontSize: 10,
+                  fontWeight:token.selectedButtonIndex == index ?FontWeight.w500 :FontWeight.w300 ,
+                  color: token.selectedButtonIndex == index
+                      ? selectColorLabel
+                      : unselectColorLabel),
             )),
       );
     }
-     
-    return AppScaffold(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
+    return AppScaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-       title: Text("Tokens",style: GoogleFonts.poppins(fontSize: 20),),
+        title: Text(
+          "Tokens",
+          style: GoogleFonts.poppins(fontSize: 20),
+        ),
         actions: [
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications_none),
             color: Theme.of(context).primaryColor,
           ),
-           IconButton(
-                onPressed: () {
-                  ref.read(appThemeProvider.notifier).toggleTheme();
-                },
-                icon: Icon(
-                  ref.watch(appThemeProvider) == ThemeMode.dark
-                      ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
-                      : Icons.light_mode,
-                  color: Theme.of(context).primaryColor,
-                ))
+          IconButton(
+              onPressed: () {
+                ref.read(appThemeProvider.notifier).toggleTheme();
+              },
+              icon: Icon(
+                ref.watch(appThemeProvider) == ThemeMode.dark
+                    ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                    : Icons.light_mode,
+                color: Theme.of(context).primaryColor,
+              ))
         ],
       ),
       body: AppBodyWithGredient(
@@ -153,19 +165,22 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
               ),
               SizedBox(height: 20.0),
               Container(
-                  padding: EdgeInsets.all(1),
-                  margin: EdgeInsets.only(top: 5,),
-                  child: Row(
-                    children: [
-                      buildButton("All", 0),
-                      buildButton("Ongoing", 1),
-                      buildButton("Upcoming", 2),
-                      buildButton("Finisned", 3)
-                  
-                    ],
-                  ),
+                padding: EdgeInsets.all(1),
+                margin: EdgeInsets.only(
+                  top: 5,
                 ),
-              Expanded(child: buildCardToken(context, token.tokenData, token.selectedButtonIndex))
+                child: Row(
+                  children: [
+                    buildButton("All", 0),
+                    buildButton("Ongoing", 1),
+                    buildButton("Upcoming", 2),
+                    buildButton("Finisned", 3)
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: buildCardToken(
+                      context, token.tokenData, token.selectedButtonIndex))
             ],
           ),
         ),

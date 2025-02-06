@@ -18,8 +18,12 @@ class TokenIntroScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isSoldOut = tokenItem.currentRaised == tokenItem.fundingGoal;
+    bool isOpen = tokenItem.status == "open";
     bool isComing = tokenItem.status == "coming";
-    String amountStatus = isSoldOut ? 'ขายหมดแล้ว' : 'ยังเปิดจองอยู่';
+    bool isClosed = tokenItem.status == "closed";
+    String labelStatus =isOpen ?"เปิดจอง" : isComing ?"ใกล้เปิดจอง" : "ปิดจองแล้ว" ;
+    Color colorStatus =isOpen? Colors.green :isComing? Colors.orange:Colors.blueGrey; 
+     String amountStatus = isSoldOut ? 'ขายหมดแล้ว' : 'ยังเปิดจองอยู่';
     if (tokenItem == null) {
       return Container();
     }
@@ -97,46 +101,16 @@ class TokenIntroScreen extends ConsumerWidget {
                 ),
                 Text(
                   '${tokenItem.name}',
-                  style: GoogleFonts.kanit(fontSize: 25, color: Colors.white),
+                  style: GoogleFonts.kanit(fontSize: 25, color: Theme.of(context).primaryColor),
                 ),
-                isSoldOut
-                    ? Container(
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Text(
-                          amountStatus,
-                          style: GoogleFonts.kanit(color: Colors.white),
-                        ))
-                    : !isComing
-                        ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.green, // Set the background color
-                              foregroundColor:
-                                  Colors.white, // Set the text color
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5), // ลด padding
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              "เปิดจอง",
-                              style: GoogleFonts.prompt(color: Colors.white),
-                            ))
-                        : Container(
-                            margin: EdgeInsets.only(top: 20),
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text(
-                              "ใกล้เปิดจอง",
-                              style: GoogleFonts.kanit(color: Colors.white),
-                            )),
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: colorStatus,
+                    borderRadius: BorderRadius.circular(12)
+                  ),
+                  child: Text(labelStatus,style: GoogleFonts.prompt(fontSize: 12, color: Colors.white),),
+                ),
                 Spacer(), // This will push the ElevatedButton to the bottom
             
                 // GestureDetector + ElevatedButton

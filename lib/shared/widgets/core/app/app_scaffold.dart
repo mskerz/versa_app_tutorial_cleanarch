@@ -48,10 +48,11 @@ class _MainScaffoldState extends ConsumerState<AppScaffold> {
       appBar: widget.appBar,
       body: widget.body,
               extendBodyBehindAppBar: true, // ทำให้เนื้อหาทับแอปบาร์
+  extendBody: true, // ให้ BottomAppBar โปร่งใสและต่อเนื่องกับพื้นหลัง
 
       bottomNavigationBar: widget.isVisibleBottomBar ? const BottomNavBar():null,
       floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+          FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

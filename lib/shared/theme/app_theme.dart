@@ -84,19 +84,32 @@ class AppTheme {
             style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor: Colors.black,
-          
           surfaceTintColor: Color(0xFF252525),
           splashFactory: NoSplash.splashFactory,
         )),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Color(0x66FFFFFF)),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Color(0x66FFFFFF),
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          shape: CircularNotchedRectangle(),
+          padding: EdgeInsets.symmetric(horizontal: 1),
+        ),
         appBarTheme: AppBarTheme(
           elevation: 0,
           foregroundColor: AppColors.primary,
           backgroundColor: AppColors.backgroundDarkBlue, // เปลี่ยนสีของ app bar
           titleTextStyle: AppTextStyles.h2,
         ),
+        iconButtonTheme: IconButtonThemeData(
+            style: IconButton.styleFrom(
+                splashFactory: NoSplash.splashFactory,
+                highlightColor: Colors.transparent
+                
+                // ใส่ฟอนต์และขนาด
+                )),
         extensions: const [
           GradientBackgroundExtention(
               gradientBackground: AppColors.gradientVersaDarkBlackground,
@@ -159,11 +172,22 @@ class AppTheme {
           backgroundColor: AppColors.primary, // เปลี่ยนสีของ app bar
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            selectedItemColor: Colors.black,
-            unselectedItemColor: AppColors.greyBlue
-           
-            
-            ),
+          selectedItemColor: Colors.black,
+          unselectedItemColor: AppColors.greyBlue,
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: IconButton.styleFrom(
+              splashFactory: NoSplash.splashFactory,
+              highlightColor: Colors.transparent
+              // ใส่ฟอนต์และขนาด
+              ),
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          shape: CircularNotchedRectangle(),
+          padding: EdgeInsets.symmetric(horizontal: 1),
+        ),
         extensions: const [
           GradientBackgroundExtention(
               gradientBackground: AppColors.gradientVersaLightBlackground,

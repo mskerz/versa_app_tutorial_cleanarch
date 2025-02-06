@@ -39,7 +39,7 @@ class AppBodyWithGredient extends StatelessWidget {
         top: 612,
         left: -64,
         child: Container(
-          width: 190,
+          width: 220,
           height: 190,
           decoration: BoxDecoration(
             gradient: gradient?.gradientBackground,
@@ -65,7 +65,7 @@ class AppBodyWithGredient extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context)
               .scaffoldBackgroundColor
-              .withAlpha(1), // เพิ่มพื้นหลังให้ MainContainer
+              .withAlpha(10), // เพิ่มพื้นหลังให้ MainContainer
           borderRadius: BorderRadius.circular(16),
         ),
         child: content ?? const SizedBox(),

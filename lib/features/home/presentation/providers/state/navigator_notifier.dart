@@ -12,16 +12,17 @@ Future<void> transitionTo(int index) async {
     previousIndex = state.index;
 
     // ถ้า index == -1 (หมายถึงการกดปุ่ม Back จากหน้าอื่น เช่น Setting)
-    if(index == -1){ 
+    if(index == 2){ 
        // ควรทำการกลับไปที่หน้าก่อนหน้านี้
        // ตรวจสอบก่อนว่า previousIndex มีค่าอะไร และทำการเปลี่ยนไปยังหน้าที่ต้องการ
-       return;
+     state = IndicatorState(false, index);
+
     }
     
     // ทำ Fade Out
     state = IndicatorState(false, state.index);
     await Future.delayed(const Duration(milliseconds: 300)); // หน่วงเวลา 300ms (เวลาที่ใช้ในการ Fade Out)
-    print(state.index);
+    
 
     // เปลี่ยนตำแหน่งหลังจาก Fade Out
     state = IndicatorState(true, index);

@@ -12,40 +12,25 @@ class BottomNavBar extends ConsumerWidget {
   const BottomNavBar({super.key});
 
   @override
-
   Widget build(BuildContext context, ref) {
     final transionNavigator = ref.watch(transitionProvider);
-    int currentIndex = transionNavigator.index;
-    final gredient = Theme.of(context).extension<GradientBackgroundExtention>();
-    Icon _getIcon(
-        {required int index,
-        required IconData selectedIcon,
-        required IconData unselectedIcon}) {
-      return Icon(
-        transionNavigator.index == index ? selectedIcon : unselectedIcon,
-      );
-    }
-       Widget _getIconSVG(
-        {required int index,
-        required Widget selectedIcon,
-        required Widget unselectedIcon}) {
-      return  
-        transionNavigator.index == index ? selectedIcon : unselectedIcon;
-      
-    }
+    final transionNotifier = ref.watch(transitionProvider.notifier);
 
-    // Update the navigation behavior when the tab is tapped
+    int currentIndex = transionNavigator.index;
+    final gradient = Theme.of(context).extension<GradientBackgroundExtention>()!;
     void _onTabTapped(int index) {
+      transionNotifier.transitionTo(index);
+
       switch (index) {
         case 0:
           AutoRouter.of(context)
               .pushAndPopUntil(HomeRoute(), predicate: (_) => false);
           break;
+
         case 1:
           AutoRouter.of(context)
               .pushAndPopUntil(TokenRoute(), predicate: (_) => false);
           break;
-
         case 3:
           AutoRouter.of(context)
               .pushAndPopUntil(SubscriptionRoute(), predicate: (_) => false);
@@ -53,82 +38,116 @@ class BottomNavBar extends ConsumerWidget {
         case 4:
           AutoRouter.of(context)
               .pushAndPopUntil(SettingRoute(), predicate: (_) => false);
+          break;
         default:
           break;
       }
-      ref
-          .read(transitionProvider.notifier)
-          .transitionTo(index); // Update the index for the transition indicator
+      ref.read(transitionProvider.notifier).transitionTo(index);
     }
 
-    return Container(
-       decoration: BoxDecoration(
-        gradient: gredient!.gradientBottomBar
-      ),
-      child: SafeArea(
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-          ),
-          child: Stack(
-            children: [
-              // BottomNavigationBar
-              BottomNavigationBar(
-                currentIndex: currentIndex,
-                elevation: 0,
+    Color? colorHandle(int index) {
+      return currentIndex == index
+          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor;
+    }
 
-                backgroundColor: Colors.transparent,
-                selectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
-                unselectedLabelStyle: GoogleFonts.poppins(fontSize: 13), 
-                type: BottomNavigationBarType.fixed,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: _getIcon(
-                      index: 0,
-                      selectedIcon: Icons.home,
-                      unselectedIcon: Icons.home_outlined,
-                    ),
-                    label: "Home",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _getIconSVG(
-                      index: 1,
-                      selectedIcon: SVGIcons.coin(Theme.of(context).bottomNavigationBarTheme.selectedItemColor!),
-                      unselectedIcon:  SVGIcons.coin_outlined(Theme.of(context).bottomNavigationBarTheme.unselectedItemColor!),
-                    ),
-                    label: "Tokens",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SizedBox(width: 20), // This creates the space
-                    label: "", // Empty label for the spacer
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _getIcon(
-                      index: 3,
-                      selectedIcon: FontAwesomeIcons.solidClock,
-                      unselectedIcon: FontAwesomeIcons.clock,
-                    ),
-                    label: "Order",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _getIcon(
-                      index: 4,
-                      selectedIcon: FontAwesomeIcons.userLarge,
-                      unselectedIcon: FontAwesomeIcons.user,
-                    ),
-                    label: "Settings",
-                  ),
-                ],
-                onTap: _onTabTapped,
+    Widget buildBorderTop({double width = 0.0}) {
+      return Positioned(
+        top: 0,
+        left: (MediaQuery.of(context).size.width / 5) * currentIndex +
+            (MediaQuery.of(context).size.width / 12) -
+            20, // Adjust the position based on the index
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 120),
+          opacity: transionNavigator.isVisible ? 1.0 : 0.0, // Control opacity
+          child: Container(
+            width: 50, // Fixed width for the top border
+            height: 3, // Border thickness
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  width: width,
+                  color: Colors.transparent, // Remove default color
+                ),
               ),
-            
-            ],
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: const [Color(0xFF1340E2), Color(0xFF911EBD)],
+              ),
+            ),
           ),
-          
         ),
-        
-      ),
+      );
+    }
+
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            gradient: gradient.gradientBottomBar 
+          ),
+          child: BottomAppBar(
+            notchMargin: 10.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  icon: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined,
+                          color: colorHandle(0)),
+                      Text('Home', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(0))),
+                    ],
+                  ),
+                  onPressed: () => _onTabTapped(0),
+                ),
+                IconButton(
+                  icon: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SVGIcons.coin(
+                         colorHandle(1)
+                      ),
+                      Text('Token', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(1))),
+                    ],
+                  ),
+                  onPressed: () => _onTabTapped(1),
+                ),
+                const SizedBox(width: 40), // Spacer for FAB
+                IconButton(
+                  icon: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(currentIndex == 3
+                          ? FontAwesomeIcons.solidClock
+                          : FontAwesomeIcons.clock
+                          ,color: colorHandle(3),),
+                      Text('Orders', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(3))),
+                    ],
+                  ),
+                  onPressed: () => _onTabTapped(3),
+                ),
+                IconButton(
+                  icon: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(currentIndex == 4
+                          ? FontAwesomeIcons.userLarge
+                          : FontAwesomeIcons.user,color: colorHandle(4)),
+                      Text('More', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(4))),
+                    ],
+                  ),
+                  onPressed: () => _onTabTapped(4),
+                ),
+              ],
+            ),
+          ),
+        ),
+        buildBorderTop(width: 15)
+      ],
     );
   }
 }
