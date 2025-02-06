@@ -4,11 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/token_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
-import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/tab_build.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token_build.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_background.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_background.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
 
 class TokenListScreen extends ConsumerStatefulWidget {
   const TokenListScreen({super.key});
@@ -35,22 +34,20 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
 
   @override
   Widget build(BuildContext context) {
-    int selectIndexTab = ref.watch(selectedTabIndexProvider);
-    final tokenState = ref.watch(tokenNotifierProvider);
-
-    final List<Token> tokenData = tokenState.tokenList;
-
-    List<Widget> tabs = [
-      Tab(text: 'โทเคนที่เปิดจองอยู่'),
-      Tab(text: 'โทเคนที่ใกล้เปิดจอง'),
-      Tab(text: 'โทเคนที่ปิดจองแล้ว'),
-    ];
-
-    List<Widget> tabViews = [
-      buildTokenList(tokenData, 'open',context),
-      buildTokenList(tokenData, 'coming',context),
-      buildTokenList(tokenData, 'closed',context),
-    ];
+    final token = TokenInstanceProvider(ref);
+      final theme = ref.watch(appThemeProvider);
+      final selectedColor = theme == ThemeMode.dark ? Theme.of(context)
+        .elevatedButtonTheme
+        .style
+        ?.backgroundColor
+        ?.resolve({}):Colors.white;
+    final unselectedColor = Theme.of(context)
+        .elevatedButtonTheme
+        .style
+        ?.surfaceTintColor
+        ?.resolve({});
+ 
+ 
     void _handleBackButtonPress() {
       final previousIndex =
           ref.read(transitionProvider.notifier).getPreviousIndex();
@@ -67,21 +64,43 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
       context.router.back();
     }
 
+
+  Widget buildButton(String label, int index) {
+      return Container(
+        padding: const EdgeInsets.symmetric( horizontal: 2),
+        margin: const EdgeInsets.only(top: 10),
+      
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: token.selectedButtonIndex == index
+                  ? selectedColor
+                  : unselectedColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40), // ความโค้งของขอบ
+                side: BorderSide(
+                    color: token.selectedButtonIndex == index
+                        ? Colors.white
+                        : Color(0x4DFFFFFF),
+                    width:
+                        token.selectedButtonIndex == index ? 1 : 0.8), // ขอบของปุ่ม
+              ),
+            ),
+            onPressed: () {
+              token.buttonNotifier.selectButton(index);
+            },
+            child: Text(
+              label,
+              style: GoogleFonts.poppins(fontSize: 10),
+            )),
+      );
+    }
+     
     return AppScaffold(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 20),
-          child: IconButton(
-              onPressed: () {
-                // กดย้อนกลับและเรียกใช้ getPreviousIndex เพื่อกลับไปยังเมนูที่เคยเปิดก่อนหน้า
-                _handleBackButtonPress();
-              },
-              icon: const Icon(Icons.arrow_back_ios,),
-              color: Theme.of(context).primaryColor),
-        ),
+       title: Text("Tokens",style: GoogleFonts.poppins(fontSize: 20),),
         actions: [
           IconButton(
             onPressed: () {},
@@ -134,33 +153,19 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
               ),
               SizedBox(height: 20.0),
               Container(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: TabBar(
-                        controller: _tabController,
-                        isScrollable: true,
-                        physics:
-                            const AlwaysScrollableScrollPhysics(), // ป้องกันการเลื่อนไปซ้ายสุด,
-                        dividerHeight: 0,
+                  padding: EdgeInsets.all(1),
+                  margin: EdgeInsets.only(top: 5,),
+                  child: Row(
+                    children: [
+                      buildButton("All", 0),
+                      buildButton("Ongoing", 1),
+                      buildButton("Upcoming", 2),
+                      buildButton("Finisned", 3)
                   
-                      
-                        onTap: (index) {
-                          ref
-                              .read(selectedTabIndexProvider.notifier)
-                              .changeTab(index);
-        
-                          print("current index : $selectIndexTab");
-                        },
-                        tabs: tabs),
+                    ],
                   ),
                 ),
-              ),
-              
-              Expanded(
-                child: TabBarView(controller: _tabController, children: tabViews),
-              ),
+              Expanded(child: buildCardToken(context, token.tokenData, token.selectedButtonIndex))
             ],
           ),
         ),

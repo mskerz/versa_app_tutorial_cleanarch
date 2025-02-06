@@ -41,3 +41,14 @@ final isInitialProvider = Provider<bool>((ref) {
     orElse: () => false,
   );
 });
+
+
+
+class AuthProviderInstance{
+ final WidgetRef ref;
+  AuthProviderInstance(this.ref);
+    AuthState get authState => ref.watch(authNotifierProvider);
+    User? get user => ref.watch(userProvider);
+    bool get isLoggedIn => ref.watch(isLoggedInProvider);
+    bool get isInitial =>ref.watch(isInitialProvider);
+}

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/appbar/drawer.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/bottom_navbar_bar.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_bottom_bar.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 
 class AppScaffold extends ConsumerStatefulWidget {

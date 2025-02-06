@@ -7,8 +7,8 @@ import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_background.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_background.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
 
 @RoutePage()
 class TokenIntroScreen extends ConsumerWidget {

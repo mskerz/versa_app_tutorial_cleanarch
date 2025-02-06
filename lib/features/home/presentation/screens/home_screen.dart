@@ -5,9 +5,7 @@ import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification_badge.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_background.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
-
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_widget.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 

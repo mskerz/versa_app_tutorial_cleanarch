@@ -7,7 +7,7 @@ import 'package:versa_app_tutorial_cleanarch/features/authentication/presentatio
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/setting/setting_icon.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/constants/assets.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
 
 class SettingScreen extends ConsumerWidget {
   @override

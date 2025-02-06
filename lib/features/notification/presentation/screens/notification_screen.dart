@@ -8,7 +8,7 @@ import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification/notification_initial.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification/notification_success.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
 
 @RoutePage()
 class NotificationScreen extends ConsumerStatefulWidget {

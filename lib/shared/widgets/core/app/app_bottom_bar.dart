@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/widgets/icon/svg_icon.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/icon/svg_icon.dart';
 
 class BottomNavBar extends ConsumerWidget {
   const BottomNavBar({super.key});
