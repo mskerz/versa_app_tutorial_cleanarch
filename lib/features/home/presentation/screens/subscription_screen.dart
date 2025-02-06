@@ -10,13 +10,23 @@ class SubscriptionScreen extends ConsumerWidget {
   Widget build(BuildContext context, ref) { 
 
     return AppScaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-                title: Text(
-          "Token Orders",
-          style: GoogleFonts.kanit(color: Theme.of(context).primaryColor),
-        ),
+                elevation: 1,
+                        backgroundColor:Colors.transparent,
+
+        surfaceTintColor: Colors.transparent,leadingWidth: 120,
+                leading: Center(
+                
+                  child: Text(
+                            "My Orders",
+                            style: GoogleFonts.poppins(color: Theme.of(context).primaryColor,fontSize: 20),
+                          ),
+                ),
       ),
+      body:AppBodyWithGredient(
+        content: Container(),
+      ) ,
     );
   }
 }
