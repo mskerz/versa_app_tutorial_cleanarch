@@ -74,9 +74,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                 },
                 label: Text(
                   "Mark all as Read",
-                  style: GoogleFonts.kanit(
+                  style: GoogleFonts.poppins(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w500,
+                    fontSize: 13
                   ),
                 ),
               ),
