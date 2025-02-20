@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/appbar/leading_logo.dart';
 import 'package:versa_app_tutorial_cleanarch/features/home/presentation/widgets/home/home_container.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/providers/notification_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification_badge.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/constants/assets_app.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_widget.dart';
 class HomeScreen extends ConsumerStatefulWidget {
@@ -23,13 +25,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final theme = ref.watch(appThemeProvider);
      return AppScaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      showDrawer: false,
       
       appBar: AppBar(
         backgroundColor:Colors.transparent,
         elevation: 1,
         surfaceTintColor: Colors.transparent,
-        leadingWidth: 150, // Set a fixed width for the leading widget
+        leadingWidth: 250, // Set a fixed width for the leading widget
         // leading: Builder(
         //   builder: (BuildContext context) {
         //     return LeadingLogo(
@@ -42,6 +43,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         //     );
         //   },
         // ),
+        leading: LeadingLogo(logoAssetPath:theme ==ThemeMode.dark ? DARK_LOGO_IMG:LIGHT_LOGO_IMG ,),
         actions: [
           NotificationBadge(
             notificationCount: notificationCount, // Example: 3 notifications

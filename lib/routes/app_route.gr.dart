@@ -24,16 +24,16 @@ abstract class _$AppRouter extends RootStackRouter {
     SettingRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: SettingScreen(),
+        child: SettingOverViewScreen(),
       );
     },
-     NotificationRoute.name: (routeData) {
+    NotificationRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: NotificationScreen(),
       );
     },
-     SubscriptionRoute.name: (routeData) {
+    SubscriptionRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: SubscriptionScreen(),
@@ -45,7 +45,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: TokenWalletScreen(),
       );
     },
-    
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -55,6 +54,12 @@ abstract class _$AppRouter extends RootStackRouter {
     RegisterRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
           routeData: routeData, child: RegisterScreen());
+    },
+    OnboardRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: InvestorOnboardScreen(),
+      );
     },
     TokenRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
@@ -72,6 +77,13 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: TokenIntroScreen(tokenItem!),
+      );
+    },
+    BlankPageRoute.name: (routeData) {
+      final args = routeData.argsAs<BlankPageRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BlankTransitionPage(onRedirect: args.onRedirect,),
       );
     }
   };
@@ -121,6 +133,7 @@ class NotificationRoute extends PageRouteInfo<void> {
   static const String name = 'NotificationRoute';
   static const PageInfo<void> page = PageInfo<void>(name);
 }
+
 class SubscriptionRoute extends PageRouteInfo<void> {
   const SubscriptionRoute({List<PageRouteInfo>? children})
       : super(
@@ -242,3 +255,59 @@ class RegisterRouteArgs {
 
 /// generated route for
 /// [SplashScreen]
+
+class OnboardRoute extends PageRouteInfo<OnboardRouteArgs> {
+  OnboardRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          OnboardRoute.name,
+          args: OnboardRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'OnboardRoute';
+
+  static const PageInfo<LoginRouteArgs> page = PageInfo<LoginRouteArgs>(name);
+}
+
+class OnboardRouteArgs {
+  const OnboardRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'OnboardRouteArgs{key: $key}';
+  }
+}
+
+
+class BlankPageRoute extends PageRouteInfo<BlankPageRouteArgs> {
+  BlankPageRoute({
+    Key? key,
+        required void Function() onRedirect, // รับ parameter ที่จำเป็น
+
+    List<PageRouteInfo>? children,
+  }) : super(
+          BlankPageRoute.name,
+          args: BlankPageRouteArgs(key: key, onRedirect: onRedirect),
+          initialChildren: children,
+        );
+
+  static const String name = 'BlankPageRoute';
+
+  static const PageInfo<BlankPageRouteArgs> page = PageInfo<BlankPageRouteArgs>(name);
+}
+
+class BlankPageRouteArgs {
+  final void Function () onRedirect;
+  const BlankPageRouteArgs({this.key,required this.onRedirect});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key}';
+  }
+}

@@ -84,7 +84,6 @@ class AuthRemoteDataSource implements AuthDataSource {
       return Left(exception);
     }, (response) {
       final userResponse = UserResponse.fromJson(response.data);
-      print(userResponse.user);
       return Right(userResponse); // On success, return null
     });
   }

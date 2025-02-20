@@ -7,7 +7,13 @@ final passwordVisibilityProvider = StateProvider<bool>((ref) => true);
 final confirmPasswordVisibilityProvider = StateProvider<bool>((ref) => true);
 
 
+final loginPasswordVisibilityProvider =StateProvider<bool>((ref) => true);
+
 // สร้าง Provider สำหรับ Step
 final stepProvider = StateNotifierProvider<StepStateNotifier, int>((ref) {
   return StepStateNotifier();
 });
+
+
+
+

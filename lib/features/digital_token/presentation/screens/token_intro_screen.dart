@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token_modal.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token/token_modal.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/extension/app_theme_gradient_extension.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_background.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
 
@@ -18,9 +18,9 @@ class TokenIntroScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isSoldOut = tokenItem.currentRaised == tokenItem.fundingGoal;
-    bool isOpen = tokenItem.status == "open";
-    bool isComing = tokenItem.status == "coming";
-    bool isClosed = tokenItem.status == "closed";
+    bool isOpen = tokenItem.status == "ongoing";
+    bool isComing = tokenItem.status == "upcoming";
+    bool isClosed = tokenItem.status == "finished";
     String labelStatus =isOpen ?"เปิดจอง" : isComing ?"ใกล้เปิดจอง" : "ปิดจองแล้ว" ;
     Color colorStatus =isOpen? Colors.green :isComing? Colors.orange:Colors.blueGrey; 
      String amountStatus = isSoldOut ? 'ขายหมดแล้ว' : 'ยังเปิดจองอยู่';

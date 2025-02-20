@@ -5,11 +5,12 @@ import 'package:versa_app_tutorial_cleanarch/shared/data/local/storage_service.d
 import 'package:versa_app_tutorial_cleanarch/shared/domain/providers/shared_preferences_storage_service_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/globals.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_colors.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/extension/app_theme_wallet_color.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/test_styles.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/text_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app_theme_extension.dart';
+import 'extension/app_theme_gradient_extension.dart';
 
 final appThemeProvider = StateNotifierProvider<AppThemeModeNotifier, ThemeMode>(
   (ref) {
@@ -23,13 +24,13 @@ class AppThemeModeNotifier extends StateNotifier<ThemeMode> {
 
   ThemeMode currentTheme = ThemeMode.light;
 
-  AppThemeModeNotifier(this.storageService) : super(ThemeMode.light) {
+  AppThemeModeNotifier(this.storageService) : super(ThemeMode.dark) {
     getCurrentTheme();
   }
 
   void toggleTheme() {
     state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
-    storageService.set(APP_THEME_STORAGE_KEY, state.name);
+    save();
   }
 
   void getCurrentTheme() async {
@@ -37,13 +38,27 @@ class AppThemeModeNotifier extends StateNotifier<ThemeMode> {
     final value = ThemeMode.values.byName('${theme ?? 'light'}');
     state = value;
   }
+
+  void changeDarkTheme() {
+    state = ThemeMode.dark;
+    save();
+  }
+
+  void changeLightTheme() {
+    state = ThemeMode.light;
+    save();
+  }
+
+  void save() {
+    storageService.set(APP_THEME_STORAGE_KEY, state.name);
+  }
 }
 
 class AppTheme {
   // Dark theme data of the app
   static ThemeData get darkTheme {
     return ThemeData(
-        scaffoldBackgroundColor: AppColors.black,
+        scaffoldBackgroundColor: Color(0xFF121212),
         brightness: Brightness.dark,
         fontFamily: AppTextStyles.fontFamily,
         primaryColor: AppColors.primary,
@@ -80,6 +95,8 @@ class AppTheme {
             inversePrimary: AppColors.primary),
         textTheme: TextThemes.textTheme,
         primaryTextTheme: TextThemes.darkTextTheme,
+        inputDecorationTheme:
+            InputDecorationTheme(fillColor: AppColors.filledTextFleidColorDark),
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
@@ -94,6 +111,7 @@ class AppTheme {
           unselectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
         ),
         bottomAppBarTheme: BottomAppBarTheme(
+          elevation: 2,
           shape: CircularNotchedRectangle(),
           padding: EdgeInsets.symmetric(horizontal: 1),
         ),
@@ -107,15 +125,28 @@ class AppTheme {
             style: IconButton.styleFrom(
                 splashFactory: NoSplash.splashFactory,
                 highlightColor: Colors.transparent
-                
+
                 // ใส่ฟอนต์และขนาด
                 )),
-        extensions: const [
+        extensions: [
+          WalletColorExtension(
+              colorWalletItemButton: AppColors.walletButtonColorDark,
+              gradientWalletContainer:
+                  GradientAppColors.walletContainerGradientDark,
+              gradientWalletContainerBorder:
+                  GradientAppColors.walletContainerBorderGradientDark),
           GradientBackgroundExtention(
-              gradientBackground: AppColors.gradientVersaDarkBlackground,
-              gradientContainerPrimary: AppColors.gradientSecondary,
-              gradientContainerSecondary: AppColors.gradientPrimary,
-              gradientBottomBar: AppColors.gradientBottomBarDark),
+              gradientBackground:
+                  GradientAppColors.gradientVersaDarkBlackground,
+              gradientContainerPrimary: GradientAppColors.gradientSweepDark,
+              gradientContainerSecondary: GradientAppColors.gradientSweepLight,
+              gradientBottomBar: GradientAppColors.gradientBottomBarDark,
+              gradientFloatingButton:
+                  GradientAppColors.floatingButtonGradientDark,
+              gradientFloatingButtonBorder:
+                  GradientAppColors.floatingBorderButtonGradientDark,
+              gradientBlackgroundIcon:
+                  GradientAppColors.circleBackgroundMenuIconDark),
         ]);
   }
 
@@ -127,6 +158,8 @@ class AppTheme {
         primaryColor: AppColors.black,
         textTheme: TextThemes.textTheme,
         primaryTextTheme: TextThemes.primaryTextTheme,
+        inputDecorationTheme: InputDecorationTheme(
+            fillColor: AppColors.filledTextFleidColorLight),
         tabBarTheme: TabBarTheme(
           labelColor: AppColors.black, // กำหนดสีของแท็บที่เลือก
           tabAlignment: TabAlignment.start,
@@ -188,12 +221,25 @@ class AppTheme {
           shape: CircularNotchedRectangle(),
           padding: EdgeInsets.symmetric(horizontal: 1),
         ),
-        extensions: const [
+        extensions: [
+          WalletColorExtension(
+              colorWalletItemButton: AppColors.walletButtonColorLight,
+              gradientWalletContainer:
+                  GradientAppColors.walletContainerGradientLight,
+              gradientWalletContainerBorder:
+                  GradientAppColors.walletContainerBorderGradientLight),
           GradientBackgroundExtention(
-              gradientBackground: AppColors.gradientVersaLightBlackground,
-              gradientContainerPrimary: AppColors.gradientPrimary,
-              gradientContainerSecondary: AppColors.gradientSecondary,
-              gradientBottomBar: AppColors.gradientBottomBarLight),
+              gradientBackground:
+                  GradientAppColors.gradientVersaLightBlackground,
+              gradientContainerPrimary: GradientAppColors.gradientSweepLight,
+              gradientContainerSecondary: GradientAppColors.gradientSweepDark,
+              gradientBottomBar: GradientAppColors.gradientBottomBarLight,
+              gradientFloatingButton:
+                  GradientAppColors.floatingButtonGradientLight,
+              gradientFloatingButtonBorder:
+                  GradientAppColors.floatingBorderButtonGradientLight,
+              gradientBlackgroundIcon:
+                  GradientAppColors.circleBackgroundMenuIconLight),
         ]);
   }
 }

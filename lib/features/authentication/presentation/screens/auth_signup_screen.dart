@@ -1,14 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/form_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/state/auth_state.dart';
-import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/widgets/form_register.dart';
+import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/widgets/forms/register/form_register.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
 
-import 'package:versa_app_tutorial_cleanarch/shared/constants/assets_app.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/user/user_model.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_widget.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/provider/ui_provider.dart';
 
 @RoutePage()
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -42,7 +44,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(authNotifierProvider.notifier);
+    final ui = UIInstanceProvider(ref);
     final step = ref.read(stepProvider.notifier);
+    final themeMode = ui.themeMode;
+    final themeNotifier = ui.themeNotifier;
+
     void CallRegister(User userCreate) {
       // ทำการประมวลผลกับ User ที่ถูกส่งมา
       // print('User Registered: ${userCreate.firstName} ${userCreate.gender}');
@@ -57,54 +63,75 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (next is Failure) {
         if (next.exception.statusCode == 400) {
           authNotifier.showErrorSnackBar(
-              "อีเมลนี้มีผู้ใช้งานแล้ว กรุณาใช้อีเมลอื่น",
-              context);
+              "อีเมลนี้มีผู้ใช้งานแล้ว กรุณาใช้อีเมลอื่น", context);
           step.previousStep();
         }
       }
 
-       // เมื่อสถานะเป็น success (ล็อกอินสำเร็จ)
+      // เมื่อสถานะเป็น success (ล็อกอินสำเร็จ)
       else if (next is Success) {
         // แสดงบาร์การโหลด (Circle Indication Bar)
-        
+
         authNotifier.showSuccessSnackbar("ลงทะเบียนสำเร็จ", context);
 
-        context.router.replace( LoginRoute());
+        context.router.replace(LoginRoute());
       }
     });
-    return Scaffold(
+    return AppScaffold(
+      isVisibleBottomBar: false,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leading: Container(
           margin: const EdgeInsets.only(left: 20),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+            icon: Icon(Icons.arrow_back_ios,
+                color: Theme.of(context).primaryColor),
             onPressed: () {
               context.router.back();
             },
           ),
         ),
-        backgroundColor: Colors.white,
-        title: Text("Registration"),
+        backgroundColor: Colors.transparent,
+        title: Text(
+          "Sign Up",
+          style: GoogleFonts.poppins(
+              color: Theme.of(context).primaryColor, fontSize: 20),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                themeNotifier.toggleTheme();
+              },
+              icon: Icon(
+                themeMode == ThemeMode.dark
+                    ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                    : Icons.light_mode,
+                color: Theme.of(context).primaryColor,
+              ))
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Image.asset(
-              LIGHT_LOGO_IMG,
-              width: 200,
-            ),
-           
-
-            RegisterForm(
-              controllers: controllers, // ส่ง controllers ไปยัง RegisterForm
-              formKey: formKey, onRegister: CallRegister, // ส่ง formKey ไปยัง RegisterForm
-            ),
-            SizedBox(height: 15),
-            const SizedBox(height: 5),
-          ],
+      body: AppBodyWithGredient(
+        removeFixedPadding: true,
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 0),
+                child: RegisterForm(
+                  controllers:
+                      controllers, // ส่ง controllers ไปยัง RegisterForm
+                  formKey: formKey,
+                  onRegister: CallRegister, // ส่ง formKey ไปยัง RegisterForm
+                ),
+              ),
+              SizedBox(height: 15),
+              const SizedBox(height: 5),
+            ],
+          ),
         ),
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 

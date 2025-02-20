@@ -3,21 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/extension/app_theme_gradient_extension.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/widget_bottombar/bottombar_clipper.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/icon/svg_icon.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/provider/ui_provider.dart';
 
 class BottomNavBar extends ConsumerWidget {
   const BottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
-    final transionNavigator = ref.watch(transitionProvider);
-    final transionNotifier = ref.watch(transitionProvider.notifier);
-
-    int currentIndex = transionNavigator.index;
+    final uiInstance = UIInstanceProvider(ref);
+    final transionNavigator = uiInstance.transionNavigator;
+    final transionNotifier = uiInstance.transionNotifier;
+    final currentIndex = transionNavigator.index;
     final gradient = Theme.of(context).extension<GradientBackgroundExtention>()!;
+
+    
     void _onTabTapped(int index) {
       transionNotifier.transitionTo(index);
 
@@ -45,30 +48,29 @@ class BottomNavBar extends ConsumerWidget {
       ref.read(transitionProvider.notifier).transitionTo(index);
     }
 
-    Color? colorHandle(int index) {
+ 
+
+    Color? _getColorForTab(int index) {
       return currentIndex == index
           ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
           : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor;
     }
 
-    Widget buildBorderTop({double width = 0.0}) {
+    Widget _buildBorderTop({double width = 0.0}) {
+      double itemWidth = MediaQuery.of(context).size.width / 5;
+
       return Positioned(
-        top: 0,
-        left: (MediaQuery.of(context).size.width / 5) * currentIndex +
-            (MediaQuery.of(context).size.width / 12) -
-            20, // Adjust the position based on the index
+        top: 12,
+        left: itemWidth * currentIndex + itemWidth / 2 - 25,
         child: AnimatedOpacity(
-          duration: Duration(milliseconds: 120),
-          opacity: transionNavigator.isVisible ? 1.0 : 0.0, // Control opacity
+          duration: Duration(milliseconds: 200),
+          opacity: transionNavigator.isVisible ? 1.0 : 0.0,
           child: Container(
-            width: 50, // Fixed width for the top border
-            height: 3, // Border thickness
+            width: 50,
+            height: 3,
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(
-                  width: width,
-                  color: Colors.transparent, // Remove default color
-                ),
+                top: BorderSide(width: width, color: Colors.transparent),
               ),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -81,72 +83,85 @@ class BottomNavBar extends ConsumerWidget {
       );
     }
 
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            gradient: gradient.gradientBottomBar 
-          ),
-          child: BottomAppBar(
-            notchMargin: 10.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined,
-                          color: colorHandle(0)),
-                      Text('Home', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(0))),
-                    ],
-                  ),
-                  onPressed: () => _onTabTapped(0),
-                ),
-                IconButton(
-                  icon: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SVGIcons.coin(
-                         colorHandle(1)
-                      ),
-                      Text('Token', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(1))),
-                    ],
-                  ),
-                  onPressed: () => _onTabTapped(1),
-                ),
-                const SizedBox(width: 40), // Spacer for FAB
-                IconButton(
-                  icon: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(currentIndex == 3
-                          ? FontAwesomeIcons.solidClock
-                          : FontAwesomeIcons.clock
-                          ,color: colorHandle(3),),
-                      Text('Orders', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(3))),
-                    ],
-                  ),
-                  onPressed: () => _onTabTapped(3),
-                ),
-                IconButton(
-                  icon: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(currentIndex == 4
-                          ? FontAwesomeIcons.userLarge
-                          : FontAwesomeIcons.user,color: colorHandle(4)),
-                      Text('More', style: GoogleFonts.poppins(fontSize: 12,color: colorHandle(4))),
-                    ],
-                  ),
-                  onPressed: () => _onTabTapped(4),
-                ),
-              ],
-            ),
+    Widget _bottomNavItem({
+      required Widget icon,
+      required String label,
+      required Color color,
+      required VoidCallback onTap,
+    }) {
+      return IconButton(
+        icon: Container(
+          margin: EdgeInsets.only(top: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon,
+              Text(label, style: GoogleFonts.poppins(fontSize: 12, color: color)),
+            ],
           ),
         ),
-        buildBorderTop(width: 15)
+        onPressed: onTap,
+      );
+    }
+
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        ClipPath(
+          clipper: BottomAppBarClipper(),
+          child: Container(
+            height: 100,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(gradient: gradient.gradientBottomBar),
+          ),
+        ),
+        BottomAppBar(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          notchMargin: 20.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _bottomNavItem(
+                icon: Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined,
+                    color: _getColorForTab(0)),
+                label: "Home",
+                color: _getColorForTab(0)!,
+                onTap: () => _onTabTapped(0),
+              ),
+              _bottomNavItem(
+                icon: SVGIcons.coin(_getColorForTab(1)),
+                label: "Token",
+                color: _getColorForTab(1)!,
+                onTap: () => _onTabTapped(1),
+              ),
+              const SizedBox(width: 40), // Spacer for FAB
+              _bottomNavItem(
+                icon: Icon(
+                  currentIndex == 3
+                      ? FontAwesomeIcons.solidClock
+                      : FontAwesomeIcons.clock,
+                  color: _getColorForTab(3),
+                ),
+                label: "Orders",
+                color: _getColorForTab(3)!,
+                onTap: () => _onTabTapped(3),
+              ),
+              _bottomNavItem(
+                icon: Icon(
+                  currentIndex == 4
+                      ? FontAwesomeIcons.userLarge
+                      : FontAwesomeIcons.user,
+                  color: _getColorForTab(4),
+                ),
+                label: "More",
+                color: _getColorForTab(4)!,
+                onTap: () => _onTabTapped(4),
+              ),
+            ],
+          ),
+        ),
+        _buildBorderTop(width: 20),
       ],
     );
   }

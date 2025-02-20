@@ -36,4 +36,28 @@ class SVGIcons {
         colorFilter: ColorFilter.mode(
             Color(0x66FFFFFF), BlendMode.srcIn), // เพิ่ม colorFilter
       );
+
+
+  static Widget transfer(Color? color){
+     return SvgPicture.asset(
+        '$_basePath/transfer/transfer.svg',
+        width: 24.0,
+        height: 24.0,
+        
+              colorFilter: ColorFilter.mode(color!, BlendMode.srcIn), // ใช้สีที่ส่งเข้ามา
+
+     );
+
+
+}
+  static Widget buy(Color? color){
+     return SvgPicture.asset(
+        '$_basePath/buy/buy.svg',
+        width: 24.0,
+        height: 24.0,
+        
+              colorFilter: ColorFilter.mode(color!, BlendMode.srcIn), // ใช้สีที่ส่งเข้ามา
+
+     );
+  }
 }

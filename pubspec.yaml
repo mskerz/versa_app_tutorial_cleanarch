@@ -26,6 +26,10 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.17
+  carousel_slider: ^5.0.0
+  smooth_page_indicator: ^1.2.0+3
+  gradient_borders: ^1.0.1
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:
@@ -40,7 +44,20 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: DBHeaven
+      fonts:
+        - asset: assets/fonts/DBHeaven_Normal.ttf
+        - asset: assets/fonts/DBHeavent_Bold.ttf
+          weight: 700
+        - asset: assets/fonts/DBHeavent_Italic.ttf
+          style: italic
+        - asset: assets/fonts/DBHeavent_Bold_Italic.ttf
+          weight: 700
+          style: italic
   assets:
     - assets/images/
+    - assets/svg/transfer/
+    - assets/svg/buy/
     - assets/svg/coin/  
     - assets/svg/home/

@@ -9,6 +9,7 @@ import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification/notification_success.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_widget.dart';
 
 @RoutePage()
 class NotificationScreen extends ConsumerStatefulWidget {
@@ -31,8 +32,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
     final appTheme = ref.watch(appThemeProvider);
 
     return AppScaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+isVisibleBottomBar: false,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text(
           "การแจ้งเตือน",
           style: GoogleFonts.prompt(
@@ -60,49 +63,52 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
               ))
         ],
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton.icon(
-                icon: Icon(
-                  Icons.checklist,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  notificationNotifier.markAllAsRead();
-                },
-                label: Text(
-                  "Mark all as Read",
-                  style: GoogleFonts.kanit(
+      body: AppBodyWithGredient(
+        content: Column(
+          
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  icon: Icon(
+                    Icons.checklist,
                     color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w500,
+                  ),
+                  onPressed: () {
+                    notificationNotifier.markAllAsRead();
+                  },
+                  label: Text(
+                    "Mark all as Read",
+                    style: GoogleFonts.kanit(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
+              ],
+            ),
+            notifyState.when(
+              initial: () => NotificationInitial(),
+              loading: () => Center(child: CircularProgressIndicator()),
+              success: (notifications) => NotificationSuccess(
+                notifications: notifications,
+                onMarkAsRead: (index) {
+                  notificationNotifier.markAsRead(index);
+                },
+                onDelete: (messageId) {
+                  notificationNotifier.tryRemove(messageId);
+                },
               ),
-            ],
-          ),
-          notifyState.when(
-            initial: () => NotificationInitial(),
-            loading: () => Center(child: CircularProgressIndicator()),
-            success: (notifications) => NotificationSuccess(
-              notifications: notifications,
-              onMarkAsRead: (index) {
-                notificationNotifier.markAsRead(index);
-              },
-              onDelete: (messageId) {
-                notificationNotifier.tryRemove(messageId);
-              },
-            ),
-            failure: (exception) => NotificationFailure(
-              message: exception.message,
-              identifier: exception.identifier,
-            ),
-            empty: () => NotificationEmpty(),
-          )
-          
-        ],
+              failure: (exception) => NotificationFailure(
+                message: exception.message,
+                identifier: exception.identifier,
+              ),
+              empty: () => NotificationEmpty(),
+            )
+            
+          ],
+        ),
       ),
     );
   }

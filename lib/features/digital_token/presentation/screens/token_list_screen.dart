@@ -1,13 +1,15 @@
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/token_provider.dart';
-import 'package:versa_app_tutorial_cleanarch/features/home/presentation/providers/ui_provider.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token/token_search.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token_build.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token/widget.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_background.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/provider/ui_provider.dart';
 
 class TokenListScreen extends ConsumerStatefulWidget {
   const TokenListScreen({super.key});
@@ -16,27 +18,23 @@ class TokenListScreen extends ConsumerStatefulWidget {
   _TokenListScreenState createState() => _TokenListScreenState();
 }
 
-class _TokenListScreenState extends ConsumerState<TokenListScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
+class _TokenListScreenState extends ConsumerState<TokenListScreen> {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final token = TokenInstanceProvider(ref);
+    final tokenNotifier = token.notifier;
     final theme = ref.watch(appThemeProvider);
-    final selectedColor = theme == ThemeMode.dark
+     final selectedColor = theme == ThemeMode.dark
         ? Theme.of(context)
             .elevatedButtonTheme
             .style
@@ -72,10 +70,10 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
 
     Widget buildButton(String label, int index) {
       return Container(
-        padding: const EdgeInsets.all(2),
-        margin: const EdgeInsets.only(top: 10),
+        margin: EdgeInsets.symmetric(horizontal: 5),
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(10),
               backgroundColor: token.selectedButtonIndex == index
                   ? selectedColor
                   : unselectedColor,
@@ -84,7 +82,7 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
                 side: BorderSide(
                     color: token.selectedButtonIndex == index
                         ? Colors.white
-                        : Color(0x4DFFFFFF),
+                        : Color.fromARGB(104, 255, 255, 255),
                     width: token.selectedButtonIndex == index
                         ? 1
                         : 0.8), // ขอบของปุ่ม
@@ -96,8 +94,11 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
             child: Text(
               label,
               style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight:token.selectedButtonIndex == index ?FontWeight.w500 :FontWeight.w300 ,
+                  fontSize: 12,
+                  height: 1.5,
+                  fontWeight: token.selectedButtonIndex == index
+                      ? FontWeight.w500
+                      : FontWeight.w300,
                   color: token.selectedButtonIndex == index
                       ? selectColorLabel
                       : unselectColorLabel),
@@ -108,6 +109,8 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
     return AppScaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         title: Text(
           "Tokens",
@@ -133,53 +136,28 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen>
       ),
       body: AppBodyWithGredient(
         content: Container(
-          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 0.0),
+          TokenSearchBar(onChanged: (query) {
+ 
+            tokenNotifier.autoSearch(query);
+}),
+
               SizedBox(height: 20.0),
-              Container(
-                margin: EdgeInsets.only(left: 20),
-                child: Text("รายการโทเคน",
-                    style: GoogleFonts.prompt(
-                      color: Theme.of(context).primaryColor,
-                      textStyle: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 20),
-                child: Text(
-                  'ชำระเงินก่อนจะได้จัดสรรก่อน',
-                  style: GoogleFonts.prompt(
-                    textStyle: TextStyle(
-                      fontSize: 18.0,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Container(
-                padding: EdgeInsets.all(1),
-                margin: EdgeInsets.only(
-                  top: 5,
-                ),
-                child: Row(
-                  children: [
-                    buildButton("All", 0),
-                    buildButton("Ongoing", 1),
-                    buildButton("Upcoming", 2),
-                    buildButton("Finisned", 3)
-                  ],
-                ),
+              Row(
+                children: [
+                  buildButton("All", 0),
+                  buildButton("Ongoing", 1),
+                  buildButton("Upcoming", 2),
+                  buildButton("Finisned", 3)
+                ],
               ),
               Expanded(
-                  child: buildCardToken(
+                  child: buidToken(
                       context, token.tokenData, token.selectedButtonIndex))
             ],
           ),
