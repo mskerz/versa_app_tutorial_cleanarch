@@ -35,6 +35,8 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
 isVisibleBottomBar: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+                surfaceTintColor: Colors.transparent,
+
         backgroundColor: Colors.transparent,
         title: Text(
           "การแจ้งเตือน",
@@ -64,50 +66,56 @@ isVisibleBottomBar: false,
         ],
       ),
       body: AppBodyWithGredient(
-        content: Column(
-          
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton.icon(
-                  icon: Icon(
-                    Icons.checklist,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  onPressed: () {
-                    notificationNotifier.markAllAsRead();
-                  },
-                  label: Text(
-                    "Mark all as Read",
-                    style: GoogleFonts.kanit(
+
+        content: Container(
+          child: Column(
+            
+            children: [
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    icon: Icon(
+                      Icons.checklist,
                       color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500,
+                    ),
+                    onPressed: () {
+                      notificationNotifier.markAllAsRead();
+                    },
+                    label: Text(
+                      "Mark all as Read",
+                      style: GoogleFonts.kanit(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
+                ],
+              ),
+              
+          
+              notifyState.when(
+                initial: () => NotificationInitial(),
+                loading: () => Center(child: CircularProgressIndicator()),
+                success: (notifications) => NotificationSuccess(
+                  notifications: notifications,
+                  onMarkAsRead: (index) {
+                    notificationNotifier.markAsRead(index);
+                  },
+                  onDelete: (messageId) {
+                    notificationNotifier.tryRemove(messageId);
+                  },
                 ),
-              ],
-            ),
-            notifyState.when(
-              initial: () => NotificationInitial(),
-              loading: () => Center(child: CircularProgressIndicator()),
-              success: (notifications) => NotificationSuccess(
-                notifications: notifications,
-                onMarkAsRead: (index) {
-                  notificationNotifier.markAsRead(index);
-                },
-                onDelete: (messageId) {
-                  notificationNotifier.tryRemove(messageId);
-                },
-              ),
-              failure: (exception) => NotificationFailure(
-                message: exception.message,
-                identifier: exception.identifier,
-              ),
-              empty: () => NotificationEmpty(),
-            )
-            
-          ],
+                failure: (exception) => NotificationFailure(
+                  message: exception.message,
+                  identifier: exception.identifier,
+                ),
+                empty: () => NotificationEmpty(),
+              )
+              
+            ],
+          ),
         ),
       ),
     );

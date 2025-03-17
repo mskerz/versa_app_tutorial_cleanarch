@@ -49,10 +49,10 @@ class GradientAppColors {
     end: Alignment.bottomLeft,
   );
 
-  static const Gradient gradientVersaDarkBlackground = RadialGradient(
+  static const Gradient gradientVersaDarkBlackground = LinearGradient(
     colors: [
         Color(0xFF2F5CFF), // #2F5CFF
-                Color.fromRGBO(141, 27, 186, 0.97)
+                Color.fromRGBO(141, 27, 186, 0.6)
     ],
   );
 

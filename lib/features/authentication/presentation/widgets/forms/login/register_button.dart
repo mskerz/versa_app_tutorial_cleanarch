@@ -21,12 +21,12 @@ class SignUpButton extends StatelessWidget {
           label: Text(
             "Sign Up",
             style: GoogleFonts.poppins(
-                color: Theme.of(context).colorScheme.secondary),
+                color: Theme.of(context).scaffoldBackgroundColor),
           ),
           icon: Icon(Icons.create,
-              color: Theme.of(context).colorScheme.onPrimary),
+              color: Theme.of(context).scaffoldBackgroundColor),
         ),
       ),
     );
   }
-}
+} 

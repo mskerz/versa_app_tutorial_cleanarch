@@ -14,6 +14,10 @@ class FormatCurrency {
     final formatCurrency = NumberFormat.simpleCurrency(locale: locale);
     return formatCurrency.format(double.parse(formattedAmount));
   }
+ 
+  String formatInt(int amount){
+    return NumberFormat.decimalPattern(locale).format(amount);
+  }
 }
 
 final format = FormatCurrency(locale: 'th_TH');

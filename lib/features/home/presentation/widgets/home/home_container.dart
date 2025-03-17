@@ -79,7 +79,7 @@ class HomeContainer extends ConsumerWidget {
             height: 10,
           ),
           Container(
-            margin: EdgeInsets.only(left: 40,bottom: 10),
+            margin: EdgeInsets.only(left: 40,right: 40, bottom: 10),
             child: UserContainerState(
               instance: auth,
             ),
@@ -105,7 +105,7 @@ class HomeContainer extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 10,left: 10),
                   child: Text(
                     "Token",
                     style: GoogleFonts.poppins(

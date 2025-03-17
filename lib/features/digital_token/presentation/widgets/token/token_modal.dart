@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/utils/format/currency/currency.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/utils/format/datetime/datetime.dart';
 
-Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
+Widget buildTokenModalSheet(Token tokenItem,BuildContext context) => DraggableScrollableSheet(
       initialChildSize: 0.6,
       minChildSize: 0.6,
       maxChildSize: 1,
       builder: (_, controller) {
-        DateTimeTH dateTimeTH = DateTimeTH();
 
         return Container(
           padding: EdgeInsets.all(20),
@@ -40,10 +40,16 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                     SizedBox(
                       width: 5,
                     ),
-                    Text(
-                      tokenItem.name,
-                      style: GoogleFonts.prompt(
-                          fontWeight: FontWeight.bold, fontSize: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tokenItem.name,
+                          style: GoogleFonts.prompt(
+                              fontWeight: FontWeight.w600, fontSize: 20),
+                        ),
+                        Text("By ${tokenItem.companyName}"),
+                      ],
                     )
                   ],
                 ),
@@ -61,7 +67,7 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                     Text(
                       "ประเภทของโทเคน",
                       style: GoogleFonts.prompt(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Spacer(),
                     Text(
@@ -70,8 +76,9 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                           : 'โทเคนเพื่อการใช้ประโยชน์',
                       style: GoogleFonts.prompt(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange),
+                          fontWeight: FontWeight.w400,
+                           color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200)
+                          ),
                     ),
                   ],
                 ),
@@ -95,15 +102,49 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                     Text(
                       "ราคาโทเคนต่อหน่วย",
                       style: GoogleFonts.prompt(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Spacer(),
                     Text(
                       '${tokenItem.tokenPrice.toStringAsFixed(2)} THB/${tokenItem.symbol}',
                       style: GoogleFonts.prompt(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange),
+                          fontWeight: FontWeight.w400,
+                           color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200)
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: Colors.black12,
+              ),
+                Container(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.dollarSign,
+                      size: 18,
+                      color: Colors.orange,
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      "จำนวนโทเคนทั้งหมด",
+                      style: GoogleFonts.prompt(
+                          fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    Spacer(),
+                    Text(
+                      '${format.formatInt(tokenItem.totalSupply)} ${tokenItem.symbol}',
+                      style: GoogleFonts.prompt(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                           color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200)
+                          ),
                     ),
                   ],
                 ),
@@ -126,22 +167,22 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                       width: 15,
                     ),
                     Text(
-                      "จองซื้อและชำระเงิน",
+                      "ระยะเวลาในการจองซื้อ",
                       style: GoogleFonts.prompt(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Spacer(),
                     Column(
                       children: [
                         Text(
-                          'ตั้งแต่ ${dateTimeTH.formatStringDate(tokenItem.startDate)}',
+                          'ตั้งแต่ ${datetime.formatStringDate(tokenItem.startDate)}',
                           style: GoogleFonts.prompt(
-                              fontSize: 16, color: Colors.grey),
+                              fontSize: 16,  color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200)),
                         ),
                         Text(
-                          'ถึง ${dateTimeTH.formatStringDate(tokenItem.endDate)}',
+                          'ถึง ${datetime.formatStringDate(tokenItem.endDate)}',
                           style: GoogleFonts.prompt(
-                              fontSize: 16, color: Colors.grey),
+                              fontSize: 16, color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200)),
                         ),
                       ],
                     )
@@ -169,13 +210,13 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
                     Text(
                       "ระยะเวลาโครงการ",
                       style: GoogleFonts.prompt(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Spacer(),
                     Text(
                       '${tokenItem.projectPeriod} ปี',
                       style:
-                          GoogleFonts.prompt(fontSize: 16, color: Colors.grey),
+                          GoogleFonts.prompt(fontSize: 16,  color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200)),
                     ),
                   ],
                 ),
@@ -183,52 +224,32 @@ Widget buildTokenModalSheet(Token tokenItem) => DraggableScrollableSheet(
               Divider(
                 color: Colors.black12,
               ),
-              Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "รายละเอียดเกี่ยวกับโทเคน",
-                        style: GoogleFonts.prompt(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      tokenItem.description,
-                      textAlign: TextAlign.justify,
-                    )
-                  ],
-                ),
-              ),
-            /*  Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
-                child: Column(
-                  children: [
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "Whitepaper",
-                          style:
-                              GoogleFonts.prompt(fontWeight: FontWeight.bold),
-                        )),
-                    Text(tokenItem.whitepaper.overview),
-                    Column(
-                      children: [
-                        Text(tokenItem.whitepaper.problemStatement[0]),
-                        Text(tokenItem.whitepaper.problemStatement[1]),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(tokenItem.whitepaper.solution[0]),
-                        Text(tokenItem.whitepaper.solution[1]),
-                      ],
-                    ),
-                  ],
-                ),
-              ) */
+              // Container(
+              //   margin: EdgeInsets.only(top: 10, bottom: 10),
+              //   child: Column(
+              //     children: [
+              //       Align(
+              //         alignment: Alignment.topLeft,
+              //         child: Text(
+              //           "รายละเอียดเกี่ยวกับโทเคน",
+              //           style: GoogleFonts.kanit(
+              //               fontSize: 16, fontWeight: FontWeight.w500),
+              //         ),
+              //       ),
+              //       Text(
+              //         tokenItem.description,
+              //         style: GoogleFonts.prompt(
+              //           fontSize: 14,
+              //           color: Theme.of(context).scaffoldBackgroundColor.withAlpha(200 )
+              //         ),
+              //         textAlign: TextAlign.justify,
+              //       )
+              //     ],
+              //   ),
+              // ),
+             
+             
+              ElevatedButton.icon(onPressed: (){}, icon: Icon(FontAwesomeIcons.newspaper,color: Theme.of(context).primaryColor,), label: Text("เอกสาร Whitepaper",style: GoogleFonts.kanit(fontSize: 16),))
             ],
           ),
         );

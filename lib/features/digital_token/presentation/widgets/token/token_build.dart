@@ -31,24 +31,26 @@ import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_mo
 
   if (filterToken.isEmpty) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.generating_tokens_outlined,
-            size: 50,
-            color: Colors.grey[500],
-          ),
-          SizedBox(height: 10),
-          Text(
-            'ยังไม่มีรายการโทเคน',
-            style: GoogleFonts.prompt(
-              fontSize: 18,
+      child: Container(
+        margin: EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.generating_tokens_outlined,
+              size: 50,
               color: Colors.grey[500],
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            Text(
+              'ยังไม่มีรายการโทเคน',
+              style: GoogleFonts.prompt(
+                fontSize: 18,
+                color: Colors.grey[500],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

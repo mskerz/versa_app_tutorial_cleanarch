@@ -62,6 +62,7 @@ class AppTheme {
         brightness: Brightness.dark,
         fontFamily: AppTextStyles.fontFamily,
         primaryColor: AppColors.primary,
+        
         tabBarTheme: TabBarTheme(
           labelColor: AppColors.primary, // กำหนดสีของแท็บที่เลือก
           tabAlignment: TabAlignment.start,
@@ -93,7 +94,7 @@ class AppTheme {
             secondaryContainer: AppColors.lightSkyBlue,
             error: AppColors.error,
             inversePrimary: AppColors.primary),
-        textTheme: TextThemes.textTheme,
+        textTheme: TextThemes.darkTextTheme,
         primaryTextTheme: TextThemes.darkTextTheme,
         inputDecorationTheme:
             InputDecorationTheme(fillColor: AppColors.filledTextFleidColorDark),
@@ -156,7 +157,7 @@ class AppTheme {
         scaffoldBackgroundColor: AppColors.primary,
         brightness: Brightness.light,
         primaryColor: AppColors.black,
-        textTheme: TextThemes.textTheme,
+        textTheme: TextThemes.primaryTextTheme,
         primaryTextTheme: TextThemes.primaryTextTheme,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: AppColors.filledTextFleidColorLight),
@@ -188,6 +189,7 @@ class AppTheme {
           surfaceTintColor: Color.fromARGB(255, 189, 189, 189),
           splashFactory: NoSplash.splashFactory,
         )),
+        
         colorScheme: const ColorScheme.light(
             primary: AppColors.backgroundDarkBlue,
             onPrimary: AppColors.primary,

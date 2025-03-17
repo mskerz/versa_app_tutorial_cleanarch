@@ -6,14 +6,17 @@ import 'package:versa_app_tutorial_cleanarch/shared/theme/extension/app_theme_gr
 class AppBodyWithGredient extends StatelessWidget {
   final Widget? content;
   final bool? removeFixedPadding;
-  const AppBodyWithGredient({super.key, this.content,this.removeFixedPadding=false});
+  const AppBodyWithGredient({super.key, this.content, this.removeFixedPadding = false});
 
   @override
   Widget build(BuildContext context) {
     final gradient = Theme.of(context).extension<GradientBackgroundExtention>();
+    
     return Stack(
+      // ตั้งค่า fit เป็น StackFit.expand เพื่อให้ Stack ขยายเต็มพื้นที่
+      fit: StackFit.expand,
       children: [
-        // Positioned อยู่ด้านหลัง content
+        // ส่วนของพื้นหลัง Gradient แสดงเป็นชั้นล่างสุด (index 0)
         Positioned(
           top: -28,
           left: 177,
@@ -28,17 +31,15 @@ class AppBodyWithGredient extends StatelessWidget {
               filter: ImageFilter.blur(sigmaY: 250, sigmaX: 250),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(1),
+                  color: Colors.black.withAlpha(50),
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
             ),
           ),
         ),
-        // เพิ่ม `SizedBox` สำหรับพื้นที่ว่าง
-        SizedBox(
-          height: 130,
-        ),
+        
+        // Gradient ด้านล่าง (index 1)
         Positioned(
           top: 612,
           left: -64,
@@ -63,14 +64,19 @@ class AppBodyWithGredient extends StatelessWidget {
             ),
           ),
         ),
-        // content อยู่ด้านบนสุด
+        
+        // ตัด SizedBox ที่ไม่จำเป็นออก เพราะไม่มีผลต่อการแสดงผลใน Stack
+        
+        // Content จะถูกวางเป็นชั้นบนสุด (index 2)
+        // ใช้ Positioned.fill เพื่อให้ Container ขยายเต็มพื้นที่ของ Stack
         Container(
-          height:   MediaQuery.of(context).size.height,
-          padding: removeFixedPadding! ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15),
+          // ไม่ต้องกำหนด height เพราะใช้ Positioned.fill
+          padding: removeFixedPadding! 
+              ? EdgeInsets.only(top: 0) 
+              : EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15),
           decoration: BoxDecoration(
-            color: Theme.of(context)
-                .scaffoldBackgroundColor
-                .withAlpha(100), 
+            // ให้มั่นใจว่า background เป็น transparent
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(16),
           ),
           child: content ?? const SizedBox(),

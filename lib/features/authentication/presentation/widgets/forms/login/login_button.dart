@@ -22,7 +22,7 @@ class SignInButton extends ConsumerWidget {
           backgroundColor: Theme.of(context).primaryColor,
           disabledBackgroundColor: Colors.grey,
         ),
-        icon: Icon(Icons.login, color: Theme.of(context).primaryColor),
+        icon: Icon(Icons.login, color: Theme.of(context).scaffoldBackgroundColor),
         label: Text(
           'Sign In',
           style: GoogleFonts.poppins(color: Theme.of(context).scaffoldBackgroundColor),

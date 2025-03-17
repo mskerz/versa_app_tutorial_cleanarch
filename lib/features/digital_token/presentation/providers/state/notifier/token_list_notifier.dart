@@ -28,10 +28,9 @@ class TokenNotifier extends StateNotifier<TokenState> {
       orElse: () => 0, // กรณีอื่นๆ คืนค่าเป็น 0
     );
     final response =
-        await tokenRepository.fetchToken(skip: page*ITEM_PER_PAGE);
+        await tokenRepository.fetchToken(skip: page * ITEM_PER_PAGE);
     updateStateFromResponse(response);
     print("Page :$page");
-   
   }
 
   void updateStateFromResponse(
@@ -72,26 +71,33 @@ class TokenNotifier extends StateNotifier<TokenState> {
 
 // ฟังก์ชันค้นหาตามคำที่กรอกใน search
 
-  void autoSearch(String search)async {
-    state.maybeWhen(
-      success: (tokens, page, total)async {
-        if (search.isEmpty) {
-         await fetchToken();
-        } else {
-          final filteredTokens = tokens
-              .where((token) =>
-                  token.name.toLowerCase().contains(search.toLowerCase()) ||
-                  token.symbol.toLowerCase().contains(search.toLowerCase()))
-              .toList();
+  void resetSearch() async {
+    state = TokenState.initial();
+    await fetchToken();
+  }
 
-          if (filteredTokens.isEmpty) {
-            state = const TokenState.empty();
-          } else {
-            state = TokenState.success(filteredTokens, page, total);
-          }
+  void autoSearch(String search) async {
+    state.maybeWhen(
+      success: (tokens, page, total) async {
+        if(search.isEmpty){
+          resetSearch();
+        }
+        final filteredTokens = tokens
+            .where((token) =>
+                token.name.toLowerCase().contains(search.toLowerCase()) ||
+                token.symbol.toLowerCase().contains(search.toLowerCase()))
+            .toList();
+
+        if (filteredTokens.isNotEmpty) {
+          state = TokenState.success(filteredTokens, page, total);
+        } else {
+         
+          state = TokenState.success([], page, total);
         }
       },
-      orElse: () {},
+      orElse: () {
+        state = TokenState.initial();
+      },
     );
   }
 }

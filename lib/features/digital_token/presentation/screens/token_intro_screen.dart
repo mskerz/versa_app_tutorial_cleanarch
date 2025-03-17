@@ -120,7 +120,7 @@ class TokenIntroScreen extends ConsumerWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color:
-                              Theme.of(context).colorScheme.onPrimary),
+                              Theme.of(context).colorScheme.onPrimary.withAlpha(90)),
                       margin: const EdgeInsets.only(bottom: 20),
                       child: IconButton(
                         color: Colors.black, // กำหนดสีที่ต้องการที่นี่
@@ -134,7 +134,7 @@ class TokenIntroScreen extends ConsumerWidget {
                             barrierColor: Colors.transparent,
                             context: context,
                             builder: (context) =>
-                                buildTokenModalSheet(tokenItem)),
+                                buildTokenModalSheet(tokenItem,context)),
                         icon: Icon(FontAwesomeIcons.arrowDown,
                             color: Theme.of(context)
                                 .primaryColor // กำหนดสีที่ต้องการที่นี่

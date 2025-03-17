@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +33,7 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen> {
     final token = TokenInstanceProvider(ref);
     final tokenNotifier = token.notifier;
     final theme = ref.watch(appThemeProvider);
-     final selectedColor = theme == ThemeMode.dark
+    final selectedColor = theme == ThemeMode.dark
         ? Theme.of(context)
             .elevatedButtonTheme
             .style
@@ -142,11 +141,11 @@ class _TokenListScreenState extends ConsumerState<TokenListScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 0.0),
-          TokenSearchBar(onChanged: (query) {
- 
-            tokenNotifier.autoSearch(query);
-}),
-
+              TokenSearchBar(onReset: () {
+                tokenNotifier.resetSearch();
+              }, onChanged: (query) {
+                tokenNotifier.autoSearch(query);
+              }),
               SizedBox(height: 20.0),
               Row(
                 children: [
