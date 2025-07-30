@@ -22,9 +22,6 @@ class NotificationScreen extends ConsumerStatefulWidget {
 class _NotificationScreenState extends ConsumerState<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
-    // ตัวอย่างข้อมูลการแจ้งเตือน
-
-    // ดึงสถานะการอ่านจาก provider
     final notifyState = ref.watch(notificationStateProvider);
     final notificationNotifier = ref.read(notificationStateProvider.notifier);
 
@@ -32,11 +29,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
     final appTheme = ref.watch(appThemeProvider);
 
     return AppScaffold(
-isVisibleBottomBar: false,
+      isVisibleBottomBar: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-                surfaceTintColor: Colors.transparent,
-
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         title: Text(
           "การแจ้งเตือน",
@@ -53,25 +49,23 @@ isVisibleBottomBar: false,
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                appThemeNotifier.toggleTheme();
-                print("Changed! theme");
-              },
-              icon: Icon(
-                appTheme == ThemeMode.dark
-                    ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
-                    : Icons.light_mode,
-                color: Theme.of(context).primaryColor,
-              ))
+            onPressed: () {
+              appThemeNotifier.toggleTheme();
+              print("Changed! theme");
+            },
+            icon: Icon(
+              appTheme == ThemeMode.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+              color: Theme.of(context).primaryColor,
+            ),
+          )
         ],
       ),
       body: AppBodyWithGredient(
-
         content: Container(
           child: Column(
-            
             children: [
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -93,8 +87,6 @@ isVisibleBottomBar: false,
                   ),
                 ],
               ),
-              
-          
               notifyState.when(
                 initial: () => NotificationInitial(),
                 loading: () => Center(child: CircularProgressIndicator()),
@@ -112,8 +104,7 @@ isVisibleBottomBar: false,
                   identifier: exception.identifier,
                 ),
                 empty: () => NotificationEmpty(),
-              )
-              
+              ),
             ],
           ),
         ),
