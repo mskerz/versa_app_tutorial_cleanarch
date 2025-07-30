@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token_modal.dart';
+import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/widgets/token/token_modal.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/token/token_model.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme_extension.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/extension/app_theme_gradient_extension.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_background.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
 
 @RoutePage()
 class TokenIntroScreen extends ConsumerWidget {
@@ -16,8 +18,12 @@ class TokenIntroScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isSoldOut = tokenItem.currentRaised == tokenItem.fundingGoal;
-    bool isComing = tokenItem.status == "coming";
-    String amountStatus = isSoldOut ? 'ขายหมดแล้ว' : 'ยังเปิดจองอยู่';
+    bool isOpen = tokenItem.status == "ongoing";
+    bool isComing = tokenItem.status == "upcoming";
+    bool isClosed = tokenItem.status == "finished";
+    String labelStatus =isOpen ?"เปิดจอง" : isComing ?"ใกล้เปิดจอง" : "ปิดจองแล้ว" ;
+    Color colorStatus =isOpen? Colors.green :isComing? Colors.orange:Colors.blueGrey; 
+     String amountStatus = isSoldOut ? 'ขายหมดแล้ว' : 'ยังเปิดจองอยู่';
     if (tokenItem == null) {
       return Container();
     }
@@ -25,44 +31,41 @@ class TokenIntroScreen extends ConsumerWidget {
         Theme.of(context).extension<GradientBackgroundExtention>()?.gradientBackground;
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final theme = ref.watch(appThemeProvider);
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradient,
-      ),
-      child: Scaffold(
-        extendBodyBehindAppBar: true, // ทำให้เนื้อหาทับแอปบาร์
-
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0, // ไม่มีเงา
-          leading: Container(
-            margin: const EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios,
-                  color: Theme.of(context).primaryColor),
-              onPressed: () {
-                context.router.back();
-              },
-            ),
-          ),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: IconButton(
-                  onPressed: () {
-                    appThemeNotifier.toggleTheme();
-                  },
-                  icon: Icon(
-                    theme == ThemeMode.dark
-                        ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
-                        : Icons.light_mode,
-                    color: Theme.of(context).primaryColor,
-                  )),
-            )
-          ],
-        ),
+    return AppScaffold(
+      isVisibleBottomBar: false,
+      
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        body: Container(
+        elevation: 0, // ไม่มีเงา
+        leading: Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Theme.of(context).primaryColor),
+            onPressed: () {
+              context.router.back();
+            },
+          ),
+        ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: IconButton(
+                onPressed: () {
+                  appThemeNotifier.toggleTheme();
+                },
+                icon: Icon(
+                  theme == ThemeMode.dark
+                      ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
+                      : Icons.light_mode,
+                  color: Theme.of(context).primaryColor,
+                )),
+          )
+        ],
+      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: AppBodyWithGredient(
+        content: Container(
           margin: EdgeInsets.only(top: 250),
           child: Center(
             child: Column(
@@ -98,48 +101,18 @@ class TokenIntroScreen extends ConsumerWidget {
                 ),
                 Text(
                   '${tokenItem.name}',
-                  style: GoogleFonts.kanit(fontSize: 25, color: Colors.white),
+                  style: GoogleFonts.kanit(fontSize: 25, color: Theme.of(context).primaryColor),
                 ),
-                isSoldOut
-                    ? Container(
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Text(
-                          amountStatus,
-                          style: GoogleFonts.kanit(color: Colors.white),
-                        ))
-                    : !isComing
-                        ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.green, // Set the background color
-                              foregroundColor:
-                                  Colors.white, // Set the text color
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5), // ลด padding
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              "เปิดจอง",
-                              style: GoogleFonts.prompt(color: Colors.white),
-                            ))
-                        : Container(
-                            margin: EdgeInsets.only(top: 20),
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text(
-                              "ใกล้เปิดจอง",
-                              style: GoogleFonts.kanit(color: Colors.white),
-                            )),
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: colorStatus,
+                    borderRadius: BorderRadius.circular(12)
+                  ),
+                  child: Text(labelStatus,style: GoogleFonts.prompt(fontSize: 12, color: Colors.white),),
+                ),
                 Spacer(), // This will push the ElevatedButton to the bottom
-
+            
                 // GestureDetector + ElevatedButton
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -147,7 +120,7 @@ class TokenIntroScreen extends ConsumerWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color:
-                              Theme.of(context).colorScheme.onPrimary),
+                              Theme.of(context).colorScheme.onPrimary.withAlpha(90)),
                       margin: const EdgeInsets.only(bottom: 20),
                       child: IconButton(
                         color: Colors.black, // กำหนดสีที่ต้องการที่นี่
@@ -161,7 +134,7 @@ class TokenIntroScreen extends ConsumerWidget {
                             barrierColor: Colors.transparent,
                             context: context,
                             builder: (context) =>
-                                buildTokenModalSheet(tokenItem)),
+                                buildTokenModalSheet(tokenItem,context)),
                         icon: Icon(FontAwesomeIcons.arrowDown,
                             color: Theme.of(context)
                                 .primaryColor // กำหนดสีที่ต้องการที่นี่

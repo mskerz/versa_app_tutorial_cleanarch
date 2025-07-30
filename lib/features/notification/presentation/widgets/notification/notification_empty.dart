@@ -13,27 +13,19 @@ class NotificationEmpty extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center, // ตรงกลางแนวนอน
         mainAxisSize: MainAxisSize.min, // ให้ Column มีขนาดเท่าที่จำเป็น
         children: [
+         
+          Icon(
+                      Icons.notifications_off,
+                      color: Theme.of(context).primaryColor.withAlpha(50),
+                      size: 60,
+                    ),
           SizedBox(
-            height: 150,
-          ),
-          Container(
-            padding: EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-      borderRadius: BorderRadius.circular(100)
-            ),
-              child: Icon(
-            Icons.notifications_off,
-            color: Theme.of(context).colorScheme.onPrimaryFixed,
-            size: 100,
-          )),
-          SizedBox(
-            height: 20,
+            height: 10,
           ),
           Text(
             "No notifications.",
             style: GoogleFonts.prompt(
-                color: Theme.of(context).colorScheme.primaryContainer, fontSize: 25,fontWeight: FontWeight.w500),
+                color: Theme.of(context).primaryColor.withAlpha(80), fontSize: 18,fontWeight: FontWeight.w500),
           ),
         ],
       ),

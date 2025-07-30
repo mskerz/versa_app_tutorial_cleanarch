@@ -10,7 +10,7 @@ _$TokenImpl _$$TokenImplFromJson(Map<String, dynamic> json) => _$TokenImpl(
       symbol: json['symbol'] as String? ?? '',
       name: json['name'] as String? ?? '',
       status: json['status'] as String? ?? '',
-      companyName: json['companyName'] as String? ?? '',
+      companyName: json['company'] as String? ?? '',
       tokenType: json['tokenType'] as String? ?? '',
       category: json['category'] as String? ?? '',
       totalSupply: (json['totalSupply'] as num?)?.toInt() ?? 0,

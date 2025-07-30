@@ -8,6 +8,8 @@ import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification/notification_initial.dart';
 import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/notification/notification_success.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_scaffold.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_widget.dart';
 
 @RoutePage()
 class NotificationScreen extends ConsumerStatefulWidget {
@@ -20,18 +22,18 @@ class NotificationScreen extends ConsumerStatefulWidget {
 class _NotificationScreenState extends ConsumerState<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
-    // ตัวอย่างข้อมูลการแจ้งเตือน
-
-    // ดึงสถานะการอ่านจาก provider
     final notifyState = ref.watch(notificationStateProvider);
     final notificationNotifier = ref.read(notificationStateProvider.notifier);
 
     final appThemeNotifier = ref.read(appThemeProvider.notifier);
     final appTheme = ref.watch(appThemeProvider);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+    return AppScaffold(
+      isVisibleBottomBar: false,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         title: Text(
           "การแจ้งเตือน",
           style: GoogleFonts.prompt(
@@ -47,62 +49,65 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                appThemeNotifier.toggleTheme();
-                print("Changed! theme");
-              },
-              icon: Icon(
-                appTheme == ThemeMode.dark
-                    ? Icons.dark_mode // ถ้าธีมเป็น dark ให้ใช้ dark_mode
-                    : Icons.light_mode,
-                color: Theme.of(context).primaryColor,
-              ))
+            onPressed: () {
+              appThemeNotifier.toggleTheme();
+              print("Changed! theme");
+            },
+            icon: Icon(
+              appTheme == ThemeMode.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+              color: Theme.of(context).primaryColor,
+            ),
+          )
         ],
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+      body: AppBodyWithGredient(
+        content: Container(
+          child: Column(
             children: [
-              TextButton.icon(
-                icon: Icon(
-                  Icons.checklist,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  notificationNotifier.markAllAsRead();
-                },
-                label: Text(
-                  "Mark all as Read",
-                  style: GoogleFonts.poppins(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    icon: Icon(
+                      Icons.checklist,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: () {
+                      notificationNotifier.markAllAsRead();
+                    },
+                    label: Text(
+                      "Mark all as Read",
+                      style: GoogleFonts.kanit(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
+                ],
+              ),
+              notifyState.when(
+                initial: () => NotificationInitial(),
+                loading: () => Center(child: CircularProgressIndicator()),
+                success: (notifications) => NotificationSuccess(
+                  notifications: notifications,
+                  onMarkAsRead: (index) {
+                    notificationNotifier.markAsRead(index);
+                  },
+                  onDelete: (messageId) {
+                    notificationNotifier.tryRemove(messageId);
+                  },
                 ),
+                failure: (exception) => NotificationFailure(
+                  message: exception.message,
+                  identifier: exception.identifier,
+                ),
+                empty: () => NotificationEmpty(),
               ),
             ],
           ),
-          notifyState.when(
-            initial: () => NotificationInitial(),
-            loading: () => Center(child: CircularProgressIndicator()),
-            success: (notifications) => NotificationSuccess(
-              notifications: notifications,
-              onMarkAsRead: (index) {
-                notificationNotifier.markAsRead(index);
-              },
-              onDelete: (messageId) {
-                notificationNotifier.tryRemove(messageId);
-              },
-            ),
-            failure: (exception) => NotificationFailure(
-              message: exception.message,
-              identifier: exception.identifier,
-            ),
-            empty: () => NotificationEmpty(),
-          )
-          
-        ],
+        ),
       ),
     );
   }

@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/auth_provider.dart';
-import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/providers/state/auth_state.dart';
-import 'package:versa_app_tutorial_cleanarch/routes/app_route.dart';
-import 'package:versa_app_tutorial_cleanarch/shared/constants/assets_app.dart';
+import 'package:versa_app_tutorial_cleanarch/features/authentication/presentation/widgets/form_login.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_theme.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_background.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/widgets/core/app/app_widget.dart';
 
 @RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {
@@ -19,79 +18,36 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool obscurePassword = true;
-
+ 
   @override
   void initState() {
     super.initState();
-    // emailController.text = "johndoe@example.com";
-    // passwordController.text = "securePassword123";
+    emailController.text = "johndoe@example.com";
+    passwordController.text = "securePassword123";
 
-    emailController.text = "testuser@example.com";
+    // emailController.text = "testuser@example.com";
 
-    passwordController.text = "TestPassword123";
+    // passwordController.text = "TestPassword123";
   }
 
   // สร้างฟังก์ชันสำหรับแสดง error snackbar
 
   @override
   Widget build(BuildContext context) {
-    final authNotifier = ref.read(authNotifierProvider.notifier);
-        final themeProvider = ref.read(appThemeProvider);
-
+    final auth = AuthProviderInstance(ref);
     final themeNotifier = ref.read(appThemeProvider.notifier);
+
+     final themeProvider = ref.read(appThemeProvider);
+
+
     // ฟังการเปลี่ยนแปลงสถานะของ loginNotifierProvider
-
-    ref.listen(authNotifierProvider, (previous, next) {
-      // เมื่อสถานะเปลี่ยนเป็น failure ให้แสดง snackbar แสดงข้อผิดพลาด
-      if (next is Failure) {
-        if (next.exception.statusCode == 400) {
-          authNotifier.showErrorSnackBar(
-              "Your email or password is incorrect. Please try again.",
-              context);
-        }
-      }
-
-      // เมื่อสถานะเป็น success (ล็อกอินสำเร็จ)
-      else if (next is Success) {
-        // แสดงบาร์การโหลด (Circle Indication Bar)
-        showDialog(
-          context: context,
-          barrierDismissible: false, // ไม่ให้ปิด Dialog โดยการแตะนอก
-          builder: (context) {
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: 100, vertical: 300),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: Colors.deepOrangeAccent,
-                ),
-              ),
-            );
-          },
-        );
-
-        // หน่วงเวลา 2 วินาที ก่อนที่จะทำการนำทาง
-        Future.delayed(const Duration(seconds: 2), () {
-          // ปิด Dialog เมื่อหน่วงเวลาหมด
-          if (context.mounted) {
-            // ปิด Dialog เมื่อหน่วงเวลาหมด
-            Navigator.of(context).pop();
-
-            // ทำการนำทางไปยังหน้า Home
-            context.router.replace(const HomeRoute());
-          }
-        });
-      }
-    });
-
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+  
+    return AppScaffold(
+      isVisibleBottomBar: false,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: BackButton(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).primaryColor,
           onPressed: () {
             context.router.back();
           },
@@ -110,184 +66,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Image.asset(
-               LIGHT_LOGO_IMG,
-               width: 300,
-              ),
-            ),
-            // แสดง error message ถ้ามี
-            // Container(
-            //   padding: const EdgeInsets.all(8),
-            //   margin: const EdgeInsets.only(bottom: 16),
-            //   decoration: BoxDecoration(
-            //     color: Colors.red.shade100,
-            //     borderRadius: BorderRadius.circular(4),
-            //   ),
-            //   child: Row(
-            //     children: [
-            //       const Icon(Icons.error_outline, color: Colors.red),
-            //       const SizedBox(width: 8),
-            //       Expanded(
-            //         child: Text(
-            //           loginState.errorMessage ?? 'Error',
-            //           style: const TextStyle(color: Colors.red),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                labelStyle:   TextStyle(color:Theme.of(context).primaryColor),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:   BorderSide(color:Theme.of(context).primaryColor),
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                        BorderSide(color:Theme.of(context).primaryColor, width: 2.0),
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
-              style:   GoogleFonts.prompt(color:Theme.of(context).primaryColor),
-              cursorColor:Theme.of(context).primaryColor,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle:   TextStyle(color:Theme.of(context).primaryColor),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:   BorderSide(color:Theme.of(context).primaryColor),
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                        BorderSide(color:Theme.of(context).primaryColor),
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscurePassword = !obscurePassword;
-                    });
-                  },
-                ),
-              ),
-              obscureText: obscurePassword,
-              style:   TextStyle(color:Theme.of(context).primaryColor),
-              cursorColor:  Theme.of(context).primaryColor,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5),
-              child: Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        print("Forget Password Button");
-                      },
-                      child: Text(
-                        "Forget Password ?",
-                        style: GoogleFonts.prompt(color:Theme.of(context).primaryColor),
-                      )),
-                ],
-              ),
-            ),
-            SizedBox(height: 5),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  final email = emailController.text.trim();
-                  final password = passwordController.text.trim();
-
-                  // ตรวจสอบว่า email หรือ password ว่าง
-                  if (email.isEmpty || password.isEmpty) {
-                    authNotifier.showErrorSnackBar(
-                        'Please fill in both email and password', context);
-                    return;
-                  }
-
-                  await authNotifier.signin(email, password);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor:   Theme.of(context).primaryColor,
-                  disabledBackgroundColor: Colors.grey,
-                ),
-                icon: Icon(Icons.login,color: themeProvider == ThemeMode.dark ? Colors.black:Colors.white,),
-                label: Text(
-                  'Sign In',
-                  style: GoogleFonts.prompt(color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
-            ),
-            const SizedBox(height: 5),
-
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Expanded(
-                    child: Divider(
-                      color: Colors.black38,
-                      thickness: 1, // ความหนาของเส้น
-                    ),
-                  ),
-                  Text(
-                    " or ",
-                    style: GoogleFonts.prompt(
-                      color: Colors.black38,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      color: Colors.black38,
-                      thickness: 1, // ความหนาของเส้น
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    context.router.push(RegisterRoute());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  label: Text(
-                    "Sign Up",
-                    style: GoogleFonts.kanit(color: Theme.of(context).colorScheme.secondary),
-                  ),
-                  icon: Icon(Icons.create,color: Theme.of(context).colorScheme.onPrimary ,),
-                ),
-              ),
-            )
-          ],
-        ),
+      body: AppBodyWithGredient(
+        content: SignInForm(
+          emailController: emailController,
+          passwordController: passwordController,
+          instance:auth ,
+        )
+     
+     
       ),
     );
   }

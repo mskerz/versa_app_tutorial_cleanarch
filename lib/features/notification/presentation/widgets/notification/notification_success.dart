@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:versa_app_tutorial_cleanarch/features/digital_token/presentation/providers/token_provider.dart';
+import 'package:versa_app_tutorial_cleanarch/features/notification/presentation/widgets/components/notification_item_card.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/domain/models/notify/notify_model.dart';
 
 class NotificationSuccess extends ConsumerStatefulWidget {
@@ -26,81 +26,24 @@ class _NotificationSuccessState extends ConsumerState<NotificationSuccess> {
   Widget build(BuildContext context) {
     final tokenNotifier = ref.watch(tokenNotifierProvider.notifier);
     return Expanded(
-      child: ListView.builder(
-        itemCount: widget.notifications.length,
-        itemBuilder: (context, index) {
-          final notification = widget.notifications[index];
-
-          return TweenAnimationBuilder<double>(
-            duration: const Duration(milliseconds: 500),
-            tween: Tween(begin: 0.0, end: 1.0),
-            builder: (context, opacity, child) {
-              return Opacity(
-                opacity: opacity,
-                child: child,
-              );
-            },
-            child: GestureDetector(
-              onTap: () {
-                widget.onMarkAsRead(index);
-              },
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                decoration: BoxDecoration(
-                  color: notification.isRead
-                      ? Theme.of(context).colorScheme.secondaryContainer
-                      : Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  leading: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: notification.isRead
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Colors.red,
-                    ),
-                    child: Text(
-                      notification.isRead ? "Read" : "New",
-                      style: GoogleFonts.prompt(color: Colors.white),
-                    ),
-                  ),
-                  title: Text(
-                    notification.title,
-                    style: GoogleFonts.kanit(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  subtitle: Text(
-                    notification.content,
-                    style: GoogleFonts.prompt(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize
-                        .min, // ลดขนาด Column ให้เล็กที่สุดที่จำเป็น
-                    mainAxisAlignment: MainAxisAlignment.end,
-
-                    children: [
-                      IconButton(
-                        icon: Icon(FontAwesomeIcons.trashCan),
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          widget.onDelete(notification.messageId);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+      child: ListView(
+        shrinkWrap: true,
+        physics:
+            AlwaysScrollableScrollPhysics(), // เพิ่ม physics เพื่อให้เลื่อนได้ตลอด
+        padding: EdgeInsets
+            .zero, // เพิ่ม padding เป็น zero เพื่อไม่ให้มี padding เริ่มต้น
+        scrollDirection: Axis.vertical,
+      
+        children: widget.notifications.map((notification) {
+          final index = widget.notifications.indexOf(notification);
+      
+          return NotificationItemCard(
+            onMarkAsRead: widget.onMarkAsRead,
+            onDelete: widget.onDelete,
+            item: notification,
+            index: index,
           );
-        },
+        }).toList(),
       ),
     );
   }

@@ -5,11 +5,12 @@ import 'package:versa_app_tutorial_cleanarch/shared/data/local/storage_service.d
 import 'package:versa_app_tutorial_cleanarch/shared/domain/providers/shared_preferences_storage_service_provider.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/globals.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/app_colors.dart';
+import 'package:versa_app_tutorial_cleanarch/shared/theme/extension/app_theme_wallet_color.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/test_styles.dart';
 import 'package:versa_app_tutorial_cleanarch/shared/theme/text_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app_theme_extension.dart';
+import 'extension/app_theme_gradient_extension.dart';
 
 final appThemeProvider = StateNotifierProvider<AppThemeModeNotifier, ThemeMode>(
   (ref) {
@@ -23,13 +24,13 @@ class AppThemeModeNotifier extends StateNotifier<ThemeMode> {
 
   ThemeMode currentTheme = ThemeMode.light;
 
-  AppThemeModeNotifier(this.storageService) : super(ThemeMode.light) {
+  AppThemeModeNotifier(this.storageService) : super(ThemeMode.dark) {
     getCurrentTheme();
   }
 
   void toggleTheme() {
     state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
-    storageService.set(APP_THEME_STORAGE_KEY, state.name);
+    save();
   }
 
   void getCurrentTheme() async {
@@ -37,15 +38,31 @@ class AppThemeModeNotifier extends StateNotifier<ThemeMode> {
     final value = ThemeMode.values.byName('${theme ?? 'light'}');
     state = value;
   }
+
+  void changeDarkTheme() {
+    state = ThemeMode.dark;
+    save();
+  }
+
+  void changeLightTheme() {
+    state = ThemeMode.light;
+    save();
+  }
+
+  void save() {
+    storageService.set(APP_THEME_STORAGE_KEY, state.name);
+  }
 }
 
 class AppTheme {
   // Dark theme data of the app
   static ThemeData get darkTheme {
     return ThemeData(
+        scaffoldBackgroundColor: Color(0xFF121212),
         brightness: Brightness.dark,
         fontFamily: AppTextStyles.fontFamily,
         primaryColor: AppColors.primary,
+        
         tabBarTheme: TabBarTheme(
           labelColor: AppColors.primary, // กำหนดสีของแท็บที่เลือก
           tabAlignment: TabAlignment.start,
@@ -77,21 +94,60 @@ class AppTheme {
             secondaryContainer: AppColors.lightSkyBlue,
             error: AppColors.error,
             inversePrimary: AppColors.primary),
-        scaffoldBackgroundColor: AppColors.backgroundDarkBlue,
-        textTheme: TextThemes.textTheme,
+        textTheme: TextThemes.darkTextTheme,
         primaryTextTheme: TextThemes.darkTextTheme,
+        inputDecorationTheme:
+            InputDecorationTheme(fillColor: AppColors.filledTextFleidColorDark),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+          surfaceTintColor: Color(0xFF252525),
+          splashFactory: NoSplash.splashFactory,
+        )),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Color(0x66FFFFFF),
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          elevation: 2,
+          shape: CircularNotchedRectangle(),
+          padding: EdgeInsets.symmetric(horizontal: 1),
+        ),
         appBarTheme: AppBarTheme(
           elevation: 0,
           foregroundColor: AppColors.primary,
           backgroundColor: AppColors.backgroundDarkBlue, // เปลี่ยนสีของ app bar
           titleTextStyle: AppTextStyles.h2,
         ),
-        extensions: const [
+        iconButtonTheme: IconButtonThemeData(
+            style: IconButton.styleFrom(
+                splashFactory: NoSplash.splashFactory,
+                highlightColor: Colors.transparent
+
+                // ใส่ฟอนต์และขนาด
+                )),
+        extensions: [
+          WalletColorExtension(
+              colorWalletItemButton: AppColors.walletButtonColorDark,
+              gradientWalletContainer:
+                  GradientAppColors.walletContainerGradientDark,
+              gradientWalletContainerBorder:
+                  GradientAppColors.walletContainerBorderGradientDark),
           GradientBackgroundExtention(
-            gradientBackground: AppColors.gradientDarkBlue,
-     gradientContainerPrimary: AppColors.gradientSecondary,
-            gradientContainerSecondary: AppColors.gradientPrimary,
-          ),
+              gradientBackground:
+                  GradientAppColors.gradientVersaDarkBlackground,
+              gradientContainerPrimary: GradientAppColors.gradientSweepDark,
+              gradientContainerSecondary: GradientAppColors.gradientSweepLight,
+              gradientBottomBar: GradientAppColors.gradientBottomBarDark,
+              gradientFloatingButton:
+                  GradientAppColors.floatingButtonGradientDark,
+              gradientFloatingButtonBorder:
+                  GradientAppColors.floatingBorderButtonGradientDark,
+              gradientBlackgroundIcon:
+                  GradientAppColors.circleBackgroundMenuIconDark),
         ]);
   }
 
@@ -101,8 +157,10 @@ class AppTheme {
         scaffoldBackgroundColor: AppColors.primary,
         brightness: Brightness.light,
         primaryColor: AppColors.black,
-        textTheme: TextThemes.textTheme,
+        textTheme: TextThemes.primaryTextTheme,
         primaryTextTheme: TextThemes.primaryTextTheme,
+        inputDecorationTheme: InputDecorationTheme(
+            fillColor: AppColors.filledTextFleidColorLight),
         tabBarTheme: TabBarTheme(
           labelColor: AppColors.black, // กำหนดสีของแท็บที่เลือก
           tabAlignment: TabAlignment.start,
@@ -124,6 +182,14 @@ class AppTheme {
           unselectedLabelStyle:
               GoogleFonts.prompt(textStyle: TextStyle(fontSize: 18.0)), // ฟอนต์
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          surfaceTintColor: Color.fromARGB(255, 189, 189, 189),
+          splashFactory: NoSplash.splashFactory,
+        )),
+        
         colorScheme: const ColorScheme.light(
             primary: AppColors.backgroundDarkBlue,
             onPrimary: AppColors.primary,
@@ -140,12 +206,42 @@ class AppTheme {
 
           backgroundColor: AppColors.primary, // เปลี่ยนสีของ app bar
         ),
-        extensions: const [
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Colors.black,
+          unselectedItemColor: AppColors.greyBlue,
+          selectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+          unselectedLabelStyle: GoogleFonts.poppins(fontSize: 13),
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: IconButton.styleFrom(
+              splashFactory: NoSplash.splashFactory,
+              highlightColor: Colors.transparent
+              // ใส่ฟอนต์และขนาด
+              ),
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          shape: CircularNotchedRectangle(),
+          padding: EdgeInsets.symmetric(horizontal: 1),
+        ),
+        extensions: [
+          WalletColorExtension(
+              colorWalletItemButton: AppColors.walletButtonColorLight,
+              gradientWalletContainer:
+                  GradientAppColors.walletContainerGradientLight,
+              gradientWalletContainerBorder:
+                  GradientAppColors.walletContainerBorderGradientLight),
           GradientBackgroundExtention(
-            gradientBackground: AppColors.gradientOrange,
-            gradientContainerPrimary: AppColors.gradientPrimary,
-            gradientContainerSecondary: AppColors.gradientSecondary,
-          ),
+              gradientBackground:
+                  GradientAppColors.gradientVersaLightBlackground,
+              gradientContainerPrimary: GradientAppColors.gradientSweepLight,
+              gradientContainerSecondary: GradientAppColors.gradientSweepDark,
+              gradientBottomBar: GradientAppColors.gradientBottomBarLight,
+              gradientFloatingButton:
+                  GradientAppColors.floatingButtonGradientLight,
+              gradientFloatingButtonBorder:
+                  GradientAppColors.floatingBorderButtonGradientLight,
+              gradientBlackgroundIcon:
+                  GradientAppColors.circleBackgroundMenuIconLight),
         ]);
   }
 }

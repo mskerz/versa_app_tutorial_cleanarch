@@ -22,7 +22,7 @@ Future<void> mainCommon(AppEnvironment environment) async {
   );
 
   
-  await NotificationConfig.initialize();  // ส่ง router เข้าไป
+  await NotificationConfig.initialize();  
   
   runApp(ProviderScope(
     observers: [
